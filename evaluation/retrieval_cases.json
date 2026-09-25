@@ -1,0 +1,14 @@
+[
+  {"query":"数据库连接池耗尽需要查看哪些证据", "source":"03-postgres.md"},
+  {"query":"idle in transaction 长时间占用连接", "source":"03-postgres.md"},
+  {"query":"网关 upstream timed out 如何区分原因", "source":"02-gateway.md"},
+  {"query":"connection refused 发布后 502", "source":"02-gateway.md"},
+  {"query":"热点键到期导致数据库瞬时压力", "source":"04-redis.md"},
+  {"query":"大量查询不存在的工单缓存穿透", "source":"04-redis.md"},
+  {"query":"OOMKilled 内存峰值与重启", "source":"05-kubernetes.md"},
+  {"query":"CrashLoopBackOff 应用启动失败", "source":"05-kubernetes.md"},
+  {"query":"数据库迁移删除字段还能回滚镜像吗", "source":"06-release.md"},
+  {"query":"消息处理后确认前中断造成重复通知", "source":"07-queue.md"},
+  {"query":"notify-worker 队列积压和下游限流", "source":"07-queue.md"},
+  {"query":"INC-LAB-017 事故时间线和端口配置", "source":"08-incident.md"}
+]

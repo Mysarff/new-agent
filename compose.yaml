@@ -1,0 +1,12 @@
+services:
+  opsatlas:
+    build: .
+    ports:
+      - "127.0.0.1:8501:8501"
+    env_file: .env
+    volumes:
+      - ./knowledge:/app/knowledge:ro
+      - opsatlas-index:/app/var
+    restart: unless-stopped
+volumes:
+  opsatlas-index:
