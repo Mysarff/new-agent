@@ -1,0 +1,16 @@
+{
+  "id": "palace-booking-checked-20260926",
+  "title": "故宫预约、闭馆日与参观入口",
+  "text": "故宫通常周一不开放，法定节假日另行安排；特别开放日还须查看专项公告。官方不售当日票，参观前第7天20:00起开放预约。观众须实名预约，建议使用故宫博物院官方小程序办理。\n参观从南侧午门进入，离院可走神武门或东华门。预约成功与具体时段以官方订单为准，不能把本资料当作余票查询结果。",
+  "source": "https://www.dpm.org.cn/subject_booking/",
+  "source_type": "official_summary",
+  "publisher": "故宫博物院",
+  "published_at": null,
+  "checked_at": "2026-09-26",
+  "valid_from": null,
+  "valid_to": null,
+  "regions": ["CN/北京", "北京", "北京市", "故宫"],
+  "tags": ["故宫", "预约", "门票", "周一", "入口", "北京"],
+  "scope": "故宫常规参观；专项公告可能覆盖常规规则",
+  "verification_method": "读取官方订票页当前个人订票须知；不采用页面遗留的疫情说明。原页未给出本段发布日期，因此留空"
+}

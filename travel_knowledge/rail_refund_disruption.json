@@ -1,0 +1,16 @@
+{
+  "id": "rail-disruption-refund-checked-20260926",
+  "title": "国铁列车晚点或停运：退票办理时限",
+  "text": "国铁旅客运输规程区分晚点与停运。未乘车旅客因列车晚点退票，应在出发站该列车实际开车前办理，免收退票费并退还全部票款。\n列车停运时，可从停运信息公布起到票面乘车日期后30日以内办理免手续费退票。联程票有额外条件，不能将上述规定直接套用于所有自愿退票或所有境外铁路订单。实际办理应查看12306订单与最新公告。",
+  "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+  "source_type": "official_summary",
+  "publisher": "中国铁路12306",
+  "published_at": null,
+  "checked_at": "2026-09-26",
+  "valid_from": null,
+  "valid_to": null,
+  "regions": ["CN", "中国"],
+  "tags": ["铁路", "火车", "高铁", "晚点", "停运", "退票", "12306"],
+  "scope": "国铁集团所属铁路运输企业及控股合资铁路公司境内旅客运输；只摘记第51、52条有关情形",
+  "verification_method": "读取官方网页铁路旅客运输规程第51、52条并自行归纳；页面对应版本发布日期未明确，不猜测生效日"
+}

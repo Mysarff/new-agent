@@ -1,12 +1,20 @@
 services:
-  opsatlas:
+  smartvoyage:
     build: .
     ports:
       - "127.0.0.1:8501:8501"
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # This image runs the UI with local specialists and real MCP subprocesses.
+      # Independent A2A services use the separate SmartVoyage.stack launcher.
+      SMARTVOYAGE_A2A: "0"
+      SMARTVOYAGE_CONFIG: config/travel.json
     volumes:
-      - ./knowledge:/app/knowledge:ro
-      - opsatlas-index:/app/var
+      - ./travel_knowledge:/app/travel_knowledge:ro
+      - smartvoyage-data:/app/var
+    init: true
     restart: unless-stopped
 volumes:
-  opsatlas-index:
+  smartvoyage-data:

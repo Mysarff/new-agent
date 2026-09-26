@@ -5,3 +5,7 @@ jsonschema==4.25.0
 streamlit==1.47.1
 python-dotenv==1.1.1
 numpy==2.3.2
+python-a2a==0.5.4
+fastapi==0.116.1
+uvicorn==0.35.0
+tzdata==2025.2

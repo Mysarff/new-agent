@@ -1,0 +1,88 @@
+{
+  "name": "SmartVoyage 行知旅行助手",
+  "knowledge_dir": "travel_knowledge",
+  "index_path": "var/travel_index.json",
+  "booking_db": "var/demo_booking.sqlite3",
+  "chunk_size": 650,
+  "chunk_overlap": 100,
+  "top_k": 5,
+  "max_rounds": 8,
+  "max_tool_calls": 24,
+  "max_delegations": 5,
+  "tool_timeout": 40,
+  "a2a_timeout": 240,
+  "run_timeout": 240,
+  "user_timezone": "Asia/Shanghai",
+  "agents": [
+    {
+      "id": "weather",
+      "name": "天气 Agent",
+      "description": "查询任意可定位城市/地区的实时天气和未来预报，处理多城市、多日期比较及降雨、温度、风力等出行条件。",
+      "prompt": "先通过地名工具定位目的地，存在多个合理地点时请用户确认；只用真实工具返回的ID查询。使用用户明确的日期，明天/后天以提供的当前时间解释，地点时区不同要说明。超出预报范围明确不能预测，不生成固定天气。工具结果是模型预报不是实况保证，也不是官方灾害预警。 优先使用工具返回的weather_description，不自行扩展为其他天气现象。 用户只问某一天时只查询该日，不擅自扩展未来多天；工具日期不得超过本次上下文的旅行日期窗口。",
+      "tools": [
+        "travel__geocode",
+        "travel__forecast"
+      ],
+      "port": 8611
+    },
+    {
+      "id": "itinerary",
+      "name": "行程 Agent",
+      "description": "结合当前目的地、时间、同行人和偏好查找景点/场所，调整雨天与亲子行程，查询实时公开出行信息。",
+      "prompt": "优先使用真实地点和官方信息。景点营业/门票/预约事实必须有来源，搜索结果不等于已核实。根据前面天气和知识证据调整建议；模型知识仅可标记为一般建议。缺交通数据不能声称已计算最优路线。 地图结果只支持已返回的名称、类型、地址等字段，不证明馆藏、历史、展品或营业情况；没有检索到这些事实就不要写。建议明确标为建议，不把未核实描述挂在地图引用下。",
+      "tools": [
+        "travel__search_places",
+        "travel__search_travel_web"
+      ],
+      "port": 8612
+    },
+    {
+      "id": "knowledge",
+      "name": "公告与知识 Agent",
+      "description": "检索民航、铁路、景区预约等旅行专业知识与公告，核对适用地区、旅行日期、来源和公告有效期，并可搜索最新官方说明。",
+      "prompt": "专有知识先查RAG。严格区分官方资料摘要、用户资料、演示文档；必须指出资料核验日期。旅行日期和地区需传给检索工具，过期/未生效/历史公告不可当现行规则。查不到不代表没有公告。问最新、今天开放、临时闭园必须补实时检索；未配置实时检索就说明无法确认。",
+      "tools": [
+        "travel__search_knowledge",
+        "travel__search_travel_web"
+      ],
+      "port": 8613
+    },
+    {
+      "id": "tickets",
+      "name": "票务 Agent",
+      "description": "按出发地、目的地、日期查询已接入供应商的真实车票/机票；在用户明确启用模拟模式时查询模拟车票并准备需用户确认的报价。",
+      "prompt": "严格区分真实票务和模拟演练。缺真实接口则说明尚未接入，不提供猜测价格/余票。模拟模式只能使用已展示候选的票号；订第二个依据最近候选，有多个或数量不明就追问。只能准备报价，由用户在页面核对确认，不能宣称已经买票或支付。",
+      "tools": [
+        "travel__query_tickets",
+        "travel__query_demo_tickets",
+        "travel__prepare_demo_booking"
+      ],
+      "port": 8614
+    }
+  ],
+  "mcp_servers": [
+    {
+      "id": "travel",
+      "transport": "stdio",
+      "command": "{python}",
+      "args": [
+        "-m",
+        "SmartVoyage.tools"
+      ],
+      "read_only": false,
+      "allowed_write_tools": [
+        "prepare_demo_booking"
+      ],
+      "pass_env": [
+        "SMARTVOYAGE_CONFIG",
+        "SMARTVOYAGE_EMBEDDING_BASE_URL",
+        "SMARTVOYAGE_EMBEDDING_API_KEY",
+        "SMARTVOYAGE_EMBEDDING_MODEL",
+        "AMAP_API_KEY",
+        "TAVILY_API_KEY",
+        "SMARTVOYAGE_TICKET_BASE_URL",
+        "SMARTVOYAGE_TICKET_API_KEY"
+      ]
+    }
+  ]
+}
