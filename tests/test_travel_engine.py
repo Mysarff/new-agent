@@ -110,6 +110,28 @@ class SessionTests(unittest.TestCase):
 
 
 class TravelEngineTests(unittest.IsolatedAsyncioTestCase):
+    async def test_model_serialized_integer_is_normalized_without_guessing_trip_facts(self):
+        model = ScriptedModel([invoke('update_trip_context', full_context(destination='西安', travelers='2')),
+                               answer('已记录两人行程')], auto_context=False)
+        result = await Engine(model, HubFixture(), configuration()).run('两人去西安')
+        self.assertEqual(result['context']['trip']['travelers'], 2)
+        self.assertIsNone(result['context']['trip']['departure'])
+        event = next(t for t in result['trace'] if t.get('tool') == 'update_trip_context')
+        self.assertEqual(event['normalized_integer_fields'], ['travelers'])
+        self.assertEqual(event['status'], 'success')
+
+    async def test_context_normalization_cannot_bypass_range_or_invent_integer(self):
+        for value in ('0', '51', '2.5', '两人', True):
+            with self.subTest(value=value):
+                model = ScriptedModel([invoke('update_trip_context', full_context(travelers=value)),
+                    invoke('update_trip_context', full_context()), answer('请确认人数')], auto_context=False)
+                result = await Engine(model, HubFixture(), configuration()).run('确认人数')
+                events = [t for t in result['trace'] if t.get('tool') == 'update_trip_context']
+                self.assertEqual(events[0]['status'], 'error')
+                self.assertEqual(events[0]['field'], 'travelers')
+                self.assertIn(events[0]['constraint'], ('type', 'minimum', 'maximum'))
+                self.assertIsNone(result['context']['trip']['travelers'])
+
     async def test_model_ignoring_context_tool_returns_explicit_incomplete(self):
         model = ScriptedModel([answer('pretend completed')], auto_context=False)
         result = await Engine(model, HubFixture(), configuration()).run('明天去西安')
