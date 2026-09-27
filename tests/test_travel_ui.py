@@ -101,6 +101,30 @@ class TravelUITests(unittest.TestCase):
         with closing(sqlite3.connect(self.config['booking_db'])) as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM demo_tickets').fetchone()[0], 0)
 
+    def test_saved_answer_formats_temperature_sources_and_trip_without_new_api_calls(self):
+        self.app.session_state['journey'].update({'destination':'西安','start_date':'2026-09-28',
+            'end_date':'2026-09-28','preferences':[],'notes':'雨天备选'})
+        result={'answer':r'## 天气\n气温 \(18.1^\circ\text{C} \sim 20.6^\circ\text{C}\) [Wsample]',
+            'retrieved_evidence':[{'id':'Wsample','title':'西安天气','source':'https://provider.test/forecast',
+                'metadata':{'kind':'weather_forecast'},'data':{'daily':[{'date':'2026-09-28',
+                    'temperature_2m_min':18.1,'temperature_2m_max':20.6,'precipitation_probability_max':100,'weather_description':'阵雨'}]}}],
+            'warnings':[], 'trace':[]}
+        self.app.session_state['messages']=[{'role':'assistant','content':result['answer'],'result':result}]
+        self.app.run()
+        self.assert_clean()
+        markdown='\n'.join(element.value for element in self.app.markdown)
+        self.assertIn('18.1℃ ～ 20.6℃',markdown)
+        self.assertIn('[来源1](#source-reply-0-1)',markdown)
+        self.assertIn('id="source-reply-0-1"',markdown)
+        self.assertNotIn('Wsample',markdown)
+        self.assertTrue(any(e.label=='来源1 · 西安天气' for e in self.app.expander))
+        text='\n'.join(element.value for element in self.app.text)
+        self.assertIn('2026-09-28（当天）',text)
+        self.assertIn('旅行偏好：未提供',text)
+        self.assertNotIn('偏好：[]',text)
+        self.assertTrue(any(e.label=='服务连接与设置' for e in self.app.expander))
+        self.tool.assert_not_awaited()
+
     def test_weather_requires_explicit_candidate_then_renders_tool_result(self):
         candidates = [
             {'location_id': 101, 'label': '测试城市 · 测试地区甲', 'timezone': 'Asia/Shanghai'},

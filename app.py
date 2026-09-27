@@ -13,6 +13,7 @@ from SmartVoyage.config import integrations, load_config
 from SmartVoyage.engine import TravelSession
 from SmartVoyage.knowledge import ingest
 from SmartVoyage.model import Embeddings
+from SmartVoyage.presentation import format_answer, safe_source_url, source_catalog, trip_overview
 from SmartVoyage.runtime import chat, direct_tool
 from SmartVoyage.tickets import DemoBookingStore
 
@@ -36,17 +37,22 @@ def call_tool(name, arguments):
         return {'status': 'error', 'message': f'服务暂不可用（{type(exc).__name__}），请检查配置后重试。'}
 
 
-def evidence_panel(items):
-    for item in items:
+def evidence_panel(items, scope='knowledge', answer=''):
+    catalog = source_catalog(items, answer)
+    for item in catalog:
         meta = dict(item.get('metadata', {}))
         meta['source_type'] = {'official_summary': '官方资料摘要', 'user_supplied_unverified': '用户资料（未经核验）',
                                'synthetic': '模拟资料'}.get(meta.get('source_type'), meta.get('source_type'))
-        with st.expander(f"{item['id']} · {item.get('title', '资料来源')}"):
-            source = item.get('source', '')
-            if source.startswith(('https://', 'http://')):
-                st.link_button('打开原始来源', source)
+        # Only controlled scope/number values enter this HTML; source text never does.
+        st.markdown(f'<span id="source-{scope}-{item["number"]}"></span>', unsafe_allow_html=True)
+        with st.expander(f"来源{item['number']} · {item.get('title', '资料来源')}"):
+            source = safe_source_url(item.get('source', ''))
+            data = item.get('data') or {}
+            places = data.get('places') if isinstance(data, dict) else None
+            if source:
+                st.link_button('查看地图接口说明' if places is not None else '打开原始来源', source)
             else:
-                st.caption(source)
+                st.caption('本地导入资料，原始文件由资料提供者维护。')
             st.caption(' · '.join(f'{label}：{meta[key]}' for key, label in
                 [('source_type', '资料类型'), ('published_at', '发布'), ('checked_at', '核验'),
                  ('valid_from', '生效'), ('valid_to', '截止')] if meta.get(key)))
@@ -54,24 +60,47 @@ def evidence_panel(items):
                 st.warning('这份公告已超过记录中的有效期，仅供历史查询。')
             if item.get('retrieved_at'):
                 st.caption('实时获取：' + item['retrieved_at'])
-            if item.get('text'):
+            if isinstance(places, list):
+                st.caption('地图返回的名称、地址与分类。是否室内、开放时间、预约和门票尚需核实；接口说明不是场所官网。')
+                rows = [{'名称': p.get('name') or '未提供', '地址': p.get('address') or '未提供',
+                         '分类': p.get('type') or '未提供'} for p in places if isinstance(p, dict)]
+                if rows:
+                    st.table(pd.DataFrame(rows).set_index('名称'))
+            elif item.get('metadata', {}).get('kind') == 'weather_forecast':
+                st.caption('以下数值直接来自本次天气接口；属于预报，可能随时间更新。')
+                rows = [{'日期': row['date'], '最低温 ℃': row.get('temperature_2m_min'),
+                         '最高温 ℃': row.get('temperature_2m_max'), '降水概率 %': row.get('precipitation_probability_max'),
+                         '天气现象': row.get('weather_description')} for row in data.get('daily', [])]
+                if rows:
+                    frame = pd.DataFrame(rows).set_index('日期')
+                    for column in ('最低温 ℃', '最高温 ℃', '降水概率 %'):
+                        frame[column] = frame[column].map(lambda value: '暂无' if pd.isna(value) else format(value, 'g'))
+                    st.table(frame)
+            elif item.get('text'):
                 st.text(item['text'])
+            elif isinstance(data, dict) and data.get('snippet'):
+                st.text(data['snippet'])
             elif item.get('data'):
                 st.json(item['data'], expanded=False)
 
 
-def render_answer(result):
-    st.markdown(result['answer'])
+def render_answer(result, scope):
+    catalog = source_catalog(result.get('retrieved_evidence', []), result['answer'])
+    if 'answer_review' not in result and any(isinstance(item.get('data'), dict) and 'places' in item['data'] for item in catalog):
+        st.info('这条历史回答尚未经过新增的来源复核。请重新查询；地图资料本身不能证明馆藏、室内条件或开放情况。')
+    st.markdown(format_answer(result['answer'], catalog, scope))
     for warning in result.get('warnings', []):
         st.caption(warning)
     if result.get('trace'):
         actors = list(dict.fromkeys(t['actor'] for t in result['trace'] if t.get('actor') != 'coordinator'))
         names = {a['id']: a['name'] for a in config['agents']}
         st.caption('本轮协作：' + (' → '.join(names.get(a, a) for a in actors) or '旅行协调器'))
-        with st.expander('查看选择了谁、调用了什么'):
+        with st.expander('查看执行详情'):
             st.dataframe(pd.DataFrame([{k: json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v
                                        for k, v in row.items()} for row in result['trace']]), hide_index=True)
-    evidence_panel(result.get('retrieved_evidence', []))
+    if catalog:
+        st.caption('点击回答中的“来源”可定位到对应资料，展开后查看原始数据。')
+    evidence_panel(result.get('retrieved_evidence', []), scope, result['answer'])
 
 
 def confirm_quote(quote, prefix):
@@ -89,21 +118,14 @@ def confirm_quote(quote, prefix):
 with st.sidebar:
     st.markdown('### 🧭 SmartVoyage')
     st.caption('行知 · 把旅途问题一件件办清楚')
-    labels = {'model': '对话模型', 'weather': '全球天气', 'embeddings': '向量检索',
-              'places': '高德地点查询', 'live_search': '最新公告搜索', 'tickets': '真实票务查询'}
-    for key, label in labels.items():
-        st.caption(('● ' if available[key] else '○ ') + label + (' · 已配置' if available[key] else ' · 待接入'))
-    st.caption('“已配置”表示配置存在；调用结果以本轮响应为准。')
     st.divider()
     st.markdown('**当前行程**')
-    if journey.trip:
-        names = {'departure': '出发地', 'destination': '目的地', 'start_date': '开始日期',
-                 'end_date': '结束日期', 'travelers': '人数', 'preferences': '偏好', 'notes': '补充条件'}
-        for key, value in journey.trip.items():
-            if value is not None:
-                st.write(f"{names.get(key, key)}：{value}")
-    else:
-        st.caption('在对话中告诉我目的地、日期和偏好。')
+    st.caption('从对话中整理，方便接着问“那里”或“那后天呢”。如有误，直接在对话中纠正。')
+    for label, value in trip_overview(journey.trip):
+        st.text(f'{label}：{value}')
+    if journey.trip.get('notes'):
+        with st.expander('补充需求'):
+            st.text(journey.trip['notes'])
     if st.button('开始一段新行程', use_container_width=True):
         st.session_state.messages = []
         st.session_state.journey = TravelSession()
@@ -114,7 +136,14 @@ with st.sidebar:
         for agent in config['agents']:
             st.markdown('**' + agent['name'] + '**')
             st.caption(agent['description'])
-    st.caption('服务模式：' + ('独立 Agent 服务' if os.getenv('SMARTVOYAGE_A2A') == '1' else '本机协作'))
+    with st.expander('服务连接与设置'):
+        labels = {'model': '对话模型', 'weather': '天气查询', 'embeddings': '语义向量检索',
+                  'places': '高德地点查询', 'live_search': '最新公告搜索', 'tickets': '真实票务查询'}
+        for key, label in labels.items():
+            status = '公共接口，无需密钥' if key == 'weather' else '已填写配置' if available[key] else '待配置'
+            st.caption(f'{label} · {status}')
+        st.caption('配置存在不代表调用成功；具体结果以本轮响应为准。')
+        st.caption('服务模式：' + ('独立 Agent 服务' if os.getenv('SMARTVOYAGE_A2A') == '1' else '本机协作'))
 
 st.title('把下一程，想得更周全。')
 st.caption('SmartVoyage 行知旅行助手 · 实时天气、旅行安排、官方知识与公告、票务查询')
@@ -124,10 +153,10 @@ with conversation:
     if not st.session_state.messages:
         st.info('试试：“明天去陕西西安，天气怎么样？如果下雨，怎么安排？”然后追问“那后天呢？”')
         st.caption('也可以问：“坐飞机能带什么充电宝？” · “故宫预约有哪些要求？”')
-    for message in st.session_state.messages:
+    for message_index, message in enumerate(st.session_state.messages):
         with st.chat_message(message['role']):
             if message['role'] == 'assistant':
-                render_answer(message['result'])
+                render_answer(message['result'], f'reply-{message_index}')
             else:
                 st.write(message['content'])
     with st.form('travel_chat', clear_on_submit=True):
