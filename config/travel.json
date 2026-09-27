@@ -12,7 +12,7 @@
   "tool_timeout": 40,
   "a2a_timeout": 240,
   "run_timeout": 240,
-  "evidence_review_timeout": 45,
+  "evidence_review_timeout": 90,
   "user_timezone": "Asia/Shanghai",
   "agents": [
     {

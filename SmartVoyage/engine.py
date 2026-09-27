@@ -132,7 +132,7 @@ class Engine:
             failed = any(event.get('event') in ('model_error', 'context_error') for event in state.trace)
             if needs_place_review(evidence) and not failed:
                 answer = await review_place_answer(self.model, query, answer, evidence, state,
-                    self.config.get('evidence_review_timeout', 45),
+                    self.config.get('evidence_review_timeout', 90),
                     {**self.session.snapshot(), 'pending_quotes': self.session.quotes})
             return answer
         try:
