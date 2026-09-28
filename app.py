@@ -96,6 +96,15 @@ def render_answer(result, scope):
         names = {a['id']: a['name'] for a in config['agents']}
         st.caption('本轮协作：' + (' → '.join(names.get(a, a) for a in actors) or '旅行协调器'))
         with st.expander('查看执行详情'):
+            metrics = result.get('metrics', {})
+            if metrics:
+                st.caption('回答设置：' + result.get('response_mode', '环境配置'))
+                elapsed = metrics.get('total_elapsed_ms', metrics['engine_elapsed_ms']) / 1000
+                st.caption(f"本轮用时 {elapsed:.1f} 秒 · 已记录模型请求 {metrics['model_calls']} 次 · 业务工具调用 {metrics['leaf_tool_calls']} 次")
+                if metrics.get('total_tokens') is not None:
+                    st.caption(f"模型服务返回的 Token 用量：{metrics['total_tokens']}。包含各专家和来源复核。")
+                else:
+                    st.caption('部分请求未返回用量，无法计算完整 Token 总数。')
             st.dataframe(pd.DataFrame([{k: json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v
                                        for k, v in row.items()} for row in result['trace']]), hide_index=True)
     if catalog:
@@ -144,6 +153,8 @@ with st.sidebar:
             st.caption(f'{label} · {status}')
         st.caption('配置存在不代表调用成功；具体结果以本轮响应为准。')
         st.caption('服务模式：' + ('独立 Agent 服务' if os.getenv('SMARTVOYAGE_A2A') == '1' else '本机协作'))
+        fast_response = st.checkbox('快速回答（实验）', value=False)
+        st.caption('减少模型思考等待，复杂问题可能更容易遗漏。需要模型支持关闭思考；如报错请关闭。默认沿用本地模型配置。')
 
 st.title('把下一程，想得更周全。')
 st.caption('SmartVoyage 行知旅行助手 · 实时天气、旅行安排、官方知识与公告、票务查询')
@@ -168,9 +179,13 @@ with conversation:
         history = [{'role': m['role'], 'content': m['content']} for m in st.session_state.messages]
         st.session_state.page_quote = None
         st.session_state.messages.append({'role': 'user', 'content': query})
+        with st.chat_message('user'):
+            st.write(query)
         try:
-            with st.spinner('正在选择助手、查询证据并整理回答…'):
-                result = asyncio.run(chat(query, history, journey, network=os.getenv('SMARTVOYAGE_A2A') == '1'))
+            with st.spinner('正在选择助手、查询证据并整理回答…', show_time=True):
+                request_config = {**config, 'enable_thinking': False} if fast_response else config
+                result = asyncio.run(chat(query, history, journey, network=os.getenv('SMARTVOYAGE_A2A') == '1', config=request_config))
+                result['response_mode'] = '快速回答（实验）' if fast_response else '环境配置'
             st.session_state.messages.append({'role': 'assistant', 'content': result['answer'], 'result': result})
             st.rerun()
         except Exception as exc:

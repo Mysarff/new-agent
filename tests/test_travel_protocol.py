@@ -106,7 +106,8 @@ class TravelProtocolTests(unittest.IsolatedAsyncioTestCase):
         wrong_method = envelope()
         wrong_method["method"] = "orders/buy"
         requests.append(wrong_method)
-        requests.extend((envelope(budget=0), envelope(budget=9)))
+        requests.extend((envelope(budget=0), envelope(budget=9), envelope(enable_thinking='false'),
+                         envelope(compact_handoffs='true')))
         for request in requests:
             with self.subTest(request=request):
                 result = (await self.client.post("/tasks/send", json=request)).json()

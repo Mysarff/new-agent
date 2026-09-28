@@ -26,7 +26,10 @@ class RemoteAgents:
         if budget < 1:
             raise ValueError('No remaining tool budget')
         task_id = str(uuid.uuid4())
-        content = {'query': query, 'history': history, 'context': context, 'evidence': evidence, 'budget': budget}
+        content = {'query': query, 'history': history, 'context': context, 'evidence': evidence, 'budget': budget,
+                   'compact_handoffs': self.config.get('compact_handoffs', False)}
+        if 'enable_thinking' in self.config:
+            content['enable_thinking'] = self.config['enable_thinking']
         task = Task(id=task_id, message=Message(role=MessageRole.USER,
                     content=TextContent(text=json.dumps(content, ensure_ascii=False))).to_dict())
         async with httpx.AsyncClient(timeout=self.config['a2a_timeout'], follow_redirects=False) as client:
@@ -78,6 +81,11 @@ def create_app(agent_id, model=None):
             if not 1 <= len(payload['query']) <= 6000 or not 1 <= payload['budget'] <= config['max_tool_calls']:
                 raise ValueError('Invalid task')
             context = payload.get('context', {})
+            compact = payload.get('compact_handoffs', config.get('compact_handoffs', False))
+            if type(compact) is not bool:
+                raise ValueError('compact_handoffs must be boolean')
+            if 'enable_thinking' in payload and payload['enable_thinking'] is not None and type(payload['enable_thinking']) is not bool:
+                raise ValueError('enable_thinking must be null or boolean')
             if type(context.get('demo_enabled', False)) is not bool:
                 raise ValueError('demo_enabled must be boolean')
             history = payload.get('history', [])
@@ -93,7 +101,9 @@ def create_app(agent_id, model=None):
             session.candidates = candidates
             state = RunState(evidence={item['id']: item for item in payload.get('evidence', [])})
             async with ToolHub(config) as hub:
-                engine = Engine(model or ChatModel(), hub, dict(config, max_tool_calls=payload['budget']), session)
+                request_model = model or (ChatModel(enable_thinking=payload['enable_thinking'])
+                    if 'enable_thinking' in payload else ChatModel())
+                engine = Engine(request_model, hub, dict(config, max_tool_calls=payload['budget'], compact_handoffs=compact), session)
                 answer = await asyncio.wait_for(engine.specialist(agent, payload['query'], history, state),
                                                 config['a2a_timeout'] - 5)
             result = {'answer': answer, 'evidence': list(state.evidence.values()), 'trace': state.trace,

@@ -15,6 +15,8 @@ from .weather import geocode as geo, forecast as weather
 
 READ = ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True)
 PREPARE = ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False)
+ISODate = Annotated[str, Field(pattern=r'^\d{4}-\d{2}-\d{2}$',
+    description='ISO日期YYYY-MM-DD。未知的可选日期请省略或传JSON null，不能传字符串None/null。')]
 
 
 def build_server():
@@ -32,7 +34,7 @@ def build_server():
         return await weather(location_id, start_date, end_date)
 
     @server.tool(annotations=READ)
-    def search_knowledge(query: str, travel_date: str | None = None, region: str | None = None,
+    def search_knowledge(query: str, travel_date: ISODate | None = None, region: str | None = None,
                          top_k: Annotated[int, Field(ge=1, le=10)] = 5, include_historical: bool = False) -> dict:
         """检索旅行专业知识/官方公告快照。传旅行日期及层级地区如CN/北京；过滤不适用或过期资料。查不到不代表没有公告。"""
         embedding = Embeddings()

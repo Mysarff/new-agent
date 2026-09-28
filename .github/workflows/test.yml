@@ -24,6 +24,8 @@ jobs:
         run: python -m unittest discover -s tests -p 'test_travel_*.py' -v
       - name: Build local knowledge index without embeddings
         run: python -m SmartVoyage.main ingest
+      - name: Evaluate curated retrieval set without external credentials
+        run: python -m SmartVoyage.benchmark --rag --output reports/rag_eval.json
       - name: Discover local MCP tools without executing external APIs
         run: |
           mkdir -p reports
@@ -35,5 +37,6 @@ jobs:
           name: smartvoyage-offline-checks
           path: |
             reports/mcp_discovery.json
+            reports/rag_eval.json
             var/travel_index.json
           if-no-files-found: warn

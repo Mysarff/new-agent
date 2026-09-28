@@ -168,7 +168,8 @@ class TravelEngineTests(unittest.IsolatedAsyncioTestCase):
             invoke("update_trip_context", full_context(destination="大理", start_date="2030-09-08", end_date="2030-09-08")),
             invoke("delegate__knowledge", {"task": "核对这次旅程的公告"}),
             invoke("travel__search_knowledge", {"query": "大理公告"}),
-            answer("资料快照 [Kfixture123]"), answer("根据资料快照 [Kfixture123]。")])
+            answer("资料快照 [Kfixture123]"), answer("根据资料快照 [Kfixture123]。"),
+            answer("来源复核后的资料快照 [Kfixture123]。")])
         session = TravelSession(trip={"destination": "杭州"}, candidates=[{"id": "old"}])
         hub = HubFixture()
         result = await Engine(model, hub, configuration(), session).run(
@@ -182,6 +183,7 @@ class TravelEngineTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(payload["context"]["recent_ticket_candidates"], [])
         self.assertIn({"role": "user", "content": "原计划杭州"}, delegated_input)
         self.assertEqual(result["citations"][0]["id"], "Kfixture123")
+        self.assertEqual(result['answer_review'], 'completed')
         self.assertEqual(model.tool_choices[0], {"type": "function", "function": {"name": "update_trip_context"}})
         self.assertTrue(all(choice == "auto" for choice in model.tool_choices[1:]))
 

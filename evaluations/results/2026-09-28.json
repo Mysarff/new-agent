@@ -1,0 +1,2486 @@
+{
+  "scope": "人工编写的开发回归；全部样本保留；未进行独立人工事实标注。不能代表生产准确率或尾延迟。公开数据包为摘要，完整工具返回和执行轨迹留在本机var报告中。",
+  "runs": [
+    {
+      "started_at": "2026-09-28T13:33:34.188778+08:00",
+      "completed_at": "2026-09-28T13:46:15.546097+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "summary": {
+        "profiles": {
+          "baseline": {
+            "attempted": 5,
+            "skipped": 0,
+            "execution_passed": 4,
+            "execution_pass_rate": 0.8,
+            "routing_exact_rate": 1.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 75.375,
+            "latency_p95_seconds": 154.531,
+            "latency_mean_seconds": 83.572,
+            "mean_model_calls": 6.6,
+            "token_complete_records": 5,
+            "mean_total_tokens": 22781.2,
+            "semantic_accuracy": null
+          },
+          "compact": {
+            "attempted": 5,
+            "skipped": 0,
+            "execution_passed": 2,
+            "execution_pass_rate": 0.4,
+            "routing_exact_rate": 0.8,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 47.906,
+            "latency_p95_seconds": 115.156,
+            "latency_mean_seconds": 68.6748,
+            "mean_model_calls": 5.8,
+            "token_complete_records": 5,
+            "mean_total_tokens": 18345,
+            "semantic_accuracy": null
+          }
+        },
+        "paired_attempts": 5,
+        "paired_delta_mean_seconds": -14.897200000000002,
+        "paired_regressions": [
+          "rain_plan",
+          "tickets_unavailable"
+        ],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "latency_paired_20260928",
+      "description": "交接精简探索：日期Schema修复前；baseline与compact配对。发现退化，compact默认关闭。",
+      "records": [
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 30.485,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 30485,
+            "model_calls": 6,
+            "model_elapsed_ms": 24969,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3798,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 17739,
+            "completion_tokens": 1559,
+            "total_tokens": 19298
+          },
+          "answer": "2026年9月29日，**中国陕西西安**的天气预报如下：\n\n*   **天气状况**：阴天 [W67dc1e8e08e6]\n*   **气温范围**：最低温 16℃，最高温 24.6℃ [W67dc1e8e08e6]\n*   **降水概率**：最高 8%，预计无降雨 [W67dc1e8e08e6]",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wb1df2c3b24c9",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W67dc1e8e08e6",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "compact",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 47.906,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 47906,
+            "model_calls": 6,
+            "model_elapsed_ms": 42483,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3625,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 17974,
+            "completion_tokens": 2501,
+            "total_tokens": 20475
+          },
+          "answer": "根据查询，2026年9月29日中国陕西省西安市的天气预报如下：\n\n* **天气现象**：阴天\n* **气温范围**：16.0℃ ～ 24.6℃ [W1270daf58d96]\n* **降水情况**：无降水，最大降水概率仅为 8% [W1270daf58d96]\n* **风力情况**：最大风速约 7.4 公里/小时，较为轻微 [W1270daf58d96]\n\n总体而言，当天的天气条件适宜出行。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W0b2c58151974",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W1270daf58d96",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "compact",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 110.859,
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": false
+          },
+          "metrics": {
+            "engine_elapsed_ms": 110859,
+            "model_calls": 6,
+            "model_elapsed_ms": 105625,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3375,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 15689,
+            "completion_tokens": 7069,
+            "total_tokens": 22758
+          },
+          "answer": "根据查询到的天气预报，2026年9月29日陕西西安的天气情况如下 [W852a0a84f3cf]：\n* **天气状况**：全天预计为**阴天**。\n* **气温**：预计在 **16.6℃～24.6℃** 之间。\n* **降雨**：预计无有效降雨，全天降水概率仅8%，降水量为 0.0 毫米。\n* **风力**：微风，最大风速约 6.0 公里/小时。\n\n### 当前无雨，常规安排建议\n由于预报显示天气温和且无明显降雨，非常适合安排典型的户外游览（如城墙骑行、大雁塔周边漫步、曲江池遗址公园散步等）。当日体感舒适，可正常执行原定的城市观光计划。\n\n### 若遇突发阵雨的备选方案\n尽管天气预报无雨，如果您担心局部天气变化，可随时转战以下防雨性较好的室内场所：\n1. **陕西历史博物馆 / 西安博物院**（需提前官方预约）；\n2. **西安美术馆 / 赛格国际购物中心**（集购物与休闲于一体，全程室内）；\n3. **本地特色茶馆或书店**（如书院门文化街区内的文房雅室）。\n\n*(注：以上为未来日期的气象模型预测，实际天气请以临行前当地实时播报为准。)*",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W085f12bf997c",
+              "title": "地点查询：Xi'an",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=Xi%27an&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W852a0a84f3cf",
+              "title": "西安西关机场 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.37497&longitude=109.12239&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "passed",
+          "elapsed_seconds": 154.531,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 154531,
+            "model_calls": 10,
+            "model_elapsed_ms": 147109,
+            "leaf_tool_calls": 4,
+            "leaf_tool_elapsed_ms": 4235,
+            "usage_reported_calls": 10,
+            "prompt_tokens": 43107,
+            "completion_tokens": 10411,
+            "total_tokens": 53518
+          },
+          "answer": "根据天气预报数据，2026年9月29日陕西西安预计为阴天[Wb31896912804]。气温在16℃至24.6℃之间，最高降水概率为8%，预计总降水量为0.0毫米，无降雨预测[Wb31896912804]。当日最大风速约7.4 km/h[Wb31896912804]。此为预报模型数据，非实时观测值。\n\n若您计划应对阵雨或提前准备备选方案，以下是经地图检索确认的地点候选（具体是否全室内、开放时间、客流及预约要求待核实）：\n文博场馆候选：西安碑林博物馆（三学街15号）、丹凤门遗址博物馆（自强东路585号大明宫国家遗址公园内南侧）、长安云·秦岭昆虫博物馆（长安云北馆5楼）、大风阁博物馆（二环北路西段汉城湖景区内）、西安市青少年活动中心航空博物馆（连心路与凤城二路交叉口北220米）、大华博物馆（太华南路251号）[W81d3fd33575d6855]。\n商业综合体候选：赛格国际购物中心（小寨东路）、西安大悦城（慈恩西路66号）、CityOn熙地港(西安)购物中心（凤城七路170号）、西安万象城(生命之树)（曲江新区长安南路2899号和雁展路交叉口东南侧）、西安荟聚（西部大道与子午大道交汇处西北角）、砂之船(西安)奥莱（世博大道5001号）、老城根G park（星火路22号）、西安浐灞万象汇（和悦路与港泽路交叉口北100米）[Wc0c7e385fb40c603]。\n\n建议出行当天关注当地短时气象预警信号，相关场所的具体营业政策与入场规定请以各机构官方公告为准。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W0989408a792b",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wb31896912804",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            },
+            {
+              "id": "W81d3fd33575d6855",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            },
+            {
+              "id": "Wc0c7e385fb40c603",
+              "title": "高德地点查询：西安 商场",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        },
+        {
+          "case_id": "knowledge_powerbank",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+          "status": "failed",
+          "elapsed_seconds": 114.89,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": false,
+            "citation_ids_valid": false,
+            "expected_document_cited": false
+          },
+          "metrics": {
+            "engine_elapsed_ms": 114890,
+            "model_calls": 6,
+            "model_elapsed_ms": 113218,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 15,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 8564,
+            "completion_tokens": 6674,
+            "total_tokens": 15238
+          },
+          "answer": "很抱歉，由于我的知识库检索工具（delegate__knowledge）在当前时刻发生系统错误，无法返回特定的官方通告 ID（如 [引用未验证]），也无法提供经过核验的具体公告来源和资料发布日期。\n\n不过，根据中国民航局（CAAC）及主流航空公司长期执行的通用规定，关于国内航班携带充电宝的建议如下：\n\n### 1. 核心判断标准：标识与能量\n机场安检对充电宝的查验，首要标准是**“物理参数的可读性”**以及**“额定能量限制”**，而非单纯查看是否有 3C 标志。\n*   **严禁托运，必须随身携带**：所有充电宝均不允许放入托运行李。\n*   **严格限制额定能量（Wh）**：\n    *   **≤100Wh**：无需审批，可直接携带（通常每人限带 2 块）。\n    *   **100Wh ~ 160Wh**：需经航空公司批准后方可携带（通常每人限带 2 块）。\n    *   **>160Wh**：**严禁携带**。\n\n### 2. 关于“无 3C 标识”能否携带\n*   **合规背景**：自 2023 年 8 月起，中国已对移动电源实施强制性 CCC 认证。新出厂的正规产品均应具备 3C 标识。\n*   **旧款库存/无标识产品**：只要该充电宝机身上的参数（如容量 mAh、电压 V、能量 Wh）**依然清晰可见**，在额定能量合规的情况下，通常可以正常通过安检。\n*   **风险提示**：若无 3C 标识且外观陈旧，或者机身铭牌已经严重磨损、字迹模糊（即所谓的“三无产品”或“黑户”充电宝），安检人员可能会认为该电池缺乏安全保障而加大检查力度，甚至直接扣留。**建议您最好随身携带标识完整的充电宝以备查验。**\n\n---\n*注：以上为基于通用规定的建议。因工具故障未能获取最新官方摘要，为避免信息偏差，如果您乘坐的是特定航司或涉及特殊航线，请务必在出发前咨询对应航空公司的客服确认。*",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "knowledge_powerbank",
+          "repeat": 1,
+          "profile": "compact",
+          "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+          "status": "failed",
+          "elapsed_seconds": 44.984,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": false,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": false
+          },
+          "metrics": {
+            "engine_elapsed_ms": 44984,
+            "model_calls": 6,
+            "model_elapsed_ms": 39874,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3516,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 17786,
+            "completion_tokens": 2390,
+            "total_tokens": 20176
+          },
+          "answer": "不可以。根据中国民用航空局（CAAC）于2025年6月28日起实施的最新安全管控通知，旅客禁止携带没有3C标识、3C标识不清晰以及被召回型号/批次的充电宝乘坐中国大陆境内的航班 [W558fb52b3340d83a] [W9d922edccb0ae2a3]。\n\n该规定旨在应对近年来锂电池产品在机上起火冒烟的事件频发及多批次产品被召回的安全风险，落实《危险物品安全航空运输技术细则》的要求 [W558fb52b3340d83a] [W9d922edccb0ae2a3]。民航相关单位在安检现场已明确查验并严格执行此标准。\n\n**资料与来源说明：**\n*   **法规来源：** 中国民用航空局综合司、航空安全办公室及相关司局发布的紧急通知 [W558fb52b3340d83a]。\n*   **资料核验日期：** 当前检索时间为 **2026-09-28T13:41:12.906687+08:00**。该政策自2025年6月28日生效实施至今仍然有效 [W558fb52b3340d83a] [W9d922edccb0ae2a3]。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W558fb52b3340d83a",
+              "title": "民航局：禁止旅客携带无3C标识及被召回的充电宝乘坐境内航班",
+              "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html"
+            },
+            {
+              "id": "W9d922edccb0ae2a3",
+              "title": "无3C标识不能登机充电宝安全新规的背后",
+              "source": "https://www.news.cn/legal/20250703/cefc82e38aaa4da09ed49b228da945b9/c.html"
+            },
+            {
+              "id": "W8a3474bd8a52b80c",
+              "title": "充电宝能带上飞机吗？最新航空安全规定及携带要求",
+              "source": "https://my.trip.com/guide/info/%E5%85%85%E7%94%B5%E5%AE%9D%E8%83%BD%E5%B8%A6%E4%B8%8A%E9%A3%9E%E6%9C%BA%E5%90%97.html"
+            },
+            {
+              "id": "Wae357fe02f0bc883",
+              "title": "关于民航旅客携带“充电宝”乘机规定的公告",
+              "source": "https://www.caac.gov.cn/XXGK/XXGK/TZTG/201511/t20151105_11173.html"
+            },
+            {
+              "id": "W1d983a628f104671",
+              "title": "锂电池、充电宝携带规定",
+              "source": "https://www.caac.gov.cn/CXCK/HLZN/201512/t20151214_15866.html"
+            }
+          ]
+        },
+        {
+          "case_id": "tickets_unavailable",
+          "repeat": 1,
+          "profile": "compact",
+          "query": "请查2026-09-29北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+          "status": "failed",
+          "elapsed_seconds": 24.469,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__query_tickets": true,
+            "forbidden:travel__query_demo_tickets": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": false
+          },
+          "metrics": {
+            "engine_elapsed_ms": 24469,
+            "model_calls": 5,
+            "model_elapsed_ms": 22843,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 16,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 6827,
+            "completion_tokens": 1424,
+            "total_tokens": 8251
+          },
+          "answer": "很抱歉，目前我暂时无法为您查询2026-09-29北京到上海的真实火车票票价和余票。\n\n根据系统反馈（[引用未验证]），真实的铁路票务供应方接口目前尚未接入或配置，因此无法获取实时的余票情况与准确票价。建议您稍后关注官方购票渠道或等待系统完成相关接口的配置。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "tickets_unavailable",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "请查2026-09-29北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+          "status": "passed",
+          "elapsed_seconds": 42.579,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__query_tickets": true,
+            "forbidden:travel__query_demo_tickets": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 42579,
+            "model_calls": 5,
+            "model_elapsed_ms": 41017,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 0,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 6666,
+            "completion_tokens": 2546,
+            "total_tokens": 9212
+          },
+          "answer": "很抱歉，当前票务服务**尚未接入真实的火车票供应方接口**（配置缺失），因此无法为您查询2026年9月29日北京到上海的真实火车票票价和余票信息。\n\n建议您通过以下官方或第三方渠道自行查询：\n1. **铁路12306官方网站或APP**\n2. **携程、去哪儿等第三方购票平台**\n\n如果您后续需要模拟的示例数据或尝试其他交通方式（如机票）的查询测试，请告诉我。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "places_only",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。",
+          "status": "passed",
+          "elapsed_seconds": 75.375,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_places": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 75375,
+            "model_calls": 6,
+            "model_elapsed_ms": 73328,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 312,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 11305,
+            "completion_tokens": 5335,
+            "total_tokens": 16640
+          },
+          "answer": "根据查询结果，为您列出西安地区符合“博物馆”分类的地图找到的地点候选及地址如下（来源：[W86900a27d670f7ac]）：\n• 西安碑林博物馆：三学街15号\n• 大华博物馆：太华南路251号\n• 丹凤门遗址博物馆：自强东路585号大明宫国家遗址公园内(南侧)\n• 西安市青少年活动中心航空博物馆：连心路与凤城二路交叉口北220米\n• 大风阁博物馆：二环北路西段汉城湖景区内\n• 长安云·秦岭昆虫博物馆：长安云北馆5楼\n• 陕西科技大学西安未央校区中国轻工业博物馆：大学园区陕西科技大学图书馆东边\n\n注：上述数据仅包含系统检索返回的名称与地址字段。各场馆实际室内条件和开放情况仍待核实，建议以现场公告或官方渠道最新通知为准。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W86900a27d670f7ac",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        },
+        {
+          "case_id": "places_only",
+          "repeat": 1,
+          "profile": "compact",
+          "query": "帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。",
+          "status": "passed",
+          "elapsed_seconds": 115.156,
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_places": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 115156,
+            "model_calls": 6,
+            "model_elapsed_ms": 113219,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 312,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 12009,
+            "completion_tokens": 8056,
+            "total_tokens": 20065
+          },
+          "answer": "根据检索数据，地图找到的西安博物馆地点候选及地址如下[W87d4bf1c6607d78b]：\n- 西安碑林博物馆：三学街15号\n- 丹凤门遗址博物馆：自强东路585号大明宫国家遗址公园内(南侧)\n- 大华博物馆：太华南路251号\n- 大风阁博物馆：二环北路西段汉城湖景区内\n- 西安市青少年活动中心航空博物馆：连心路与凤城二路交叉口北220米\n- 长安云·秦岭昆虫博物馆：长安云北馆5楼\n- 陕西科技大学西安未央校区中国轻工业博物馆：大学园区陕西科技大学图书馆东边\n\n地图找到的地点候选，明确室内条件和开放情况仍待核实。当前仅提供名称、地址与分类字段，无法推断馆藏规模、具体票价或实时余票等详情。如需调整筛选条件或补充其他需求，请随时告知。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W87d4bf1c6607d78b",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "started_at": "2026-09-28T13:50:01.871264+08:00",
+      "completed_at": "2026-09-28T13:57:54.178140+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "implementation_sha256": {
+        "benchmark.py": "eda3a89a66cba337823ea715302f69095452464e6a142dae88d652ad61b1bd44",
+        "engine.py": "8137e64b7c78cfbfcc5ba5ba115b9f87eea9f945fb888e74ad02cab79f6df46c",
+        "model.py": "116007c6c26f7c103eb503be44ad6d39732cc5709d3b218637b035930e095ccd",
+        "metrics.py": "01b66baf0161f74d37010b598732d740c1b159be54efecadb9549aea3b3b23da",
+        "grounding.py": "d39e7751fec14299d747605b252ebc5b1e609a2ae726cc7100b7cb803b2274d5",
+        "a2a.py": "73637522bd56e787a7ceeb8031bbc6b9a52546487d25ed21c638f5acf28178af",
+        "runtime.py": "19d7208eb7086051589d868836a0732d17d6357b183524902a2c368167d5e813"
+      },
+      "summary": {
+        "profiles": {
+          "baseline": {
+            "attempted": 5,
+            "skipped": 0,
+            "execution_passed": 5,
+            "execution_pass_rate": 1.0,
+            "routing_exact_rate": 1.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 54.14,
+            "latency_p95_seconds": 147.219,
+            "latency_mean_seconds": 79.50919999999999,
+            "mean_model_calls": 6.6,
+            "token_complete_records": 5,
+            "mean_total_tokens": 23033.8,
+            "semantic_accuracy": null
+          },
+          "responsive": {
+            "attempted": 5,
+            "skipped": 0,
+            "execution_passed": 3,
+            "execution_pass_rate": 0.6,
+            "routing_exact_rate": 0.8,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 15.953,
+            "latency_p95_seconds": 18.094,
+            "latency_mean_seconds": 14.9312,
+            "mean_model_calls": 5.6,
+            "token_complete_records": 5,
+            "mean_total_tokens": 13545.8,
+            "semantic_accuracy": null
+          }
+        },
+        "paired_attempts": 5,
+        "comparison": "responsive",
+        "paired_delta_mean_seconds": -64.578,
+        "paired_regressions": [
+          "rain_plan",
+          "tickets_unavailable"
+        ],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "thinking_paired_20260928",
+      "description": "思考开关对照：相同代码，含日期Schema修复；还未补强备选安排与无来源状态引用提示。",
+      "records": [
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 45.5,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 45500,
+            "model_calls": 6,
+            "model_elapsed_ms": 40563,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3312,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18220,
+            "completion_tokens": 2577,
+            "total_tokens": 20797,
+            "reasoning_tokens": 1810,
+            "total_elapsed_ms": 45500
+          },
+          "answer": "为您查询到 **2026年9月29日** 陕西省西安市的天气预报如下：\n\n*   **天气状况**：全天以阴天为主，无明显降水迹象 [Wba0fd3f04af2]。\n*   **温度范围**：气温在 16.0℃～24.6℃ 之间，早晚较凉爽，午间舒适 [Wba0fd3f04af2]。\n*   **风力与降水**：当天风力较小，最大风速约 7.4 km/h（2级风）；降水概率较低（8%），累计降水量预计为 0.0 mm [Wba0fd3f04af2]。\n\n注：此处为您提供的是气象模型生成的预报数据，实际出行时可关注临近当天的实时更新。整体来看，这天非常适合在户外游览。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W8886364a2597",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wba0fd3f04af2",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 16.953,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 16953,
+            "model_calls": 6,
+            "model_elapsed_ms": 11497,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3720,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18878,
+            "completion_tokens": 596,
+            "total_tokens": 19474,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 16953
+          },
+          "answer": "西安（陕西）2026-09-29 预报：阴天，16℃～24.6℃；最高风速约 7.4 km/h，降水概率最高 8%，无降雨 [W165f11993c5c]。\n\n说明：这是模型预报，非实况保证，也不是官方灾害预警。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wafdfa56c7489",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W165f11993c5c",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 15.953,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 15953,
+            "model_calls": 6,
+            "model_elapsed_ms": 10390,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3969,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 17841,
+            "completion_tokens": 550,
+            "total_tokens": 18391,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 15953
+          },
+          "answer": "2026年9月29日，陕西西安的天气预报显示为**阴天**。\n\n*   **气温**：16℃～24.6℃\n*   **降雨情况**：预计总降水量为 0.0mm，最高降水概率仅为 8%。因此当天**没有降雨** [W11356f8a7d13]。\n\n由于当天天气以阴天为主且无雨，建议您无需特别安排避雨措施，但早晚温差较大（最低温16℃），出行时可适当携带薄外套或注意保暖。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W108032766c05",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W11356f8a7d13",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "passed",
+          "elapsed_seconds": 128.5,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 128500,
+            "model_calls": 10,
+            "model_elapsed_ms": 121408,
+            "leaf_tool_calls": 3,
+            "leaf_tool_elapsed_ms": 3843,
+            "usage_reported_calls": 10,
+            "prompt_tokens": 38742,
+            "completion_tokens": 8619,
+            "total_tokens": 47361,
+            "reasoning_tokens": 6995,
+            "total_elapsed_ms": 128500
+          },
+          "answer": "2026年9月29日陕西西安天气为阴天，气温范围16℃～24.6℃，当日最高降水概率为8%，预测降水量0.0毫米[W9f32d8ebac82]。需注意降水概率并非降雨时长占比，当前预报无显著降雨。\n\n若您需调整行程参考以下室内备选场所，这些均为地图找到的地点候选，仅支持名称、地址与分类信息，室内条件与开放情况仍待核实：\n* 碑林区/市中心商圈：灰色博物馆（柏树林街道骡马市1号星悦MALL F6层）[B0M6ZU1RZQ]、时光记忆时光博物馆（北院门70号）[B0LD65EU4T]\n* 新城区/钟楼周边：东邦里-冰峰博物馆（易俗社步行街）[B0I14HAKA6]\n* 雁塔区/曲江一带：陕西历史博物馆（小寨东路91号）[B001D03PEX]、陕西数字博物馆（小寨东路91号）[B001D11SSM]、陕西自然博物馆（长安南路88号电视塔旁）[B001D0939J]、青龙寺遗址博物馆（西影路铁炉庙村北1号）[B0FFFBB9AZ]、健康博物馆（西影路178号）[B001D11SLR]\n\n建议出发前通过各场馆官方渠道确认当日具体开放时间、闭馆维护通知及预约政策，地图检索结果仅供参考，不建议直接作为行程确定的唯一依据。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W82e8f639709f",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json"
+            },
+            {
+              "id": "W9f32d8ebac82",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            },
+            {
+              "id": "W93e986d2c550d3ad",
+              "title": "高德地点查询：西安 室内景点 博物馆 商场 休闲",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        },
+        {
+          "case_id": "knowledge_powerbank",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+          "status": "passed",
+          "elapsed_seconds": 147.219,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 147219,
+            "model_calls": 6,
+            "model_elapsed_ms": 145000,
+            "leaf_tool_calls": 3,
+            "leaf_tool_elapsed_ms": 437,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 14611,
+            "completion_tokens": 9303,
+            "total_tokens": 23914,
+            "reasoning_tokens": 7226,
+            "total_elapsed_ms": 147219
+          },
+          "answer": "根据中国民用航空局（CAAC）的最新资料，**不允许**携带没有3C标识的充电宝乘坐中国境内航班。\n\n具体规定与信息来源如下：\n\n1. **禁止携带无3C标识充电宝**\n   *   **规定内容**：自2025年6月28日起，中国境内航班旅客不得携带**没有3C标识**或**标识无法辨认**的充电宝 [K-faf599d7fcd980e35c99]。\n   *   **资料核验日期**：该信息基于中国民航局官网发布的说明采集，核验时间为 **2026-09-26** [K-faf599d7fcd980e35c99]。\n\n2. **召回型号同样禁带**\n   *   即便是有3C标识的充电宝，若属于官方**召回型号或批次**，也严禁随身携带或托运 [K-faf599d7fcd980e35c99]。\n\n建议您在出行前仔细检查充电宝上的标识是否清晰、是否存在，并确认不属于召回名单。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "K-faf599d7fcd980e35c99",
+              "title": "境内航班充电宝：3C 标识与召回限制",
+              "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+              "document_id": "caac-power-bank-domestic-20250628"
+            },
+            {
+              "id": "K-ee81b0d57ddfbd25f135",
+              "title": "国铁列车晚点或停运：退票办理时限",
+              "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+              "document_id": "rail-disruption-refund-checked-20260926"
+            }
+          ]
+        },
+        {
+          "case_id": "knowledge_powerbank",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+          "status": "passed",
+          "elapsed_seconds": 13.828,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 13828,
+            "model_calls": 5,
+            "model_elapsed_ms": 11734,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 469,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 9180,
+            "completion_tokens": 607,
+            "total_tokens": 9787,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 13828
+          },
+          "answer": "不可以。\n\n根据中国民用航空局于2025年6月26日发布的官方通知（资料核验日期：2026-09-26），自2025年6月28日起，旅客乘坐境内航班**不得携带没有3C标识的充电宝** [K-faf599d7fcd980e35c99]。\n\n此外，如果充电宝上的标识无法辨认，或者该型号/批次属于召回范围，也均禁止携带。建议您出行前再次核对民航局的最新公告及承运航司的具体要求。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "K-faf599d7fcd980e35c99",
+              "title": "境内航班充电宝：3C 标识与召回限制",
+              "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+              "document_id": "caac-power-bank-domestic-20250628"
+            },
+            {
+              "id": "K-ee81b0d57ddfbd25f135",
+              "title": "国铁列车晚点或停运：退票办理时限",
+              "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+              "document_id": "rail-disruption-refund-checked-20260926"
+            }
+          ]
+        },
+        {
+          "case_id": "tickets_unavailable",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "请查2026-09-29北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+          "status": "failed",
+          "elapsed_seconds": 9.828,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__query_tickets": true,
+            "forbidden:travel__query_demo_tickets": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": false
+          },
+          "metrics": {
+            "engine_elapsed_ms": 9828,
+            "model_calls": 5,
+            "model_elapsed_ms": 8094,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 0,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 6572,
+            "completion_tokens": 420,
+            "total_tokens": 6992,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 9828
+          },
+          "answer": "很抱歉，目前系统尚未接入真实的火车票务供应方接口，因此无法查询2026年9月29日北京到上海的真实票价和余票信息 [引用未验证]。\n\n建议您通过铁路官方渠道（如12306）或主流旅行平台进行实时查询和预订。如果您需要模拟演练或其他非真实数据的帮助，请告诉我。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "tickets_unavailable",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "请查2026-09-29北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+          "status": "passed",
+          "elapsed_seconds": 22.187,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__query_tickets": true,
+            "forbidden:travel__query_demo_tickets": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 22187,
+            "model_calls": 5,
+            "model_elapsed_ms": 20546,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 0,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 6573,
+            "completion_tokens": 1329,
+            "total_tokens": 7902,
+            "reasoning_tokens": 911,
+            "total_elapsed_ms": 22187
+          },
+          "answer": "很抱歉，由于当前环境未接入真实的票务供应方接口，我无法获取2026年9月29日北京到上海的真实火车票票价和余票数据 [SMARTVOYAGE_TICKET_BASE_URL]。\n\n建议您前往铁路官方售票平台（如12306）或授权的票务网站进行查询与购买。如需查看模拟数据以供参考，请明确告知开启模拟模式。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "places_only",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。",
+          "status": "passed",
+          "elapsed_seconds": 54.14,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_places": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 54140,
+            "model_calls": 6,
+            "model_elapsed_ms": 52078,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 297,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 11271,
+            "completion_tokens": 3924,
+            "total_tokens": 15195,
+            "reasoning_tokens": 3087,
+            "total_elapsed_ms": 54140
+          },
+          "answer": "以下是地图找到的西安博物馆地点候选及相关地址（来源：实时搜索 [Wacd2732ded87305e]）：\n1. 西安市青少年活动中心航空博物馆：连心路与凤城二路交叉口北220米\n2. 大风阁博物馆：二环北路西段汉城湖景区内\n3. 大华博物馆：太华南路251号\n4. 西安碑林博物馆：三学街15号\n5. 丹凤门遗址博物馆：自强东路585号大明宫国家遗址公园内(南侧)\n6. 陕西科技大学西安未央校区中国轻工业博物馆：大学园区陕西科技大学图书馆东边\n7. 长安云·秦岭昆虫博物馆：长安云北馆5楼\n\n以上为地点候选信息，具体室内条件、实际开放情况与预约要求仍待核实，建议前往前向场馆确认最新信息。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wacd2732ded87305e",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        },
+        {
+          "case_id": "places_only",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。",
+          "status": "passed",
+          "elapsed_seconds": 18.094,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_places": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 18094,
+            "model_calls": 6,
+            "model_elapsed_ms": 16140,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 297,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 11761,
+            "completion_tokens": 1324,
+            "total_tokens": 13085,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 18094
+          },
+          "answer": "根据高德地图查询结果，为您列出西安的博物馆地点候选及地址信息：\n\n*   **西安碑林博物馆**\n    *   地址：西安市碑林区三学街15号 [Wb1a22c339b8b6d3e]\n*   **丹凤门遗址博物馆**\n    *   地址：西安市新城区自强东路585号大明宫国家遗址公园内（南侧） [Wb1a22c339b8b6d3e]\n*   **大华博物馆**\n    *   地址：西安市新城区太华南路251号 [Wb1a22c339b8b6d3e]\n*   **大风阁博物馆**\n    *   地址：西安市未央区二环北路西段汉城湖景区内 [Wb1a22c339b8b6d3e]\n*   **西安市青少年活动中心航空博物馆**\n    *   地址：西安市未央区连心路与凤城二路交叉口北220米 [Wb1a22c339b8b6d3e]\n*   **长安云·秦岭昆虫博物馆**\n    *   地址：西安市灞桥区长安云北馆5楼 [Wb1a22c339b8b6d3e]\n*   **陕西科技大学西安未央校区中国轻工业博物馆**\n    *   地址：西安市未央区大学园区陕西科技大学图书馆东边 [Wb1a22c339b8b6d3e]\n\n以上仅为地图找到的地点候选。关于室内/全室内条件、开放情况及预约要求，目前尚未核实，建议以各场馆官方公告为准。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wb1a22c339b8b6d3e",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "started_at": "2026-09-28T13:58:43.081313+08:00",
+      "completed_at": "2026-09-28T14:02:03.868660+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "implementation_sha256": {
+        "benchmark.py": "29f0212c98b21399004ff8dfcfa260e4b8781964a035a22abe3150bed2155519",
+        "engine.py": "760548147ebc96ba881650977ffa3355765dd68d6e01ec188e9e713f111acc35",
+        "model.py": "5fe18ad8d57a9dd0a33a0f059ab82f162734f2aa59873edb11c3e36415b69152",
+        "metrics.py": "01b66baf0161f74d37010b598732d740c1b159be54efecadb9549aea3b3b23da",
+        "grounding.py": "d39e7751fec14299d747605b252ebc5b1e609a2ae726cc7100b7cb803b2274d5",
+        "a2a.py": "73637522bd56e787a7ceeb8031bbc6b9a52546487d25ed21c638f5acf28178af",
+        "runtime.py": "19d7208eb7086051589d868836a0732d17d6357b183524902a2c368167d5e813"
+      },
+      "summary": {
+        "profiles": {
+          "responsive": {
+            "attempted": 12,
+            "skipped": 0,
+            "execution_passed": 11,
+            "execution_pass_rate": 0.9166666666666666,
+            "routing_exact_rate": 1.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 14.094,
+            "latency_p95_seconds": 36.766,
+            "latency_mean_seconds": 16.722666666666665,
+            "mean_model_calls": 5.833333333333333,
+            "token_complete_records": 12,
+            "mean_total_tokens": 17219,
+            "manual_reviewed_records": 0,
+            "semantic_accuracy": null,
+            "request_coverage_rate": null,
+            "supported_claim_rate": null
+          }
+        },
+        "paired_attempts": 0,
+        "comparison": "responsive",
+        "paired_delta_mean_seconds": null,
+        "paired_regressions": [],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "responsive_final_20260928",
+      "description": "提示修订后扩展回归：仅快速模式，12场景各一次；尚未修复行程不查地图时跳过来源复核的漏洞。",
+      "records": [
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 15.031,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 15031,
+            "model_calls": 6,
+            "model_elapsed_ms": 9530,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3891,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18194,
+            "completion_tokens": 557,
+            "total_tokens": 18751,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 15031
+          },
+          "answer": "2026年9月29日，中国陕西西安的天气预报如下：\n\n*   **天气状况**：阴天 [Wed2bd5b0d742]\n*   **温度范围**：16℃～24.6℃ [Wed2bd5b0d742]\n*   **降水概率**：最高 8% [Wed2bd5b0d742]\n*   **风力情况**：最大风速约 7.4 km/h [Wed2bd5b0d742]\n\n请注意，这是基于模型的预测数据，实际天气可能会有所变化。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wd97eba6e52e5",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wed2bd5b0d742",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 32.031,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 32031,
+            "model_calls": 8,
+            "model_elapsed_ms": 24313,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 4453,
+            "usage_reported_calls": 8,
+            "prompt_tokens": 28913,
+            "completion_tokens": 1259,
+            "total_tokens": 30172,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 32031
+          },
+          "answer": "2026年9月29日陕西西安的天气以阴天为主，气温在 16℃～24.6℃ 之间。根据预报，当日最高降水概率仅为 8%，预测降水量为 0.0 毫米 [Wad5efa4bd7bd]，下雨的可能性极低。\n\n**如果不下雨（正常情况）：**\n天气较为温和，适合游览户外景点或室内场馆。建议穿着轻便长袖或薄外套，早晚注意保暖。\n\n**如果下雨（备选方案）：**\n虽然预报无雨，但为了应对突发降雨，您可以安排以下室内行程：\n1. **陕西历史博物馆**、**西安博物院**或**碑林博物馆**：这些是典型的室内文化场馆，不受天气影响。\n2. **西安曲江海洋极地公园**：全室内体验，适合家庭游玩。\n3. **大型购物中心**：如赛格国际购物中心、SKP等，可兼顾餐饮与休闲。\n\n温馨提示：多数博物馆需提前实名预约，建议您出发前通过官方渠道确认余票情况。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wf37d6b8e0db3",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wad5efa4bd7bd",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "knowledge_powerbank",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+          "status": "passed",
+          "elapsed_seconds": 14.094,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 14094,
+            "model_calls": 5,
+            "model_elapsed_ms": 12202,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 282,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 9557,
+            "completion_tokens": 674,
+            "total_tokens": 10231,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 14094
+          },
+          "answer": "根据中国民用航空局（CAAC）于2025年6月26日发布的官方通知，自**2025年6月28日**起，乘坐中国境内航班**不得携带没有“3C”（CCC）认证标识的充电宝**。\n\n此外，如果充电宝上的3C标识无法辨认或模糊不清，同样禁止携带登机 [K-faf599d7fcd980e35c99]。\n\n*   **来源**：中国民用航空局官网公告\n*   **资料核验日期**：2025年6月26日\n*   **生效日期**：2025年6月28日\n\n请注意，即使充电宝有3C标识，乘机时仍需符合额定能量（通常不超过100Wh）等其他通用安全规定。建议出行前核对承运航司的具体要求。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "K-faf599d7fcd980e35c99",
+              "title": "境内航班充电宝：3C 标识与召回限制",
+              "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+              "document_id": "caac-power-bank-domestic-20250628"
+            },
+            {
+              "id": "K-ee81b0d57ddfbd25f135",
+              "title": "国铁列车晚点或停运：退票办理时限",
+              "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+              "document_id": "rail-disruption-refund-checked-20260926"
+            }
+          ]
+        },
+        {
+          "case_id": "tickets_unavailable",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "请查2026-09-29北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+          "status": "passed",
+          "elapsed_seconds": 9.859,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__query_tickets": true,
+            "forbidden:travel__query_demo_tickets": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 9859,
+            "model_calls": 5,
+            "model_elapsed_ms": 8234,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 15,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 6924,
+            "completion_tokens": 389,
+            "total_tokens": 7313,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 9859
+          },
+          "answer": "很抱歉，目前 SmartVoyage 尚未接入真实的火车票务供应方接口。因此无法查询到2026年9月29日北京到上海的真实票价和余票信息。\n\n建议您前往铁路官方渠道（如12306网站或APP）或其他票务平台进行查询和购票。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "places_only",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。",
+          "status": "passed",
+          "elapsed_seconds": 17.5,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_places": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 17500,
+            "model_calls": 6,
+            "model_elapsed_ms": 15421,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 282,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 12124,
+            "completion_tokens": 1165,
+            "total_tokens": 13289,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 17500
+          },
+          "answer": "根据高德地图实时查询结果，为您整理了西安的博物馆地点候选及地址信息 [W33a104ea982413d8]。\n\n*   **西安碑林博物馆**：位于西安市碑林区三学街15号\n*   **丹凤门遗址博物馆**：位于西安市新城区自强东路585号大明宫国家遗址公园内（南侧）\n*   **大华博物馆**：位于西安市新城区太华南路251号\n*   **大风阁博物馆**：位于西安市未央区二环北路西段汉城湖景区内\n*   **西安市青少年活动中心航空博物馆**：位于西安市未央区连心路与凤城二路交叉口北220米\n*   **长安云·秦岭昆虫博物馆**：位于西安市灞桥区长安云北馆5楼\n*   **陕西科技大学西安未央校区中国轻工业博物馆**：位于西安市未央区大学园区陕西科技大学图书馆东边\n\n请注意，以上仅为地图找到的地点候选，明确室内条件和开放情况仍待核实。具体的营业时间与预约要求，建议您出发前核对各场馆的官方公告。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W33a104ea982413d8",
+              "title": "高德地点查询：西安 博物馆",
+              "source": "https://lbs.amap.com/api/webservice/guide/api/search"
+            }
+          ]
+        },
+        {
+          "case_id": "weather_tokyo",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "请查日本东京2026-09-29的天气预报。",
+          "status": "passed",
+          "elapsed_seconds": 24.578,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 24578,
+            "model_calls": 6,
+            "model_elapsed_ms": 12607,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 10376,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18366,
+            "completion_tokens": 736,
+            "total_tokens": 19102,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 24578
+          },
+          "answer": "关于您查询的日本东京2026年9月29日的天气情况，目前工具返回的是**天气预报模型数据**，而非实时实况。以下是该日期的预测详情：\n\n*   **天气现象**：中雨 [W20064d41bfcd]\n*   **温度范围**：18.4℃ ～ 20.9℃ [W20064d41bfcd]\n*   **风力情况**：最大风速约 2.9 km/h [W20064d41bfcd]\n*   **降雨条件**：降水概率为 100%，预计总降水量约为 38.1 mm [W20064d41bfcd]\n\n**出行建议**：由于预报显示为中雨且降水量较大，建议您携带雨具并穿着防水鞋服。气温较为凉爽舒适，但湿度较高。请注意天气预报仅为预测值，实际天气可能随时间变化，建议在出发前再次确认最新预报。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "Wfdca209ccca2",
+              "title": "地点查询：Tokyo",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=10&language=zh&format=json&countryCode=JP"
+            },
+            {
+              "id": "W20064d41bfcd",
+              "title": "東京 · 东京都 · 日本 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.69171&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FTokyo&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "context_day_after",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "那后天呢？",
+          "status": "passed",
+          "elapsed_seconds": 15.546,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:destination": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 15546,
+            "model_calls": 6,
+            "model_elapsed_ms": 10358,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3531,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18520,
+            "completion_tokens": 619,
+            "total_tokens": 19139,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 15546
+          },
+          "answer": "陕西西安 2026-09-30（后天）天气预报：\n\n*   **天气现象**：轻微毛毛雨 [W2d038dda4a64]\n*   **气温范围**：17.9℃～23.9℃ [W2d038dda4a64]\n*   **降水概率**：最高 45% [W2d038dda4a64]\n*   **风力情况**：最大风速约 11.7 km/h [W2d038dda4a64]\n\n这是基于模型的预测数据，实际天气可能会有所变化，建议出行前再次确认最新预报。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W549788d114e9",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W2d038dda4a64",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-30&end_date=2026-09-30&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "context_change_city",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "换成日本东京，还是同一天。查天气。",
+          "status": "passed",
+          "elapsed_seconds": 36.766,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 36766,
+            "model_calls": 12,
+            "model_elapsed_ms": 23516,
+            "leaf_tool_calls": 4,
+            "leaf_tool_elapsed_ms": 8235,
+            "usage_reported_calls": 12,
+            "prompt_tokens": 58910,
+            "completion_tokens": 1165,
+            "total_tokens": 60075,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 36766
+          },
+          "answer": "陕西西安2026年9月29日天气预报显示为阴天，气温在16℃～24.6℃之间。降水概率最高为8%，预计总降水量为0.0毫米，最大风速为7.4公里/小时 [W1f21eed5534c]。\n\n换成日本东京，还是同一天。查天气。\n\n日本东京2026年9月29日的天气预报如下：\n- **天气状况**：中雨 [W5ea1ee602a02]\n- **气温范围**：18.4℃～20.9℃\n- **降水概率**：100%\n- **预计降水量**：38.1毫米\n- **最大风速**：2.9公里/小时\n\n请注意，这是基于模型的天气预报预测，实际天气可能会有所变化。建议出行前关注最新气象信息并携带雨具。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W1c840e8055fe",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W1f21eed5534c",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            },
+            {
+              "id": "W71869a2c10a0",
+              "title": "地点查询：Tokyo",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=Tokyo&count=10&language=zh&format=json&countryCode=JP"
+            },
+            {
+              "id": "W5ea1ee602a02",
+              "title": "東京 · 东京都 · 日本 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=35.6895&longitude=139.69171&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FTokyo&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rail_refund",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "国铁列车停运，退票什么时候办理？请查知识库并注明资料日期。",
+          "status": "passed",
+          "elapsed_seconds": 12.484,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 12484,
+            "model_calls": 5,
+            "model_elapsed_ms": 10452,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 329,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 9326,
+            "completion_tokens": 527,
+            "total_tokens": 9853,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 12484
+          },
+          "answer": "根据中国铁路12306发布的《铁路旅客运输规程》相关规定 [K-ee81b0d57ddfbd25f135]：\n\n*   **办理时间**：乘客可从停运信息公布之日起，至票面乘车日期后**30日以内**办理退票。\n*   **费用规则**：此情形下办理退票**免收手续费**，并退还全部票款。\n\n**资料说明**：以上规则基于12306官方网页的摘录快照，该资料的核验/发布日期为 **2026年9月26日**。请注意，具体执行细节请以您购票时的12306订单页面及最新公告为准。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "K-ee81b0d57ddfbd25f135",
+              "title": "国铁列车晚点或停运：退票办理时限",
+              "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+              "document_id": "rail-disruption-refund-checked-20260926"
+            },
+            {
+              "id": "K-faf599d7fcd980e35c99",
+              "title": "境内航班充电宝：3C 标识与召回限制",
+              "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+              "document_id": "caac-power-bank-domestic-20250628"
+            }
+          ]
+        },
+        {
+          "case_id": "palace_booking",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "根据知识库，故宫怎么预约、从哪个入口进入？请明确资料日期，不用查实时余票。",
+          "status": "passed",
+          "elapsed_seconds": 11.469,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__search_knowledge": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "expected_document_cited": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 11469,
+            "model_calls": 5,
+            "model_elapsed_ms": 9453,
+            "leaf_tool_calls": 1,
+            "leaf_tool_elapsed_ms": 313,
+            "usage_reported_calls": 5,
+            "prompt_tokens": 9302,
+            "completion_tokens": 580,
+            "total_tokens": 9882,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 11469
+          },
+          "answer": "根据故宫博物院官方资料摘要（核验日期：2026-09-26）[K-d53570fcb9044cfefc22]，查询结果如下：\n\n*   **预约方式**：官方不售当日票。参观前第7天20:00起开放预约，观众须实名预约，建议使用“故宫博物院”官方小程序办理。\n*   **入口**：参观需从南侧**午门**进入；离院时可从神武门或东华门离开。\n*   **资料发布日期**：该资料未明确标注具体的发布页面日期，仅显示核验/更新日期为 2026-09-26 [K-d53570fcb9044cfefc22]。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "K-d53570fcb9044cfefc22",
+              "title": "故宫预约、闭馆日与参观入口",
+              "source": "https://www.dpm.org.cn/subject_booking/",
+              "document_id": "palace-booking-checked-20260926"
+            },
+            {
+              "id": "K-ee81b0d57ddfbd25f135",
+              "title": "国铁列车晚点或停运：退票办理时限",
+              "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+              "document_id": "rail-disruption-refund-checked-20260926"
+            }
+          ]
+        },
+        {
+          "case_id": "greeting",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "你好，简单介绍一下你能帮我做什么。",
+          "status": "passed",
+          "elapsed_seconds": 4.079,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "forbidden:travel__prepare_demo_booking": true,
+            "citation_ids_valid": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 4079,
+            "model_calls": 2,
+            "model_elapsed_ms": 4079,
+            "leaf_tool_calls": 0,
+            "leaf_tool_elapsed_ms": 0,
+            "usage_reported_calls": 2,
+            "prompt_tokens": 2531,
+            "completion_tokens": 244,
+            "total_tokens": 2775,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 4079
+          },
+          "answer": "你好！我是 SmartVoyage 旅行助手，可以为你提供以下帮助：\n\n1. **天气查询**：实时天气和未来预报，包括降雨、温度、风力等出行条件。\n2. **行程规划**：根据目的地、时间、同行人和偏好推荐景点/场所，并调整雨天与亲子行程。\n3. **票务查询**：按出发地、目的地、日期查询真实车票或机票（需明确启用模拟模式时查询模拟票）。\n4. **旅行知识**：检索民航、铁路、景区预约等专业知识与公告，核对适用地区、日期及有效期。\n\n如果你有具体的旅行需求，可以随时告诉我！",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        },
+        {
+          "case_id": "missing_destination",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "帮我查一下明天的天气。",
+          "status": "passed",
+          "elapsed_seconds": 7.235,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "forbidden:travel__forecast": true,
+            "context:destination": true,
+            "citation_ids_valid": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 7235,
+            "model_calls": 4,
+            "model_elapsed_ms": 5595,
+            "leaf_tool_calls": 0,
+            "leaf_tool_elapsed_ms": 0,
+            "usage_reported_calls": 4,
+            "prompt_tokens": 5811,
+            "completion_tokens": 235,
+            "total_tokens": 6046,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 7235
+          },
+          "answer": "为了查询明天的天气，请告诉我您想查询的具体**目的地城市或地点**（例如：北京、上海、纽约等）。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": []
+        }
+      ]
+    },
+    {
+      "started_at": "2026-09-28T14:02:56.672068+08:00",
+      "completed_at": "2026-09-28T14:03:45.795791+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "implementation_sha256": {
+        "benchmark.py": "f30551716628413ffa8e48a7aa06ecdaae30b6533668d026583eff369cc77b55",
+        "engine.py": "e7f0a17b7c4120482c02e4c4b2ce4e5c9d67776cbff4bc7c5ff2b24731dfe5b9",
+        "model.py": "5fe18ad8d57a9dd0a33a0f059ab82f162734f2aa59873edb11c3e36415b69152",
+        "metrics.py": "01b66baf0161f74d37010b598732d740c1b159be54efecadb9549aea3b3b23da",
+        "grounding.py": "d39e7751fec14299d747605b252ebc5b1e609a2ae726cc7100b7cb803b2274d5",
+        "a2a.py": "73637522bd56e787a7ceeb8031bbc6b9a52546487d25ed21c638f5acf28178af",
+        "runtime.py": "19d7208eb7086051589d868836a0732d17d6357b183524902a2c368167d5e813"
+      },
+      "configuration_sha256": "724312a6d1c31cb0b0c9267f1bccacafb8a039c88be7c336c2dc5c368470e401",
+      "summary": {
+        "profiles": {
+          "responsive": {
+            "attempted": 3,
+            "skipped": 0,
+            "execution_passed": 0,
+            "execution_pass_rate": 0.0,
+            "routing_exact_rate": 0.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 15.969,
+            "latency_p95_seconds": 17.297,
+            "latency_mean_seconds": 16.369666666666667,
+            "mean_model_calls": 6,
+            "token_complete_records": 3,
+            "mean_total_tokens": 18810.666666666668,
+            "manual_reviewed_records": 0,
+            "semantic_accuracy": null,
+            "request_coverage_rate": null,
+            "supported_claim_rate": null
+          }
+        },
+        "paired_attempts": 0,
+        "comparison": "responsive",
+        "paired_delta_mean_seconds": null,
+        "paired_regressions": [],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "rain_guard_final_20260928",
+      "description": "行程来源复核专项：补上行程未查地图时的来源复核，明确要求查询具体地点；原失败雨天问题重复3次。",
+      "records": [
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 15.843,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 15843,
+            "model_calls": 6,
+            "model_elapsed_ms": 10391,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3656,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18264,
+            "completion_tokens": 598,
+            "total_tokens": 18862,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 15843
+          },
+          "answer": "2026年9月29日陕西西安的天气预报显示，当天以阴天为主 [W866220da1304]。气温预计在 16℃～24.6℃ 之间，最高降水概率为 8%，预计降水量为 0.0 毫米 [W866220da1304]。\n\n虽然预报降雨概率极低且无降水预测，但如果您计划全天在户外游览（如兵马俑、城墙等），仍建议随身携带雨具以防天气突变。由于气温适中，穿着透气舒适的衣物即可；早晚温差较大，建议备一件薄外套。室内景点（如陕西历史博物馆）不受天气影响，可作为备选方案。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W4ea57c9d02c0",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W866220da1304",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 2,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 17.297,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 17297,
+            "model_calls": 6,
+            "model_elapsed_ms": 11219,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 4343,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18220,
+            "completion_tokens": 562,
+            "total_tokens": 18782,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 17297
+          },
+          "answer": "2026年9月29日陕西西安的天气预测如下：\n\n*   **天气状况**：阴天 [Wa5694697da07]\n*   **降雨概率**：最高 8% [Wa5694697da07]\n*   **降水量**：预计为 0.0 毫米 [Wa5694697da07]\n*   **气温范围**：16℃～24.6℃ [Wa5694697da07]\n\n预报显示该日降水可能性极低，基本无雨。因此无需特别安排雨天行程。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W6bdce3a8188f",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wa5694697da07",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 3,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 15.969,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 15969,
+            "model_calls": 6,
+            "model_elapsed_ms": 10376,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3765,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18213,
+            "completion_tokens": 575,
+            "total_tokens": 18788,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 15969
+          },
+          "answer": "2026年9月29日，陕西西安的天气预报为**阴天** [W1b65e666cad4]。\n\n*   **降水概率**：当日最高降水概率预测为 8% [W1b65e666cad4]。\n*   **降水量**：总降水量和降雨量预测均为 0.0 mm [W1b65e666cad4]。\n*   **气温**：预计在 16.0℃～24.6℃ 之间 [W1b65e666cad4]。\n\n根据当前预报，下雨的可能性非常低，因此无需特别准备雨天行程。不过，预报数据存在变化可能，建议您出行前再次确认最新天气情况。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W214d1649e808",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W1b65e666cad4",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "started_at": "2026-09-28T14:05:07.064066+08:00",
+      "completed_at": "2026-09-28T14:06:29.010436+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "implementation_sha256": {
+        "benchmark.py": "f30551716628413ffa8e48a7aa06ecdaae30b6533668d026583eff369cc77b55",
+        "engine.py": "e7f0a17b7c4120482c02e4c4b2ce4e5c9d67776cbff4bc7c5ff2b24731dfe5b9",
+        "model.py": "5fe18ad8d57a9dd0a33a0f059ab82f162734f2aa59873edb11c3e36415b69152",
+        "metrics.py": "01b66baf0161f74d37010b598732d740c1b159be54efecadb9549aea3b3b23da",
+        "grounding.py": "d39e7751fec14299d747605b252ebc5b1e609a2ae726cc7100b7cb803b2274d5",
+        "a2a.py": "73637522bd56e787a7ceeb8031bbc6b9a52546487d25ed21c638f5acf28178af",
+        "runtime.py": "19d7208eb7086051589d868836a0732d17d6357b183524902a2c368167d5e813"
+      },
+      "configuration_sha256": "724312a6d1c31cb0b0c9267f1bccacafb8a039c88be7c336c2dc5c368470e401",
+      "summary": {
+        "profiles": {
+          "baseline": {
+            "attempted": 1,
+            "skipped": 0,
+            "execution_passed": 0,
+            "execution_pass_rate": 0.0,
+            "routing_exact_rate": 0.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 81.938,
+            "latency_p95_seconds": 81.938,
+            "latency_mean_seconds": 81.938,
+            "mean_model_calls": 6,
+            "token_complete_records": 1,
+            "mean_total_tokens": 22814,
+            "manual_reviewed_records": 0,
+            "semantic_accuracy": null,
+            "request_coverage_rate": null,
+            "supported_claim_rate": null
+          }
+        },
+        "paired_attempts": 0,
+        "comparison": "compact",
+        "paired_delta_mean_seconds": null,
+        "paired_regressions": [],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "baseline_guard_final_20260928",
+      "description": "同阶段默认模式复测：也发生协调器漏调行程专家，问题不能全部归因于关闭思考。",
+      "records": [
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "baseline",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 81.938,
+          "model_options": {
+            "enable_thinking": null,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": false,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": false,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 81938,
+            "model_calls": 6,
+            "model_elapsed_ms": 72954,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 7375,
+            "usage_reported_calls": 6,
+            "prompt_tokens": 18421,
+            "completion_tokens": 4393,
+            "total_tokens": 22814,
+            "reasoning_tokens": 3506,
+            "total_elapsed_ms": 81938
+          },
+          "answer": "为您查询到 **2026年9月29日** 陕西省西安市的天气状况如下：\n\n*   **天气实况**：以**阴天**为主，无日照预期 [Wd21e39122545]。\n*   **气温范围**：最低 16.0℃，最高 24.6℃ [Wd21e39122545]。\n*   **降雨预测**：当日预计降水总量为 0.0 毫米，出现降雨的最高概率仅为 8% [Wd21e39122545]。目前看当天出行几乎不会受到降雨影响。\n\n不过，针对您提到的**“如果下雨”**这一假设情境，以下是针对西安的雨天行程建议（仅供参考）：\n\n如果您决定预留雨天备选方案，西安非常适合作为一座“室内深度游”城市：\n\n1.  **参观博物馆与纪念馆**：西安拥有密集的国家级与地方级博物馆。例如前往**陕西历史博物馆**（需提前预约，周一闭馆）了解周秦汉唐的历史瑰宝，或者前往**西安博物院**（含小雁塔景区，有室内外结合区，适合小雨天）。\n2.  **古城墙与室内展览**：可以在城墙上选择特定的开放城门（如雨棚较多区域）体验，随后前往城墙内的**赛格国际购物中心**等大型商业综合体休息用餐。\n3.  **特色演艺与休闲**：晚间可观看《长恨歌》之外的室内实景演出（如有排期）或在回民街/洒金桥附近寻找地道的老字号美食，享受“逛吃”乐趣。\n\n**温馨提示**：由于早晚气温较低（16℃左右），无论阴晴，建议随身带一件薄外套以防着凉。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W790d2206c6e3",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wd21e39122545",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "started_at": "2026-09-28T14:08:35.821493+08:00",
+      "completed_at": "2026-09-28T14:09:20.508962+08:00",
+      "model": "qwen3.7-flash",
+      "transport": "a2a_mcp",
+      "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+      "implementation_sha256": {
+        "benchmark.py": "f30551716628413ffa8e48a7aa06ecdaae30b6533668d026583eff369cc77b55",
+        "engine.py": "95568a77894fddfa84afb1683cc6476166370958271677ab5d04d05f24ddb69e",
+        "model.py": "5fe18ad8d57a9dd0a33a0f059ab82f162734f2aa59873edb11c3e36415b69152",
+        "metrics.py": "01b66baf0161f74d37010b598732d740c1b159be54efecadb9549aea3b3b23da",
+        "grounding.py": "d39e7751fec14299d747605b252ebc5b1e609a2ae726cc7100b7cb803b2274d5",
+        "a2a.py": "73637522bd56e787a7ceeb8031bbc6b9a52546487d25ed21c638f5acf28178af",
+        "runtime.py": "a583c7f1e2a76edda309c99896c2f17bbb0178aba73b8b588bb55acab23f8976"
+      },
+      "configuration_sha256": "5b3c77ebddd6d71efcc44f4e277160703bf5b3f030e8652766ece4837c51a9b2",
+      "summary": {
+        "profiles": {
+          "responsive": {
+            "attempted": 2,
+            "skipped": 0,
+            "execution_passed": 1,
+            "execution_pass_rate": 0.5,
+            "routing_exact_rate": 1.0,
+            "timeout_rate": 0.0,
+            "latency_p50_seconds": 17.062,
+            "latency_p95_seconds": 27.61,
+            "latency_mean_seconds": 22.336,
+            "mean_model_calls": 8,
+            "token_complete_records": 2,
+            "mean_total_tokens": 27291.5,
+            "manual_reviewed_records": 0,
+            "semantic_accuracy": null,
+            "request_coverage_rate": null,
+            "supported_claim_rate": null
+          }
+        },
+        "paired_attempts": 0,
+        "comparison": "responsive",
+        "paired_delta_mean_seconds": null,
+        "paired_regressions": [],
+        "quantile_method": "nearest_rank; all attempted runs, including failures"
+      },
+      "id": "source_guard_final_20260928",
+      "description": "最终默认开启全部证据回答复核：防止协调器未委派行程专家时直接展示无来源的具体地点事实；不能代替完整性验证。",
+      "records": [
+        {
+          "case_id": "weather_xian",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "中国陕西西安2026-09-29的天气怎么样？请查真实预报。",
+          "status": "passed",
+          "elapsed_seconds": 17.062,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 17062,
+            "model_calls": 7,
+            "model_elapsed_ms": 12092,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3329,
+            "usage_reported_calls": 7,
+            "prompt_tokens": 21069,
+            "completion_tokens": 511,
+            "total_tokens": 21580,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 17062
+          },
+          "answer": "2026-09-29 中国陕西西安的天气预报：阴天，气温16℃～24.6℃，降水概率最高8%，预计无降水。风速最大7.4km/h [Wa31871e7e01f]。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W70ec82fc307d",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "Wa31871e7e01f",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        },
+        {
+          "case_id": "rain_plan",
+          "repeat": 1,
+          "profile": "responsive",
+          "query": "2026-09-29去陕西西安，天气怎么样？如果下雨，怎么安排？",
+          "status": "failed",
+          "elapsed_seconds": 27.61,
+          "model_options": {
+            "enable_thinking": false,
+            "compact_handoffs": false
+          },
+          "checks": {
+            "routing_exact": true,
+            "no_incomplete_event": true,
+            "answer_nonempty": true,
+            "tool:travel__forecast": true,
+            "tool:travel__search_places": false,
+            "context:start_date": true,
+            "context:end_date": true,
+            "citation_ids_valid": true,
+            "evidence_cited": true,
+            "place_review_completed": true,
+            "cited_weather_matches_target": true
+          },
+          "metrics": {
+            "engine_elapsed_ms": 27610,
+            "model_calls": 9,
+            "model_elapsed_ms": 20299,
+            "leaf_tool_calls": 2,
+            "leaf_tool_elapsed_ms": 3796,
+            "usage_reported_calls": 9,
+            "prompt_tokens": 32065,
+            "completion_tokens": 938,
+            "total_tokens": 33003,
+            "reasoning_tokens": null,
+            "total_elapsed_ms": 27610
+          },
+          "answer": "2026年9月29日陕西西安的天气预报显示，当天为阴天，最高温度约24.6℃，最低温度约16℃。降雨概率较低（8%），预计降水量为0.0毫米，风力方面最大风速约为7.4公里/小时 [W688aaf6f3c9f]。\n\n如果下雨，可以优先选择室内活动，例如博物馆、商场或购物中心等。建议随身携带雨具，并提前规划好交通路线，以防雨天影响出行。以上安排仅为参考，具体行程可根据实际情况调整。",
+          "manual_review": {
+            "status": "pending",
+            "claim_count": null,
+            "supported_claim_count": null,
+            "answer_correct": null,
+            "covers_user_request": null,
+            "reviewer": null
+          },
+          "sources": [
+            {
+              "id": "W8c71cf840566",
+              "title": "地点查询：西安",
+              "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN"
+            },
+            {
+              "id": "W688aaf6f3c9f",
+              "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+              "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-09-29&end_date=2026-09-29&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "retrieval": {
+    "scope": "Small curated development corpus; document relevance labels evaluated on top 5 chunks. Not answer accuracy.",
+    "dataset_sha256": "f90f4d699e4e922882f28531100fccb77a608c2cce7a3ddc5ada43def66704fe",
+    "knowledge_fingerprints": {
+      "caac_power_banks.json": "bf1554e936773a5e32bc8645dc6d38f0d3cad38f1da423c048d2e95e896c3f19",
+      "palace_booking.json": "02d86e1c489c57b3ac480798e66ce7f2c5841ed69a93ab4ac0f5569b5120c4f6",
+      "palace_special_open_20260727.json": "52216a40dca5f32b30dcac44236fb723056b8a7b25ca087a7360c56d86524411",
+      "rail_refund_disruption.json": "bf63d4fd2533868b1753fdd1cb50b2563d32d89a600302a1c607eec050f7b57f"
+    },
+    "results": [
+      {
+        "mode": "bm25",
+        "documents": 4,
+        "chunks": 4,
+        "rows": [
+          {
+            "id": "bank_3c",
+            "retrieved": [
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "bank_recall",
+            "retrieved": [
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "bank_unreadable",
+            "retrieved": [
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "rail_cancel",
+            "retrieved": [
+              "rail-disruption-refund-checked-20260926"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.015
+          },
+          {
+            "id": "rail_delay",
+            "retrieved": [
+              "rail-disruption-refund-checked-20260926"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "palace_reserve",
+            "retrieved": [
+              "palace-booking-checked-20260926",
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "palace_gate",
+            "retrieved": [
+              "palace-booking-checked-20260926"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "palace_monday",
+            "retrieved": [
+              "palace-booking-checked-20260926"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": true,
+            "elapsed_seconds": 0.016
+          },
+          {
+            "id": "palace_special_day",
+            "retrieved": [
+              "palace-special-opening-20260727",
+              "palace-booking-checked-20260926",
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": 1.0,
+            "reciprocal_rank": 1.0,
+            "filter_passed": true,
+            "has_filter_label": false,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "expired_announcement",
+            "retrieved": [
+              "palace-booking-checked-20260926",
+              "caac-power-bank-domestic-20250628"
+            ],
+            "recall_at_5": null,
+            "reciprocal_rank": null,
+            "filter_passed": true,
+            "has_filter_label": true,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "before_effective",
+            "retrieved": [],
+            "recall_at_5": null,
+            "reciprocal_rank": null,
+            "filter_passed": true,
+            "has_filter_label": true,
+            "elapsed_seconds": 0.0
+          },
+          {
+            "id": "wrong_region",
+            "retrieved": [],
+            "recall_at_5": null,
+            "reciprocal_rank": null,
+            "filter_passed": true,
+            "has_filter_label": true,
+            "elapsed_seconds": 0.0
+          }
+        ],
+        "positive_queries": 9,
+        "recall_at_5": 1.0,
+        "mrr_at_5": 1.0,
+        "filter_queries": 4,
+        "filter_pass_rate": 1.0
+      }
+    ]
+  }
+}

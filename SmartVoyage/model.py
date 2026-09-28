@@ -3,17 +3,33 @@ import os
 
 import httpx
 
+USE_ENV = object()
+
+
+def thinking_setting(value):
+    if value is None or value == '':
+        return None
+    if type(value) is bool:
+        return value
+    if isinstance(value, str) and value.lower() in ('true', 'false'):
+        return value.lower() == 'true'
+    raise ValueError('SMARTVOYAGE_ENABLE_THINKING must be empty, true or false')
+
 
 class ChatModel:
-    def __init__(self):
+    def __init__(self, enable_thinking=USE_ENV):
         self.model = os.getenv('SMARTVOYAGE_MODEL', '')
         self.key = os.getenv('SMARTVOYAGE_API_KEY', '')
         self.base = os.getenv('SMARTVOYAGE_BASE_URL', '').rstrip('/')
+        self.enable_thinking = thinking_setting(os.getenv('SMARTVOYAGE_ENABLE_THINKING', '')
+                                                if enable_thinking is USE_ENV else enable_thinking)
         if not self.model or not self.key or not self.base:
             raise ValueError('请在 .env 配置 SMARTVOYAGE_MODEL、SMARTVOYAGE_BASE_URL 和 SMARTVOYAGE_API_KEY。')
 
     async def complete(self, messages, tools, tool_choice='auto'):
         payload = {'model': self.model, 'messages': messages}
+        if self.enable_thinking is not None:
+            payload['enable_thinking'] = self.enable_thinking
         if tools:
             payload.update(tools=tools, tool_choice=tool_choice)
         async with httpx.AsyncClient(timeout=90, follow_redirects=False) as client:
@@ -22,7 +38,12 @@ class ChatModel:
             response.raise_for_status()
             data = response.json()
         message = data['choices'][0]['message']
-        return {k: v for k, v in message.items() if k in ('role', 'content', 'tool_calls')}
+        result = {k: v for k, v in message.items() if k in ('role', 'content', 'tool_calls')}
+        result['_usage'] = data.get('usage') if isinstance(data.get('usage'), dict) else {}
+        details = result['_usage'].get('completion_tokens_details')
+        if isinstance(details, dict) and type(details.get('reasoning_tokens')) is int:
+            result['_usage']['reasoning_tokens'] = details['reasoning_tokens']
+        return result
 
 
 class Embeddings:

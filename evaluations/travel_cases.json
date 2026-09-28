@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "scope": "开发回归集，人工编写；不是独立测试集，不代表真实用户问题分布。agents为必要专家集合，自动规则仅核查执行契约。",
+  "cases": [
+    {"id":"weather_xian","query":"中国陕西西安{tomorrow}的天气怎么样？请查真实预报。","agents":["weather"],"tools":{"travel__forecast":["success"]},"context":{"start_date":"{tomorrow}","end_date":"{tomorrow}"},"weather":{"names":["西安","Xi'an","Xian"],"country":"CN","date":"{tomorrow}"}},
+    {"id":"rain_plan","query":"{tomorrow}去陕西西安，天气怎么样？如果下雨，怎么安排？","agents":["weather","itinerary"],"tools":{"travel__forecast":["success"],"travel__search_places":["success"]},"context":{"start_date":"{tomorrow}","end_date":"{tomorrow}"},"weather":{"names":["西安","Xi'an","Xian"],"country":"CN","date":"{tomorrow}"},"place_review":true},
+    {"id":"knowledge_powerbank","query":"乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。","agents":["knowledge"],"tools":{"travel__search_knowledge":["candidates"]},"documents":["caac-power-bank-domestic-20250628"]},
+    {"id":"tickets_unavailable","requires_unconfigured_tickets":true,"query":"请查{tomorrow}北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。","agents":["tickets"],"tools":{"travel__query_tickets":["unavailable"]},"forbidden_tools":["travel__query_demo_tickets","travel__prepare_demo_booking"]},
+    {"id":"places_only","query":"帮我查找西安的博物馆地点候选及地址，先不用查天气或预约。","agents":["itinerary"],"tools":{"travel__search_places":["success"]},"place_review":true},
+    {"id":"weather_tokyo","query":"请查日本东京{tomorrow}的天气预报。","agents":["weather"],"tools":{"travel__forecast":["success"]},"weather":{"names":["東京","东京","Tokyo"],"country":"JP","date":"{tomorrow}"}},
+    {"id":"context_day_after","initial_trip":{"destination":"陕西西安","start_date":"{tomorrow}","end_date":"{tomorrow}"},"history":[{"role":"user","content":"我在查陕西西安{tomorrow}的天气。"}],"query":"那后天呢？","agents":["weather"],"tools":{"travel__forecast":["success"]},"context":{"destination":["陕西西安","西安"],"start_date":"{day_after}","end_date":"{day_after}"},"weather":{"names":["西安","Xi'an","Xian"],"country":"CN","date":"{day_after}"}},
+    {"id":"context_change_city","initial_trip":{"destination":"陕西西安","start_date":"{tomorrow}","end_date":"{tomorrow}"},"history":[{"role":"user","content":"查询陕西西安{tomorrow}的天气。"}],"query":"换成日本东京，还是同一天。查天气。","agents":["weather"],"tools":{"travel__forecast":["success"]},"context":{"start_date":"{tomorrow}","end_date":"{tomorrow}"},"weather":{"names":["東京","东京","Tokyo"],"country":"JP","date":"{tomorrow}"}},
+    {"id":"rail_refund","query":"国铁列车停运，退票什么时候办理？请查知识库并注明资料日期。","agents":["knowledge"],"tools":{"travel__search_knowledge":["candidates"]},"documents":["rail-disruption-refund-checked-20260926"]},
+    {"id":"palace_booking","query":"根据知识库，故宫怎么预约、从哪个入口进入？请明确资料日期，不用查实时余票。","agents":["knowledge"],"tools":{"travel__search_knowledge":["candidates"]},"documents":["palace-booking-checked-20260926"]},
+    {"id":"greeting","query":"你好，简单介绍一下你能帮我做什么。","agents":[],"tools":{},"forbidden_tools":["travel__prepare_demo_booking"]},
+    {"id":"missing_destination","query":"帮我查一下明天的天气。","agents":[[],["weather"]],"tools":{},"forbidden_tools":["travel__forecast"],"context":{"destination":null},"manual_focus":"缺少地点时是否明确追问，而不是猜测城市"}
+  ],
+  "rag_cases": [
+    {"id":"bank_3c","query":"国内航班可以携带没有3C标识的充电宝吗","region":"CN","date":"2026-09-28","relevant":["caac-power-bank-domestic-20250628"]},
+    {"id":"bank_recall","query":"我的移动电源属于召回批次，飞国内航线能带吗","region":"CN","date":"2026-09-28","relevant":["caac-power-bank-domestic-20250628"]},
+    {"id":"bank_unreadable","query":"充电宝的认证标志已经磨损看不清楚","region":"CN","date":"2026-09-28","relevant":["caac-power-bank-domestic-20250628"]},
+    {"id":"rail_cancel","query":"火车停运了，过了乘车日还能免手续费退票吗","region":"CN","date":"2026-09-28","relevant":["rail-disruption-refund-checked-20260926"]},
+    {"id":"rail_delay","query":"列车晚点没坐车，退票期限和手续费是什么","region":"CN","date":"2026-09-28","relevant":["rail-disruption-refund-checked-20260926"]},
+    {"id":"palace_reserve","query":"故宫提前几天开始预约门票","region":"CN/北京","date":"2026-09-28","relevant":["palace-booking-checked-20260926"]},
+    {"id":"palace_gate","query":"去紫禁城参观应该走哪个门进去","region":"CN/北京","date":"2026-09-28","relevant":["palace-booking-checked-20260926"]},
+    {"id":"palace_monday","query":"故宫周一开放吗","region":"CN/北京","date":"2026-09-28","relevant":["palace-booking-checked-20260926"],"forbidden":["palace-special-opening-20260727"]},
+    {"id":"palace_special_day","query":"故宫7月27日免费特别开放的时间","region":"CN/北京","date":"2026-07-27","relevant":["palace-special-opening-20260727"]},
+    {"id":"expired_announcement","query":"故宫7月27日免费特别开放","region":"CN/北京","date":"2026-09-28","relevant":[],"forbidden":["palace-special-opening-20260727"]},
+    {"id":"before_effective","query":"充电宝3C标识要求","region":"CN","date":"2025-06-27","relevant":[],"forbidden":["caac-power-bank-domestic-20250628"]},
+    {"id":"wrong_region","query":"故宫预约参观","region":"JP/东京","date":"2026-09-28","relevant":[],"forbidden":["palace-booking-checked-20260926","palace-special-opening-20260727"]}
+  ]
+}

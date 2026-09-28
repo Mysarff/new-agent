@@ -199,3 +199,18 @@ python -m SmartVoyage.verify --live --network
 报告中的通过只代表这些执行、上下文和证据判据通过，不是对全部回答逐句事实核查，也不是所有场景的长期成功率评估。该命令不单独验收高德、Tavily、所有专家组合或向量召回质量；是否启用向量取决于当前索引。读取报告的最终 `status` 和各步骤判据判断完成情况，不把仍在执行、跳过或失败的报告描述为全部通过。
 
 当前按本机可信环境设计，默认服务只监听127.0.0.1，没有多租户登录、文档访问控制或生产支付能力。网页会话各自保存对话，知识库及模拟库存为本地共享资源。检索资料可能发送给配置的模型提供商，导入私有资料前需确认其使用要求。更多协议和数据流说明见 `docs/architecture.md`。
+
+### 量化测评与速度对照
+
+[查看本次真实测评结果与失败分析](docs/evaluation-results-2026-09-28.md)。页面侧栏“服务连接与设置”新增“快速回答（实验）”；默认关闭，完整耗时和Token记录在每轮执行详情中。
+
+```powershell
+# 离线：对带相关文档标注的问题测 Recall@5 / MRR@5 和日期地区过滤
+python -m SmartVoyage.benchmark --rag --output var/rag_eval.json
+# 真实模型：五个问题，使用服务商默认思考设置，共五次问答
+python -m SmartVoyage.benchmark --live --network --output var/baseline.json
+# 支持 enable_thinking 的模型：对照默认思考与关闭思考，共十次问答
+python -m SmartVoyage.benchmark --live --network --profile both --comparison responsive --output var/paired.json
+```
+
+输出逐条 JSON 和 CSV，统计执行条件通过率、Agent集合匹配率、P50/P95、超时率、模型调用次数和完整可得的Token用量。失败保留在分母中，缺失用量不当作0，未人工审阅不报告语义准确率。当前 RAG 仅4份文档，结果不代表大规模知识库质量。扩充12类开发场景、重复运行、向量检索对照、人工审阅和`compact_handoffs`回退方法见 [测评说明](docs/evaluation.md)。
