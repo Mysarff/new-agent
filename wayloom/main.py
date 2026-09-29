@@ -10,7 +10,7 @@ from .runtime import chat, direct_tool
 
 
 def main():
-    parser = argparse.ArgumentParser(description='SmartVoyage travel agent')
+    parser = argparse.ArgumentParser(description='Wayloom travel agent')
     sub = parser.add_subparsers(dest='command', required=True)
     indexing = sub.add_parser('ingest')
     indexing.add_argument('--dense', action='store_true')

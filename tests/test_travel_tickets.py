@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import httpx
 
-from SmartVoyage.tickets import DemoBookingStore, query_tickets
+from wayloom.tickets import DemoBookingStore, query_tickets
 
 
 QUERY = {"kind": "train", "departure": "景德镇", "arrival": "伊宁", "date": "2031-04-23"}
@@ -20,7 +20,7 @@ def provider_ticket(**overrides):
 
 class ProviderTests(unittest.IsolatedAsyncioTestCase):
     async def test_not_configured_is_unavailable_without_fake_prices(self):
-        with patch.dict("os.environ", {"SMARTVOYAGE_TICKET_BASE_URL": ""}):
+        with patch.dict("os.environ", {"WAYLOOM_TICKET_BASE_URL": ""}):
             result = await query_tickets(**QUERY)
         self.assertEqual(result["status"], "unavailable")
         self.assertEqual(result["tickets"], [])
@@ -35,8 +35,8 @@ class ProviderTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(request.headers["Authorization"], "Bearer test-secret")
             return httpx.Response(200, json={"tickets": [provider_ticket()]})
         async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-            with patch.dict("os.environ", {"SMARTVOYAGE_TICKET_BASE_URL": "https://supplier.example/api/v1/",
-                                          "SMARTVOYAGE_TICKET_API_KEY": "test-secret"}):
+            with patch.dict("os.environ", {"WAYLOOM_TICKET_BASE_URL": "https://supplier.example/api/v1/",
+                                          "WAYLOOM_TICKET_API_KEY": "test-secret"}):
                 result = await query_tickets(**QUERY, client=client)
         self.assertEqual(str(requests[0].url).split("?")[0], "https://supplier.example/api/v1/tickets")
         self.assertEqual(result["tickets"][0]["source_kind"], "live")
@@ -196,10 +196,10 @@ class DemoBookingTests(unittest.TestCase):
 
     def test_quote_expires_at_five_minutes_without_order(self):
         ticket = self.seed()
-        with patch("SmartVoyage.tickets.time.time", return_value=1000):
+        with patch("wayloom.tickets.time.time", return_value=1000):
             quote = self.store.prepare(ticket["id"], 1)["quote"]
         self.assertEqual(quote["expires_at"], 1300)
-        with patch("SmartVoyage.tickets.time.time", return_value=1300):
+        with patch("wayloom.tickets.time.time", return_value=1300):
             result = self.store.confirm(quote["quote_id"], "late-click")
         self.assertEqual(result["status"], "expired")
 

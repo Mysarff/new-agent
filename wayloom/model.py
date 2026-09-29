@@ -1,6 +1,8 @@
 """Provider-neutral Chat Completions and embeddings adapters; no fake model fallback."""
 import os
 
+from .config import env_value
+
 import httpx
 
 USE_ENV = object()
@@ -13,18 +15,18 @@ def thinking_setting(value):
         return value
     if isinstance(value, str) and value.lower() in ('true', 'false'):
         return value.lower() == 'true'
-    raise ValueError('SMARTVOYAGE_ENABLE_THINKING must be empty, true or false')
+    raise ValueError('WAYLOOM_ENABLE_THINKING must be empty, true or false')
 
 
 class ChatModel:
     def __init__(self, enable_thinking=USE_ENV):
-        self.model = os.getenv('SMARTVOYAGE_MODEL', '')
-        self.key = os.getenv('SMARTVOYAGE_API_KEY', '')
-        self.base = os.getenv('SMARTVOYAGE_BASE_URL', '').rstrip('/')
-        self.enable_thinking = thinking_setting(os.getenv('SMARTVOYAGE_ENABLE_THINKING', '')
+        self.model = env_value('WAYLOOM_MODEL', '')
+        self.key = env_value('WAYLOOM_API_KEY', '')
+        self.base = env_value('WAYLOOM_BASE_URL', '').rstrip('/')
+        self.enable_thinking = thinking_setting(env_value('WAYLOOM_ENABLE_THINKING', '')
                                                 if enable_thinking is USE_ENV else enable_thinking)
         if not self.model or not self.key or not self.base:
-            raise ValueError('请在 .env 配置 SMARTVOYAGE_MODEL、SMARTVOYAGE_BASE_URL 和 SMARTVOYAGE_API_KEY。')
+            raise ValueError('请在 .env 配置 WAYLOOM_MODEL、WAYLOOM_BASE_URL 和 WAYLOOM_API_KEY。')
 
     async def complete(self, messages, tools, tool_choice='auto'):
         payload = {'model': self.model, 'messages': messages}
@@ -48,9 +50,9 @@ class ChatModel:
 
 class Embeddings:
     def __init__(self):
-        self.model = os.getenv('SMARTVOYAGE_EMBEDDING_MODEL', '')
-        self.base = os.getenv('SMARTVOYAGE_EMBEDDING_BASE_URL') or os.getenv('SMARTVOYAGE_BASE_URL', '')
-        self.key = os.getenv('SMARTVOYAGE_EMBEDDING_API_KEY') or os.getenv('SMARTVOYAGE_API_KEY', '')
+        self.model = env_value('WAYLOOM_EMBEDDING_MODEL', '')
+        self.base = env_value('WAYLOOM_EMBEDDING_BASE_URL') or env_value('WAYLOOM_BASE_URL', '')
+        self.key = env_value('WAYLOOM_EMBEDDING_API_KEY') or env_value('WAYLOOM_API_KEY', '')
 
     @property
     def identity(self):

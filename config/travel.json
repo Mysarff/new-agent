@@ -1,5 +1,5 @@
 {
-  "name": "SmartVoyage 行知旅行助手",
+  "name": "Wayloom 旅知旅行助手",
   "knowledge_dir": "travel_knowledge",
   "index_path": "var/travel_index.json",
   "booking_db": "var/demo_booking.sqlite3",
@@ -70,21 +70,21 @@
       "command": "{python}",
       "args": [
         "-m",
-        "SmartVoyage.tools"
+        "wayloom.tools"
       ],
       "read_only": false,
       "allowed_write_tools": [
         "prepare_demo_booking"
       ],
       "pass_env": [
-        "SMARTVOYAGE_CONFIG",
-        "SMARTVOYAGE_EMBEDDING_BASE_URL",
-        "SMARTVOYAGE_EMBEDDING_API_KEY",
-        "SMARTVOYAGE_EMBEDDING_MODEL",
+        "WAYLOOM_CONFIG",
+        "WAYLOOM_EMBEDDING_BASE_URL",
+        "WAYLOOM_EMBEDDING_API_KEY",
+        "WAYLOOM_EMBEDDING_MODEL",
         "AMAP_API_KEY",
         "TAVILY_API_KEY",
-        "SMARTVOYAGE_TICKET_BASE_URL",
-        "SMARTVOYAGE_TICKET_API_KEY"
+        "WAYLOOM_TICKET_BASE_URL",
+        "WAYLOOM_TICKET_API_KEY"
       ]
     }
   ]

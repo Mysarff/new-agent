@@ -1,4 +1,4 @@
-"""SmartVoyage's python-a2a 0.5.4 Task envelope over real HTTP JSON-RPC."""
+"""Wayloom's python-a2a 0.5.4 Task envelope over real HTTP JSON-RPC."""
 import argparse
 import asyncio
 import json

@@ -2,8 +2,8 @@ import asyncio
 import json
 import unittest
 
-from SmartVoyage.engine import RunState, Engine
-from SmartVoyage.grounding import needs_place_review, review_place_answer
+from wayloom.engine import RunState, Engine
+from wayloom.grounding import needs_place_review, review_place_answer
 from tests.test_travel_engine import ScriptedModel, HubFixture, answer, configuration, invoke
 
 EVIDENCE = [{'id':'Wplaces','source':'https://provider.test/docs','data':{'places':[{'name':'测试馆','address':'某路1号','type':'博物馆'}]}}]

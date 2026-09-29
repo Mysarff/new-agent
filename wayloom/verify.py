@@ -1,6 +1,6 @@
 """Explicit, repeatable live acceptance checks; model responses alone never pass.
 
-Run ``python -m SmartVoyage.verify --live --network`` after starting the A2A
+Run ``python -m wayloom.verify --live --network`` after starting the A2A
 stack. Without --live this module only describes its checks and makes no calls.
 These checks verify execution, context and evidence; they are not a benchmark of
 every claim's factual accuracy or a substitute for human review of the answers.
@@ -20,7 +20,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
 
-from .config import ROOT, load_config
+from .config import ROOT, load_config, env_value
 from .engine import TravelSession
 from .runtime import chat
 
@@ -140,7 +140,7 @@ def _redact(value):
     encoded = json.dumps(value, ensure_ascii=False)
     private = []
     for key, secret in os.environ.items():
-        if key.startswith(("SMARTVOYAGE_", "AMAP_", "TAVILY_")) and key.endswith(("API_KEY", "TOKEN", "PASSWORD", "BASE_URL")) and secret:
+        if key.startswith(("WAYLOOM_", "SMARTVOYAGE_", "AMAP_", "TAVILY_")) and key.endswith(("API_KEY", "TOKEN", "PASSWORD", "BASE_URL")) and secret:
             private.append(secret)
             if key.endswith("BASE_URL"):
                 hostname = urlsplit(secret).netloc
@@ -183,7 +183,7 @@ async def run_live(network=False, output=None):
         query = template.format(date=day_after)
         if index >= 3:
             session, history = TravelSession(), []
-        if identifier == "tickets_unconfigured" and os.getenv("SMARTVOYAGE_TICKET_BASE_URL", "").strip():
+        if identifier == "tickets_unconfigured" and env_value("WAYLOOM_TICKET_BASE_URL", "").strip():
             report["steps"].append({"id": identifier, "query": query, "status": "skipped", "criteria": {},
                                     "reason": "真实票务接口已配置，未配置场景不适用；没有修改配置或发起真实购买。"})
             _write_report(path, report)
@@ -231,7 +231,7 @@ async def run_live(network=False, output=None):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="SmartVoyage真实联调验证；显式--live才调用付费模型/网络工具")
+    parser = argparse.ArgumentParser(description="Wayloom真实联调验证；显式--live才调用付费模型/网络工具")
     parser.add_argument("--live", action="store_true", help="显式启用真实模型和实时工具，可能产生API费用")
     parser.add_argument("--network", action="store_true", help="经已启动的A2A Agent服务执行；省略则本进程MCP编排")
     parser.add_argument("--output", type=Path, default=None, help="报告路径；默认var/live_verification.json")

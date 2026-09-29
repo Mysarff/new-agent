@@ -5,12 +5,22 @@ from unittest.mock import patch
 
 import httpx
 
-from SmartVoyage.model import ChatModel, thinking_setting
-from SmartVoyage.tools import ISODate
+from wayloom.model import ChatModel, thinking_setting
+from wayloom.config import env_value
+from wayloom.tools import ISODate
 from pydantic import TypeAdapter, ValidationError
 
 
 class ModelOptionsTests(unittest.IsolatedAsyncioTestCase):
+    def test_legacy_configuration_remains_usable_after_rename(self):
+        with patch.dict(os.environ, {'SMARTVOYAGE_API_KEY':'legacy-test-value'}, clear=True):
+            self.assertEqual(env_value('WAYLOOM_API_KEY'), 'legacy-test-value')
+            self.assertEqual(env_value('WAYLOOM_MODEL', 'fallback'), 'fallback')
+
+    def test_new_configuration_wins_even_when_explicitly_empty(self):
+        with patch.dict(os.environ, {'SMARTVOYAGE_API_KEY':'legacy-test-value', 'WAYLOOM_API_KEY':''}, clear=True):
+            self.assertEqual(env_value('WAYLOOM_API_KEY'), '')
+
     async def test_optional_thinking_and_usage_are_transmitted_without_reasoning_text(self):
         sent=[]
         def handler(request):
@@ -19,9 +29,9 @@ class ModelOptionsTests(unittest.IsolatedAsyncioTestCase):
                 'reasoning_content':'private reasoning'}}], 'usage':{'prompt_tokens':10,'completion_tokens':3,
                 'total_tokens':13,'completion_tokens_details':{'reasoning_tokens':1}}})
         client=httpx.AsyncClient
-        with patch.dict(os.environ,{'SMARTVOYAGE_MODEL':'test-model','SMARTVOYAGE_API_KEY':'local-test',
-            'SMARTVOYAGE_BASE_URL':'https://model.test/v1','SMARTVOYAGE_ENABLE_THINKING':'false'}), \
-            patch('SmartVoyage.model.httpx.AsyncClient',side_effect=lambda **kw:client(transport=httpx.MockTransport(handler),**kw)):
+        with patch.dict(os.environ,{'WAYLOOM_MODEL':'test-model','WAYLOOM_API_KEY':'local-test',
+            'WAYLOOM_BASE_URL':'https://model.test/v1','WAYLOOM_ENABLE_THINKING':'false'}), \
+            patch('wayloom.model.httpx.AsyncClient',side_effect=lambda **kw:client(transport=httpx.MockTransport(handler),**kw)):
             response=await ChatModel().complete([{'role':'user','content':'天气'}],[])
             await ChatModel(enable_thinking=None).complete([{'role':'user','content':'天气'}],[])
             await ChatModel(enable_thinking=True).complete([{'role':'user','content':'天气'}],[])

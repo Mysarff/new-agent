@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 import httpx
 
-from SmartVoyage.travel_web import search_places, search_travel_web
+from wayloom.travel_web import search_places, search_travel_web
 
 
 AMAP_KEY = 'test-only-amap-secret-do-not-echo'

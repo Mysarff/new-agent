@@ -42,8 +42,8 @@ def main():
                 sock.bind(('127.0.0.1', port))
             except OSError:
                 parser.error(f'端口{port}已被使用，请先停止对应的旧服务。')
-    env = {**os.environ, 'SMARTVOYAGE_A2A': '1', 'PYTHONUTF8': '1', 'PYTHONUNBUFFERED': '1'}
-    commands = [['-m', 'SmartVoyage.a2a', '--agent', agent['id']] for agent in config['agents']]
+    env = {**os.environ, 'WAYLOOM_A2A': '1', 'PYTHONUTF8': '1', 'PYTHONUNBUFFERED': '1'}
+    commands = [['-m', 'wayloom.a2a', '--agent', agent['id']] for agent in config['agents']]
     if not args.no_ui:
         commands.append(['-m', 'streamlit', 'run', 'app.py', '--server.address', '127.0.0.1',
                          '--server.port', str(args.port), '--server.headless', 'true', '--browser.gatherUsageStats', 'false'])
@@ -55,7 +55,7 @@ def main():
         for command in commands:
             children.append(subprocess.Popen([sys.executable, *command], cwd=ROOT, env=env,
                             creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0))
-        print(f'SmartVoyage: http://127.0.0.1:{args.port} ; Ctrl+C to stop', flush=True)
+        print(f'Wayloom: http://127.0.0.1:{args.port} ; Ctrl+C to stop', flush=True)
         while all(child.poll() is None for child in children):
             time.sleep(0.5)
         stopped = [(commands[i], child.returncode) for i, child in enumerate(children) if child.poll() is not None]

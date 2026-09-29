@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from SmartVoyage.knowledge import TravelKnowledge, ingest, split_document, tokens
+from wayloom.knowledge import TravelKnowledge, ingest, split_document, tokens
 
 
 class TravelKnowledgeTests(unittest.TestCase):
@@ -140,7 +140,7 @@ class TravelKnowledgeTests(unittest.TestCase):
         self.document('palace')
         self.build()
         previous = Path(self.config['index_path']).read_bytes()
-        with patch('SmartVoyage.knowledge.os.replace', side_effect=OSError('simulated disk issue')):
+        with patch('wayloom.knowledge.os.replace', side_effect=OSError('simulated disk issue')):
             with self.assertRaises(OSError):
                 ingest(self.config)
         self.assertEqual(previous, Path(self.config['index_path']).read_bytes())

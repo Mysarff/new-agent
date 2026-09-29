@@ -9,6 +9,8 @@ import hashlib
 import json
 import math
 import os
+
+from .config import env_value
 import re
 import sqlite3
 import time
@@ -93,13 +95,13 @@ async def query_tickets(kind, departure, arrival, date, client=None, *,
     Invalid caller parameters raise ValueError before any network request.
     """
     params = _query_values(kind, departure, arrival, date)
-    base_url = os.getenv("SMARTVOYAGE_TICKET_BASE_URL", "") if base_url is None else base_url
-    api_key = os.getenv("SMARTVOYAGE_TICKET_API_KEY", "") if api_key is None else api_key
+    base_url = env_value("WAYLOOM_TICKET_BASE_URL", "") if base_url is None else base_url
+    api_key = env_value("WAYLOOM_TICKET_API_KEY", "") if api_key is None else api_key
     if not base_url or not base_url.strip():
         return {"status": "unavailable", "source_kind": "unavailable", "tickets": [],
                 "source": "票务供应方尚未配置", "query": params,
-                "message": "尚未接入真实票务接口。请配置 SMARTVOYAGE_TICKET_BASE_URL；"
-                           "如供应方需要认证，再配置 SMARTVOYAGE_TICKET_API_KEY。没有查询到真实票价或库存。"}
+                "message": "尚未接入真实票务接口。请配置 WAYLOOM_TICKET_BASE_URL；"
+                           "如供应方需要认证，再配置 WAYLOOM_TICKET_API_KEY。没有查询到真实票价或库存。"}
     endpoint = _provider_url(base_url)
     if isinstance(timeout, bool) or not isinstance(timeout, (int, float)) or not 0 < timeout <= 120:
         raise ValueError("票务请求超时须为0至120秒之间的正数")

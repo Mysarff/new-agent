@@ -4,9 +4,9 @@ import time
 import unittest
 from datetime import date
 
-from SmartVoyage.benchmark import DEFAULT_CASES, resolve_dates, score_execution, summarize
-from SmartVoyage.engine import Engine
-from SmartVoyage.metrics import model_event, summarize_trace
+from wayloom.benchmark import DEFAULT_CASES, resolve_dates, score_execution, summarize
+from wayloom.engine import Engine
+from wayloom.metrics import model_event, summarize_trace
 from tests.test_travel_engine import HubFixture, ScriptedModel, answer, configuration, invoke
 from tests.test_travel_grounding import EVIDENCE
 

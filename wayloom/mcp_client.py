@@ -12,7 +12,7 @@ from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 from mcp.client.streamable_http import streamablehttp_client
 
-from .config import ROOT
+from .config import ROOT, env_value
 
 
 class ToolHub:
@@ -29,10 +29,11 @@ class ToolHub:
                     command = sys.executable if server['command'] == '{python}' else server['command']
                     # Do not pass LLM credentials to every third-party child process.
                     environment = {key: value for key, value in os.environ.items()
-                                   if key in ('PATH', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'HOME', 'USERPROFILE', 'SMARTVOYAGE_CONFIG')}
+                                   if key in ('PATH', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'HOME', 'USERPROFILE', 'WAYLOOM_CONFIG')}
                     for key in server.get('pass_env', []):
-                        if key in os.environ:
-                            environment[key] = os.environ[key]
+                        value = env_value(key) if key.startswith('WAYLOOM_') else os.getenv(key)
+                        if value is not None:
+                            environment[key] = value
                     environment['PYTHONUTF8'] = '1'
                     streams = await self.stack.enter_async_context(stdio_client(StdioServerParameters(
                         command=command, args=server.get('args', []), cwd=str(ROOT), env=environment)))

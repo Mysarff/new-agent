@@ -12,7 +12,7 @@ from unittest.mock import AsyncMock, patch
 
 from streamlit.testing.v1 import AppTest
 
-from SmartVoyage.knowledge import TravelKnowledge
+from wayloom.knowledge import TravelKnowledge
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -44,14 +44,14 @@ class TravelUITests(unittest.TestCase):
         self.tool = AsyncMock(side_effect=self.offline_tool)
         patches = [
             # Patch before app.py imports these functions: .env is never loaded.
-            patch('SmartVoyage.config.load_config', return_value=self.config),
-            patch('SmartVoyage.config.integrations', return_value={
+            patch('wayloom.config.load_config', return_value=self.config),
+            patch('wayloom.config.integrations', return_value={
                 'model': False, 'weather': True, 'embeddings': False,
                 'places': False, 'live_search': False, 'tickets': False}),
-            patch('SmartVoyage.runtime.direct_tool', self.tool),
+            patch('wayloom.runtime.direct_tool', self.tool),
             patch('httpx.Client.request', side_effect=no_network),
             patch('httpx.AsyncClient.request', side_effect=no_network),
-            patch.dict(os.environ, {'SMARTVOYAGE_A2A': '0'}),
+            patch.dict(os.environ, {'WAYLOOM_A2A': '0'}),
         ]
         for mocked in patches:
             mocked.start()

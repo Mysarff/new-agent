@@ -1,4 +1,4 @@
-# SmartVoyage 架构与接口
+# Wayloom 架构与接口
 
 ## 从用户任务到可核对结果
 
@@ -114,7 +114,7 @@ MCP服务配置可执行本地程序，是维护者信任边界。聊天用户�
 
 ## 票务查询契约
 
-配置 `SMARTVOYAGE_TICKET_BASE_URL` 后发送只读 `GET <base>/tickets`。请求参数为 `kind/departure/arrival/date`；Key非空时以 Bearer 头认证。外部地址必须为HTTPS，localhost调试允许HTTP，不跟随重定向。
+配置 `WAYLOOM_TICKET_BASE_URL` 后发送只读 `GET <base>/tickets`。请求参数为 `kind/departure/arrival/date`；Key非空时以 Bearer 头认证。外部地址必须为HTTPS，localhost调试允许HTTP，不跟随重定向。
 
 响应对象含 `tickets` 数组，每次最多500条，票号不可重复。每条记录字段如下：
 
@@ -137,7 +137,7 @@ MCP服务配置可执行本地程序，是维护者信任边界。聊天用户�
 
 自动化测试应分别验证工具正确性、RAG过滤与来源、模型编排协议、上下文变更和模拟确认。mock模型与向量验证的是可重复的控制流程，不是模型语义能力；真实模型对话、真实网络服务及供应方授权须单独验证。
 
-`python -m SmartVoyage.verify` 仅展示验收计划，不发起模型或网络请求。明确执行 `python -m SmartVoyage.verify --live --network` 后，会调用已配置的真实模型与已运行的四个 A2A 专家服务，经 MCP 访问实际工具，可能产生模型/API费用。需要先运行 `python -m SmartVoyage.stack` 或 `python -m SmartVoyage.stack --no-ui`。省略 `--network` 只改变专家执行方式，不把真实模型改成 mock。
+`python -m wayloom.verify` 仅展示验收计划，不发起模型或网络请求。明确执行 `python -m wayloom.verify --live --network` 后，会调用已配置的真实模型与已运行的四个 A2A 专家服务，经 MCP 访问实际工具，可能产生模型/API费用。需要先运行 `python -m wayloom.stack` 或 `python -m wayloom.stack --no-ui`。省略 `--network` 只改变专家执行方式，不把真实模型改成 mock。
 
 验收器默认持续写入 `var/live_verification.json`（可用 `--output` 修改），包含每步的 `criteria`、工具记录、引用与结构化上下文，并脱敏配置中的认证值和私有服务地址。三步连续天气问题核对西安明天、西安后天及东京同一天的地点、国家、时区、日期、预报数值和引用；另检查民航充电宝知识引用及未配置票务的明确不可用状态。网络模式还要求存在真实 A2A 完成事件，单有一段自然语言回答不会通过。
 

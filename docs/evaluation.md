@@ -9,21 +9,21 @@
 先按 README 安装依赖。下面默认不调用外部模型，只列出可测场景：
 
 ```sh
-python -m SmartVoyage.benchmark
-python -m SmartVoyage.benchmark --rag --output var/rag_eval.json
+python -m wayloom.benchmark
+python -m wayloom.benchmark --rag --output var/rag_eval.json
 ```
 
 `--rag`临时构建独立索引，不覆盖应用已有索引。12条标注包含9条正例和4条日期/地区过滤检查，其中1条同时检查召回和过滤。当前仅4份文档、4个片段，Recall@5容易饱和；MRR提供首个相关片段的名次，但这仍是很小的开发样本。不要将100%检索命中率称为100%回答准确率。向量对照需要已配置的向量模型，会调用其接口：
 
 ```sh
-python -m SmartVoyage.benchmark --rag --dense --live --output var/rag_hybrid_eval.json
+python -m wayloom.benchmark --rag --dense --live --output var/rag_hybrid_eval.json
 ```
 
 真实模型测评会产生API费用，默认5个问题×1种流程×1次重复，共5次问答；每次问答还会调用多次模型。默认不发送服务商专用思考参数。先启动更新后的完整服务，再在另一个终端运行：
 
 ```sh
-python -m SmartVoyage.stack
-python -m SmartVoyage.benchmark --live --network --output var/baseline.json
+python -m wayloom.stack
+python -m wayloom.benchmark --live --network --output var/baseline.json
 ```
 
 不加`--network`则使用本进程编排和真实MCP工具，不要求启动四个A2A服务；这两种模式的耗时不能直接混为一组。不要对旧服务进程运行新版本对照，需先重启以加载交接协议和用量记录。
@@ -31,8 +31,8 @@ python -m SmartVoyage.benchmark --live --network --output var/baseline.json
 扩大覆盖与重复次数：
 
 ```sh
-python -m SmartVoyage.benchmark --live --network --profile both --comparison responsive --cases all --repeats 3 --output var/full_eval.json
-python -m SmartVoyage.benchmark --live --network --profile baseline --cases rain_plan,places_only --repeats 3 --output var/places_eval.json
+python -m wayloom.benchmark --live --network --profile both --comparison responsive --cases all --repeats 3 --output var/full_eval.json
+python -m wayloom.benchmark --live --network --profile baseline --cases rain_plan,places_only --repeats 3 --output var/places_eval.json
 ```
 
 第一条会运行12个场景×2流程×3次，即72次问答，费用和时间会明显增加。`--profile baseline`或`--profile compact`可以单独运行一种流程。查询日期在一次评测开始时固定，并保存实际问题；首次运行和后续追问的上下文分别有标注。若已配置真实票务接口，“供应商未接入”用例会明确跳过，不能算成功。
@@ -54,7 +54,7 @@ python -m SmartVoyage.benchmark --live --network --profile baseline --cases rain
 
 每条真实回答附`manual_review`空字段。审阅者应对照保存的原始证据拆分可核查事实，记录`claim_count`、`supported_claim_count`，分别判定`answer_correct`与`covers_user_request`，并填写审阅者。引用ID存在不代表引用支持那句话；地点名称和地址也不能证明室内条件或营业时间。未完成审阅时`semantic_accuracy`保持null，脚本不会拿模型复核成功冒充人工准确率。
 
-人工审阅后把各条`manual_review.status`设为`completed`，填写上述字段，再执行`python -m SmartVoyage.benchmark --summarize var/paired.json`。这个操作不调用API，只重算JSON/CSV。只有同一配置的全部已尝试记录都完成审阅，才报告答案正确率、需求覆盖率和有证据支持的事实比例；不能只审核成功条目而忽略失败条目。脚本无法验证审阅者是否真实或标注是否可靠，正式结果仍需保留审核依据。
+人工审阅后把各条`manual_review.status`设为`completed`，填写上述字段，再执行`python -m wayloom.benchmark --summarize var/paired.json`。这个操作不调用API，只重算JSON/CSV。只有同一配置的全部已尝试记录都完成审阅，才报告答案正确率、需求覆盖率和有证据支持的事实比例；不能只审核成功条目而忽略失败条目。脚本无法验证审阅者是否真实或标注是否可靠，正式结果仍需保留审核依据。
 
 正式评估宜另建独立问题集，增加目的地、歧义、缺参、多轮修改、公告失效、供应商故障、票务数量和报价确认场景；冻结标注后再调提示。模拟报价、确认、幂等和库存边界目前由独立程序测试验证，默认真实对照不会创建订单。
 
@@ -64,12 +64,12 @@ python -m SmartVoyage.benchmark --live --network --profile baseline --cases rain
 
 页面侧栏“服务连接与设置”提供“快速回答（实验）”，默认关闭，仅影响当前会话后续请求。它显式关闭支持该参数的模型思考；关闭勾选则继续使用本地配置。当前小样本出现过质量退化，所以没有自动开启，也没有替用户修改`.env`。
 
-支持此参数的模型可以在本地`.env`设置`SMARTVOYAGE_ENABLE_THINKING=false`关闭思考模式；留空则不发送参数，沿用服务商默认值。`true`明确开启。参数是否支持取决于实际服务商和模型，不通过模型名或关键词自动猜测；不支持时可能报错，应保持留空。
+支持此参数的模型可以在本地`.env`设置`WAYLOOM_ENABLE_THINKING=false`关闭思考模式；留空则不发送参数，沿用服务商默认值。`true`明确开启。参数是否支持取决于实际服务商和模型，不通过模型名或关键词自动猜测；不支持时可能报错，应保持留空。
 
 当前使用的Qwen3.7 Flash属于默认开启思考的混合思考模型，参见[阿里云官方说明](https://help.aliyun.com/zh/model-studio/deep-thinking)。关闭思考可能降低时延和Token消耗，也可能影响复杂任务质量；不能直接套用官方示例的提速比例。
 
 ```sh
-python -m SmartVoyage.benchmark --live --network --profile both --comparison responsive --output var/thinking_paired.json
+python -m wayloom.benchmark --live --network --profile both --comparison responsive --output var/thinking_paired.json
 ```
 
 这个对照仅改变思考参数：`baseline`不发送`enable_thinking`、`responsive`发送false，均不启用精简交接；不更换模型、资料、工具或预算。`compact`对照也不发送思考参数。评测显式覆盖本地思考设置，避免本地改成false后连基线也一起变快。每条记录保存实际请求选项；服务商若返回`reasoning_tokens`则保存数量，不保存或展示内部思考文本。单独运行某个配置可用`--profile responsive`等。

@@ -1,4 +1,4 @@
-"""SmartVoyage's local travel workspace."""
+"""Wayloom's local travel workspace."""
 import asyncio
 import json
 import os
@@ -9,15 +9,32 @@ from pathlib import Path
 import pandas as pd
 import streamlit as st
 
-from SmartVoyage.config import integrations, load_config
-from SmartVoyage.engine import TravelSession
-from SmartVoyage.knowledge import ingest
-from SmartVoyage.model import Embeddings
-from SmartVoyage.presentation import format_answer, safe_source_url, source_catalog, trip_overview
-from SmartVoyage.runtime import chat, direct_tool
-from SmartVoyage.tickets import DemoBookingStore
+from wayloom.config import integrations, load_config, env_value
+from wayloom.engine import TravelSession
+from wayloom.knowledge import ingest
+from wayloom.model import Embeddings
+from wayloom.presentation import format_answer, safe_source_url, source_catalog, trip_overview
+from wayloom.runtime import chat, direct_tool
+from wayloom.tickets import DemoBookingStore
 
-st.set_page_config(page_title='SmartVoyage · 行知', page_icon='🧭', layout='wide')
+st.set_page_config(page_title='Wayloom 旅知 · 旅行助手', page_icon='🧭', layout='wide')
+st.markdown('''<style>
+/* Small layout refinements; colors come from the shared light theme. */
+[data-testid="stMainBlockContainer"] { max-width: 1240px; padding-top: 3.4rem; }
+[data-testid="stSidebar"] { border-right: 1px solid #e0e9e9; }
+[data-testid="stSidebar"] h3 { letter-spacing: -.03em; }
+[data-testid="stChatMessage"] { border: 1px solid #e2eaea; border-radius: 16px; padding: 1.2rem; }
+[data-testid="stForm"] { border-color: #dbe6e5; border-radius: 16px; padding: 1.2rem; }
+[data-testid="stExpander"] details { border-color: #e0e9e9; border-radius: 12px; }
+[data-testid="stCaptionContainer"], [data-testid="stCaptionContainer"] p { color: #566d76; }
+h1 { letter-spacing: -.04em; }
+button[kind="primary"] { border-radius: 10px; }
+a { text-underline-offset: 3px; }
+@media (max-width: 640px) {
+  [data-testid="stMainBlockContainer"] { padding-top: 2rem; }
+  [data-testid="stChatMessage"] { padding: .85rem; }
+}
+</style>''', unsafe_allow_html=True)
 config = load_config()
 available = integrations()
 for key, value in [('messages', []), ('journey', TravelSession()), ('weather_candidates', []),
@@ -125,8 +142,8 @@ def confirm_quote(quote, prefix):
 
 
 with st.sidebar:
-    st.markdown('### 🧭 SmartVoyage')
-    st.caption('行知 · 把旅途问题一件件办清楚')
+    st.markdown('### 🧭 Wayloom 旅知')
+    st.caption('每一程，都有据可依。')
     st.divider()
     st.markdown('**当前行程**')
     st.caption('从对话中整理，方便接着问“那里”或“那后天呢”。如有误，直接在对话中纠正。')
@@ -152,12 +169,13 @@ with st.sidebar:
             status = '公共接口，无需密钥' if key == 'weather' else '已填写配置' if available[key] else '待配置'
             st.caption(f'{label} · {status}')
         st.caption('配置存在不代表调用成功；具体结果以本轮响应为准。')
-        st.caption('服务模式：' + ('独立 Agent 服务' if os.getenv('SMARTVOYAGE_A2A') == '1' else '本机协作'))
+        st.caption('服务模式：' + ('独立 Agent 服务' if env_value('WAYLOOM_A2A') == '1' else '本机协作'))
         fast_response = st.checkbox('快速回答（实验）', value=False)
         st.caption('减少模型思考等待，复杂问题可能更容易遗漏。需要模型支持关闭思考；如报错请关闭。默认沿用本地模型配置。')
 
-st.title('把下一程，想得更周全。')
-st.caption('SmartVoyage 行知旅行助手 · 实时天气、旅行安排、官方知识与公告、票务查询')
+st.caption('WAYLOOM / 旅知')
+st.title('下一程，从容出发。')
+st.caption('查天气、理行程、核对旅行知识，让每一步安排有据可依。')
 conversation, weather_tab, knowledge_tab, ticket_tab = st.tabs(['💬 旅行对话', '🌦️ 实时天气', '📚 知识与公告', '🎫 票务演练'])
 
 with conversation:
@@ -184,7 +202,7 @@ with conversation:
         try:
             with st.spinner('正在选择助手、查询证据并整理回答…', show_time=True):
                 request_config = {**config, 'enable_thinking': False} if fast_response else config
-                result = asyncio.run(chat(query, history, journey, network=os.getenv('SMARTVOYAGE_A2A') == '1', config=request_config))
+                result = asyncio.run(chat(query, history, journey, network=env_value('WAYLOOM_A2A') == '1', config=request_config))
                 result['response_mode'] = '快速回答（实验）' if fast_response else '环境配置'
             st.session_state.messages.append({'role': 'assistant', 'content': result['answer'], 'result': result})
             st.rerun()
@@ -338,4 +356,4 @@ with ticket_tab:
                 confirm_quote(st.session_state.page_quote, 'manual-')
 
 st.divider()
-st.caption('SmartVoyage · 天气来自 Open-Meteo / GeoNames；资料提供原始来源和日期；工具未接入时会如实说明。')
+st.caption('Wayloom · 天气来自 Open-Meteo / GeoNames；资料提供原始来源和日期；工具未接入时会如实说明。')

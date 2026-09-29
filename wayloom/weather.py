@@ -77,7 +77,7 @@ async def _client_scope(client: httpx.AsyncClient | None):
     else:
         async with httpx.AsyncClient(
             timeout=httpx.Timeout(25.0, connect=10.0),
-            headers={"User-Agent": "SmartVoyage/2.0 (travel-weather)"},
+            headers={"User-Agent": "wayloom/2.0 (travel-weather)"},
             follow_redirects=False,
         ) as owned:
             yield owned

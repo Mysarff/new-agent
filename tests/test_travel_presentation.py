@@ -1,6 +1,6 @@
 import unittest
 
-from SmartVoyage.presentation import format_answer, readable_units, safe_source_url, source_catalog, trip_overview
+from wayloom.presentation import format_answer, readable_units, safe_source_url, source_catalog, trip_overview
 
 
 class PresentationTests(unittest.TestCase):

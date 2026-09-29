@@ -8,7 +8,7 @@ from pathlib import Path
 
 from jsonschema import ValidationError
 
-from SmartVoyage.engine import CONTEXT_SCHEMA, Engine, TravelSession
+from wayloom.engine import CONTEXT_SCHEMA, Engine, TravelSession
 
 
 def configuration(**overrides):

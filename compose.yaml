@@ -1,5 +1,5 @@
 services:
-  smartvoyage:
+  wayloom:
     build: .
     ports:
       - "127.0.0.1:8501:8501"
@@ -8,9 +8,9 @@ services:
         required: false
     environment:
       # This image runs the UI with local specialists and real MCP subprocesses.
-      # Independent A2A services use the separate SmartVoyage.stack launcher.
-      SMARTVOYAGE_A2A: "0"
-      SMARTVOYAGE_CONFIG: config/travel.json
+      # Independent A2A services use the separate wayloom.stack launcher.
+      WAYLOOM_A2A: "0"
+      WAYLOOM_CONFIG: config/travel.json
     volumes:
       - ./travel_knowledge:/app/travel_knowledge:ro
       - smartvoyage-data:/app/var

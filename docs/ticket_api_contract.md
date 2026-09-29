@@ -1,11 +1,11 @@
-# SmartVoyage 票务接口与模拟演练
+# Wayloom 票务接口与模拟演练
 
 ## 真实供应方：仅查询，不下单
 
 环境变量：
 
-- `SMARTVOYAGE_TICKET_BASE_URL`：供应方或适配服务的 HTTPS 根地址，例如 `https://your-provider.example/api/v1`。
-- `SMARTVOYAGE_TICKET_API_KEY`：供应方需要认证时填写；以 `Authorization: Bearer ...` 请求头发送。此密钥不应提交到仓库。
+- `WAYLOOM_TICKET_BASE_URL`：供应方或适配服务的 HTTPS 根地址，例如 `https://your-provider.example/api/v1`。
+- `WAYLOOM_TICKET_API_KEY`：供应方需要认证时填写；以 `Authorization: Bearer ...` 请求头发送。此密钥不应提交到仓库。
 
 项目没有假定任何商业供应方已经接入。用户提供接口文档后，可由适配服务转换成下面的统一契约；配置任意供应方 URL 不代表其已经兼容该契约。未配置时返回 `unavailable`，不会自动转为虚构票价。仅本机调试允许 HTTP。
 

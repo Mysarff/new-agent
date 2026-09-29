@@ -1,4 +1,4 @@
-name: SmartVoyage checks
+name: Wayloom checks
 on: [push, pull_request]
 permissions:
   contents: read
@@ -8,8 +8,8 @@ jobs:
     timeout-minutes: 10
     env:
       PYTHONUTF8: '1'
-      SMARTVOYAGE_CONFIG: config/travel.json
-      SMARTVOYAGE_A2A: '0'
+      WAYLOOM_CONFIG: config/travel.json
+      WAYLOOM_A2A: '0'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -19,22 +19,22 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
       - name: Compile travel application
-        run: python -m compileall -q SmartVoyage app.py
+        run: python -m compileall -q wayloom app.py
       - name: Run travel tests without external API credentials
         run: python -m unittest discover -s tests -p 'test_travel_*.py' -v
       - name: Build local knowledge index without embeddings
-        run: python -m SmartVoyage.main ingest
+        run: python -m wayloom.main ingest
       - name: Evaluate curated retrieval set without external credentials
-        run: python -m SmartVoyage.benchmark --rag --output reports/rag_eval.json
+        run: python -m wayloom.benchmark --rag --output reports/rag_eval.json
       - name: Discover local MCP tools without executing external APIs
         run: |
           mkdir -p reports
-          python -m SmartVoyage.main discover > reports/mcp_discovery.json
+          python -m wayloom.main discover > reports/mcp_discovery.json
           python -c "import json; p=json.load(open('reports/mcp_discovery.json')); assert any(x.get('tools') for x in p), 'No MCP tools discovered'"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: smartvoyage-offline-checks
+          name: wayloom-offline-checks
           path: |
             reports/mcp_discovery.json
             reports/rag_eval.json

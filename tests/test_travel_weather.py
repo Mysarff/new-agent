@@ -4,7 +4,7 @@ import unittest
 
 import httpx
 
-from SmartVoyage.weather import DAILY_VARIABLES, forecast, geocode
+from wayloom.weather import DAILY_VARIABLES, forecast, geocode
 
 
 # Unit-test fixtures, deliberately isolated from production and never a fallback.

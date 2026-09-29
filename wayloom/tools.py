@@ -21,7 +21,7 @@ ISODate = Annotated[str, Field(pattern=r'^\d{4}-\d{2}-\d{2}$',
 
 def build_server():
     config = load_config()
-    server = FastMCP('SmartVoyageTravelTools', log_level='WARNING')
+    server = FastMCP('WayloomTravelTools', log_level='WARNING')
 
     @server.tool(annotations=READ)
     async def geocode(query: str, country_code: str | None = None) -> dict:

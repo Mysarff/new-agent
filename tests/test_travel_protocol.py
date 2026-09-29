@@ -8,7 +8,7 @@ from unittest.mock import patch
 import httpx
 from python_a2a import Message, MessageRole, Task, TextContent
 
-from SmartVoyage.a2a import RemoteAgents, create_app
+from wayloom.a2a import RemoteAgents, create_app
 
 
 class LocalHub:
@@ -62,8 +62,8 @@ class TravelProtocolTests(unittest.IsolatedAsyncioTestCase):
                        "user_timezone": "Asia/Shanghai", "max_tool_calls": 8, "max_rounds": 4,
                        "max_delegations": 3, "a2a_timeout": 30}
         self.hub, self.model = LocalHub(), LocalModel()
-        for patcher in (patch("SmartVoyage.a2a.load_config", return_value=self.config),
-                        patch("SmartVoyage.a2a.ToolHub", return_value=self.hub)):
+        for patcher in (patch("wayloom.a2a.load_config", return_value=self.config),
+                        patch("wayloom.a2a.ToolHub", return_value=self.hub)):
             patcher.start()
             self.addCleanup(patcher.stop)
         self.app = create_app("knowledge", model=self.model)
@@ -90,7 +90,7 @@ class TravelProtocolTests(unittest.IsolatedAsyncioTestCase):
         original_client = httpx.AsyncClient
         def local_client(**kwargs):
             return original_client(transport=httpx.ASGITransport(app=self.app), **kwargs)
-        with patch("SmartVoyage.a2a.httpx.AsyncClient", side_effect=local_client):
+        with patch("wayloom.a2a.httpx.AsyncClient", side_effect=local_client):
             result = await RemoteAgents(self.config).call(self.config["agents"][0], "旅行公告", [],
                                                         {"trip": {"destination": "杭州"}, "demo_enabled": False}, [], 2)
         self.assertEqual(result["tool_calls"], 1)
@@ -120,7 +120,7 @@ class TravelProtocolTests(unittest.IsolatedAsyncioTestCase):
             seen.append(request)
             return httpx.Response(200, json={"name": "different_agent"})
         original_client = httpx.AsyncClient
-        with patch("SmartVoyage.a2a.httpx.AsyncClient", side_effect=lambda **kwargs: original_client(transport=httpx.MockTransport(handler), **kwargs)):
+        with patch("wayloom.a2a.httpx.AsyncClient", side_effect=lambda **kwargs: original_client(transport=httpx.MockTransport(handler), **kwargs)):
             with self.assertRaises(ValueError):
                 await RemoteAgents(self.config).call(self.config["agents"][0], "旅行公告", [], {}, [], 2)
         self.assertEqual(len(seen), 1)
@@ -137,7 +137,7 @@ class TravelProtocolTests(unittest.IsolatedAsyncioTestCase):
             task.metadata = {"business": {"answer": "fake", "tool_calls": 100, "trace": []}}
             return httpx.Response(200, json={"jsonrpc": "2.0", "id": body["id"], "result": task.to_dict()})
         original_client = httpx.AsyncClient
-        with patch("SmartVoyage.a2a.httpx.AsyncClient", side_effect=lambda **kwargs: original_client(transport=httpx.MockTransport(handler), **kwargs)):
+        with patch("wayloom.a2a.httpx.AsyncClient", side_effect=lambda **kwargs: original_client(transport=httpx.MockTransport(handler), **kwargs)):
             with self.assertRaises(ValueError):
                 await RemoteAgents(self.config).call(self.config["agents"][0], "旅行公告", [], {}, [], 2)
 

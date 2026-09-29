@@ -1,4 +1,8 @@
-# SmartVoyage 行知旅行助手
+# Wayloom 旅知旅行助手
+
+**Wayloom（旅知）**：以实时工具和可追溯知识辅助旅行决策的多 Agent 项目。名称结合 way（旅途）与 loom（编织），对应天气、行程、知识和票务能力的协作。界面默认采用白色主题与青绿色重点色。
+
+本项目沿 SmartVoyage 旅游 Agent 原型继续改造，当前名称、代码包与启动命令统一为 Wayloom / `wayloom`。已有 `.env` 中的 `SMARTVOYAGE_*` 配置继续兼容；新部署按 `.env.example` 使用 `WAYLOOM_*`，同名新配置优先（包括显式留空）。历史测评原始记录保留原样，改名不代表重新取得测评结果。
 
 围绕真实旅行问题工作的 Agent：查询目的地天气、根据同行人与天气调整行程、检索景区公告和旅行规则，并在已接入供应方时查询票务。支持连续对话，例如先问“北京明天会下雨吗”，再问“那后天呢”“换成西安，带孩子有什么室内活动”。
 
@@ -32,13 +36,13 @@ python -m venv .venv
 .venv/Scripts/Activate.ps1
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
-python -m SmartVoyage.main ingest
-python -m SmartVoyage.stack
+python -m wayloom.main ingest
+python -m wayloom.stack
 ```
 
 已有 `.env` 时保留自己的配置，不要用示例覆盖。Linux/macOS 激活命令为 `source .venv/bin/activate`，首次复制用 `cp .env.example .env`。
 
-完整启动器打开 [本机页面](http://127.0.0.1:8510)，并启动四个独立专家服务，默认端口为8611—8614。用 Ctrl+C 停止启动器及其创建的子进程。端口可在配置中调整；页面端口可用 `python -m SmartVoyage.stack --port 8511` 指定。
+完整启动器打开 [本机页面](http://127.0.0.1:8510)，并启动四个独立专家服务，默认端口为8611—8614。用 Ctrl+C 停止启动器及其创建的子进程。端口可在配置中调整；页面端口可用 `python -m wayloom.stack --port 8511` 指定。
 
 只启动单进程页面也可以：
 
@@ -54,20 +58,20 @@ streamlit run app.py --server.address 127.0.0.1
 
 | 功能 | 配置项 | 是否必需 |
 | --- | --- | --- |
-| 自然语言 Agent、上下文理解、动态路由 | `SMARTVOYAGE_BASE_URL`、`SMARTVOYAGE_API_KEY`、`SMARTVOYAGE_MODEL` | Agent 对话必需；模型须支持 Chat Completions 的 `tools/tool_calls` |
+| 自然语言 Agent、上下文理解、动态路由 | `WAYLOOM_BASE_URL`、`WAYLOOM_API_KEY`、`WAYLOOM_MODEL` | Agent 对话必需；模型须支持 Chat Completions 的 `tools/tool_calls` |
 | 地名与天气 | Open-Meteo 公共接口 | 当前实现无需 API Key，需要网络连接 |
 | 景点、餐饮、室内场所 | `AMAP_API_KEY` | 可选，高德 Web 服务 Key，需开通地点搜索权限 |
 | 最新公告与公开资料 | `TAVILY_API_KEY` | 可选；未配时不能声称已联网核实最新公告 |
 | 本地词法检索 | 无 | 无密钥即可运行；不产生模型回答 |
-| 向量混合检索 | `SMARTVOYAGE_EMBEDDING_MODEL`，可另配 `SMARTVOYAGE_EMBEDDING_BASE_URL/API_KEY` | 可选；地址与密钥为空时沿用对话模型配置 |
-| 接入已有票务服务 | `SMARTVOYAGE_TICKET_BASE_URL`，以及供应方需要的 `SMARTVOYAGE_TICKET_API_KEY` | 可选；服务必须满足下文的查询契约 |
+| 向量混合检索 | `WAYLOOM_EMBEDDING_MODEL`，可另配 `WAYLOOM_EMBEDDING_BASE_URL/API_KEY` | 可选；地址与密钥为空时沿用对话模型配置 |
+| 接入已有票务服务 | `WAYLOOM_TICKET_BASE_URL`，以及供应方需要的 `WAYLOOM_TICKET_API_KEY` | 可选；服务必须满足下文的查询契约 |
 
 对话配置示例，以下值只是占位内容：
 
 ```dotenv
-SMARTVOYAGE_BASE_URL=https://your-provider.example/v1
-SMARTVOYAGE_API_KEY=your-own-key
-SMARTVOYAGE_MODEL=your-tool-calling-model
+WAYLOOM_BASE_URL=https://your-provider.example/v1
+WAYLOOM_API_KEY=your-own-key
+WAYLOOM_MODEL=your-tool-calling-model
 ```
 
 这是可替换的 OpenAI 兼容接口适配器，不限定某一家模型公司，也不保证所有兼容接口都实现相同的工具能力。模型、搜索、地点和向量服务可能有调用费用或配额。天气服务能力依据 [Open-Meteo 预报文档](https://open-meteo.com/en/docs)与[地名接口文档](https://open-meteo.com/en/docs/geocoding-api)；商用或高频使用请核对供应方的现行授权与用量方案。
@@ -76,20 +80,20 @@ SMARTVOYAGE_MODEL=your-tool-calling-model
 
 ```powershell
 # 无密钥建立词法索引
-python -m SmartVoyage.main ingest
+python -m wayloom.main ingest
 
 # 本地资料检索，地区用显式国家/城市层级
-python -m SmartVoyage.main search "故宫预约规则" --date 2026-10-01 --region "CN/北京"
+python -m wayloom.main search "故宫预约规则" --date 2026-10-01 --region "CN/北京"
 
 # 查看真正从 MCP 服务发现的工具
-python -m SmartVoyage.main discover
+python -m wayloom.main discover
 
 # 配好模型后，在当前进程运行专家
-python -m SmartVoyage.main chat "查北京明天的天气，说明数据来源"
+python -m wayloom.main chat "查北京明天的天气，说明数据来源"
 
 # 配好模型后，只启动独立专家，再在另一个终端发起 A2A 对话
-python -m SmartVoyage.stack --no-ui
-python -m SmartVoyage.main chat "充电宝坐国内飞机有什么限制？" --network
+python -m wayloom.stack --no-ui
+python -m wayloom.main chat "充电宝坐国内飞机有什么限制？" --network
 ```
 
 命令行 `chat` 每次为新会话；连续指代演示使用网页会话。示例日期用于说明格式，实际旅行请填写真实日期。
@@ -122,7 +126,7 @@ python -m SmartVoyage.main chat "充电宝坐国内飞机有什么限制？" --n
 
 摘要不是实时公告库，也不代表已经覆盖全国所有景区政策。历史公告详情页直接访问曾超时，使用官方页面搜索提取内容核对，文件保留获取限制。核验时间不等于持续有效，查询不到不等于没有公告。
 
-把自己的 JSON、Markdown 或 TXT 放入 `travel_knowledge/`，再运行 `python -m SmartVoyage.main ingest`。JSON 推荐包含 `id/title/text/source/source_type/published_at/checked_at/valid_from/valid_to/regions/tags`；字段与导入说明见 `travel_knowledge/FORMAT.rst`。Markdown/TXT 默认标为未核实资料，不会因正文自称“官方”而自动获得可信标签。
+把自己的 JSON、Markdown 或 TXT 放入 `travel_knowledge/`，再运行 `python -m wayloom.main ingest`。JSON 推荐包含 `id/title/text/source/source_type/published_at/checked_at/valid_from/valid_to/regions/tags`；字段与导入说明见 `travel_knowledge/FORMAT.rst`。Markdown/TXT 默认标为未核实资料，不会因正文自称“官方”而自动获得可信标签。
 
 文档按标题与滑动窗口切成知识单元，默认650字符、100字符重叠，保留来源、原文位置和稳定 `K-` 引用ID。短摘要可能只有一个单元，不为增加数量强行拆碎。中文 BM25 使用双字词元，属于词法检索；需要接模型生成带依据的回答时，才是完整的 RAG 问答流程。
 
@@ -131,13 +135,13 @@ python -m SmartVoyage.main chat "充电宝坐国内飞机有什么限制？" --n
 可选语义向量检索：
 
 ```dotenv
-SMARTVOYAGE_EMBEDDING_BASE_URL=https://your-provider.example/v1
-SMARTVOYAGE_EMBEDDING_API_KEY=your-own-key
-SMARTVOYAGE_EMBEDDING_MODEL=your-embedding-model
+WAYLOOM_EMBEDDING_BASE_URL=https://your-provider.example/v1
+WAYLOOM_EMBEDDING_API_KEY=your-own-key
+WAYLOOM_EMBEDDING_MODEL=your-embedding-model
 ```
 
 ```powershell
-python -m SmartVoyage.main ingest --dense
+python -m wayloom.main ingest --dense
 ```
 
 使用兼容 `/embeddings` 的真实服务生成向量，与 BM25 通过 RRF 融合。更换资料、切分参数、向量提供商、模型或维度后需要重建；索引不匹配会报错。构建失败保留先前索引。实现使用本地 JSON 与 NumPy，面向小型资料库。向量单元测试使用 mock 验证机制，不代表真实语义召回已达到某个效果。
@@ -147,9 +151,9 @@ python -m SmartVoyage.main ingest --dense
 项目提供**查询适配契约**，没有把任意 Key 填进去就能查询12306、携程或航空公司的通用接口。接入你持有权限的供应方时，需要实现或提供一个符合契约的后端：
 
 ```text
-GET <SMARTVOYAGE_TICKET_BASE_URL>/tickets
+GET <WAYLOOM_TICKET_BASE_URL>/tickets
 查询参数：kind、departure、arrival、date（YYYY-MM-DD）
-可选认证：Authorization: Bearer <SMARTVOYAGE_TICKET_API_KEY>
+可选认证：Authorization: Bearer <WAYLOOM_TICKET_API_KEY>
 响应：{"tickets": [...]}
 ```
 
@@ -164,12 +168,12 @@ GET <SMARTVOYAGE_TICKET_BASE_URL>/tickets
 | 入口 | 职责 |
 | --- | --- |
 | `config/travel.json` | 专家描述、权限、端口、MCP 服务与调用预算 |
-| `SmartVoyage/engine.py` | 模型路由、上下文、工具循环、证据与引用 |
-| `SmartVoyage/a2a.py`、`stack.py` | 独立专家 HTTP 服务、进程启动与停止 |
-| `SmartVoyage/mcp_client.py`、`tools.py` | MCP 工具发现、参数校验、工具调用 |
-| `SmartVoyage/weather.py`、`travel_web.py` | 天气、地点、公开资料接口 |
-| `SmartVoyage/knowledge.py` | 切分、日期/地区过滤、BM25与可选向量 |
-| `SmartVoyage/tickets.py` | 只读真实票务适配器、本地确认式演练 |
+| `wayloom/engine.py` | 模型路由、上下文、工具循环、证据与引用 |
+| `wayloom/a2a.py`、`stack.py` | 独立专家 HTTP 服务、进程启动与停止 |
+| `wayloom/mcp_client.py`、`tools.py` | MCP 工具发现、参数校验、工具调用 |
+| `wayloom/weather.py`、`travel_web.py` | 天气、地点、公开资料接口 |
+| `wayloom/knowledge.py` | 切分、日期/地区过滤、BM25与可选向量 |
+| `wayloom/tickets.py` | 只读真实票务适配器、本地确认式演练 |
 | `app.py` | 多轮对话、直接查询、来源展示和演练确认 |
 
 添加专家可修改配置的能力描述和工具权限；添加 MCP 工具后由运行时发现其参数，不用往协调器添加关键词分支。真正的新能力仍需实现相应工具。参数约束、权限、预报窗口与确认流程属于必要业务边界，不是把城市或答案写死。
@@ -182,14 +186,14 @@ python -m unittest discover -s tests -v
 
 ### 真实模型与 A2A 联调验收
 
-先启动 `python -m SmartVoyage.stack`（或 `--no-ui`），保持四个专家服务运行，再在另一个终端执行：
+先启动 `python -m wayloom.stack`（或 `--no-ui`），保持四个专家服务运行，再在另一个终端执行：
 
 ```powershell
 # 只列出检查内容，不调用模型或网络
-python -m SmartVoyage.verify
+python -m wayloom.verify
 
 # 使用真实模型，经独立 A2A 服务与 MCP 工具执行；可能产生模型/API费用
-python -m SmartVoyage.verify --live --network
+python -m wayloom.verify --live --network
 ```
 
 默认报告写入 `var/live_verification.json`，逐步保存问题、回答、工具记录、引用、上下文及每项判据。省略 `--network` 时仍是真实模型和 MCP 调用，但专家在当前进程执行；`--output` 可指定其他报告路径。
@@ -206,11 +210,11 @@ python -m SmartVoyage.verify --live --network
 
 ```powershell
 # 离线：对带相关文档标注的问题测 Recall@5 / MRR@5 和日期地区过滤
-python -m SmartVoyage.benchmark --rag --output var/rag_eval.json
+python -m wayloom.benchmark --rag --output var/rag_eval.json
 # 真实模型：五个问题，使用服务商默认思考设置，共五次问答
-python -m SmartVoyage.benchmark --live --network --output var/baseline.json
+python -m wayloom.benchmark --live --network --output var/baseline.json
 # 支持 enable_thinking 的模型：对照默认思考与关闭思考，共十次问答
-python -m SmartVoyage.benchmark --live --network --profile both --comparison responsive --output var/paired.json
+python -m wayloom.benchmark --live --network --profile both --comparison responsive --output var/paired.json
 ```
 
 输出逐条 JSON 和 CSV，统计执行条件通过率、Agent集合匹配率、P50/P95、超时率、模型调用次数和完整可得的Token用量。失败保留在分母中，缺失用量不当作0，未人工审阅不报告语义准确率。当前 RAG 仅4份文档，结果不代表大规模知识库质量。扩充12类开发场景、重复运行、向量检索对照、人工审阅和`compact_handoffs`回退方法见 [测评说明](docs/evaluation.md)。

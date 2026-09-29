@@ -14,7 +14,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-from .config import ROOT, load_config
+from .config import ROOT, load_config, env_value
 from .engine import TravelSession
 from .knowledge import TravelKnowledge, fingerprint, ingest
 from .model import Embeddings
@@ -163,11 +163,11 @@ async def run_live(args, dataset, config):
     output = Path(args.output or ROOT / 'var/benchmark.json')
     report = {'version': 1, 'status': 'running', 'started_at': now.isoformat(), 'scope': dataset['scope'],
               'dataset_sha256': hashlib.sha256(Path(args.dataset).read_bytes()).hexdigest(),
-              'implementation_sha256': {name: hashlib.sha256((ROOT/'SmartVoyage'/name).read_bytes()).hexdigest()
+              'implementation_sha256': {name: hashlib.sha256((ROOT/'wayloom'/name).read_bytes()).hexdigest()
                   for name in ('benchmark.py','engine.py','model.py','metrics.py','grounding.py','a2a.py','runtime.py')},
               'configuration_sha256': hashlib.sha256(json.dumps(config, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
               'transport': 'a2a_mcp' if args.network else 'local_mcp',
-              'model': os.getenv('SMARTVOYAGE_MODEL'), 'repeats': args.repeats,
+              'model': env_value('WAYLOOM_MODEL'), 'repeats': args.repeats,
               'profile_order': 'AB/BA alternating by case and repeat, sequential execution',
               'notes': ['No paid model judge; semantic accuracy requires manual review.',
                         'Wall-clock latency includes MCP startup/cleanup; no TTFT or currency cost inferred.',
@@ -182,7 +182,7 @@ async def run_live(args, dataset, config):
                 record = {'case_id': case['id'], 'repeat': repeat + 1, 'profile': profile, 'query': case['query'],
                           'model_options': {'enable_thinking': False if profile == 'responsive' else None,
                                             'compact_handoffs': profile == 'compact'}}
-                if case.get('requires_unconfigured_tickets') and os.getenv('SMARTVOYAGE_TICKET_BASE_URL'):
+                if case.get('requires_unconfigured_tickets') and env_value('WAYLOOM_TICKET_BASE_URL'):
                     record.update(status='skipped', reason='Supplier is configured; missing-supplier case is not applicable.')
                 else:
                     print(f"{case['id']} {profile} repeat={repeat+1}: RUNNING", flush=True)
@@ -215,7 +215,7 @@ async def run_live(args, dataset, config):
 def run_rag(args, dataset, config):
     reports = []
     # Never rebuild or replace the application's existing index.
-    with tempfile.TemporaryDirectory(prefix='smartvoyage-eval-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='wayloom-eval-') as temporary:
         for mode in (['bm25', 'hybrid'] if args.dense else ['bm25']):
             run_config = {**config, 'index_path': str(Path(temporary) / (mode + '.json'))}
             embedder = Embeddings() if mode == 'hybrid' else None
