@@ -1,5 +1,6 @@
 """Real MCP tools. Confirmation is deliberately absent from the model's tool catalog."""
 import logging
+import os
 from typing import Annotated
 
 from mcp.server.fastmcp import FastMCP
@@ -20,6 +21,16 @@ ISODate = Annotated[str, Field(pattern=r'^\d{4}-\d{2}-\d{2}$',
 
 
 def build_server():
+    # The trusted built-in launcher sends effective embedding values, including
+    # dialogue-provider fallbacks. Capture them before load_config reloads .env,
+    # whose blank embedding entries would otherwise erase those resolved values.
+    # Standalone servers retain the normal .env precedence for every setting.
+    inherited_embeddings = {}
+    if os.environ.get('WAYLOOM_MCP_RESOLVED_EMBEDDINGS') == '1':
+        inherited_embeddings = {attribute: os.environ[name] for attribute, name in (
+            ('base', 'WAYLOOM_EMBEDDING_BASE_URL'),
+            ('key', 'WAYLOOM_EMBEDDING_API_KEY'),
+            ('model', 'WAYLOOM_EMBEDDING_MODEL')) if name in os.environ}
     config = load_config()
     server = FastMCP('WayloomTravelTools', log_level='WARNING')
 
@@ -38,6 +49,8 @@ def build_server():
                          top_k: Annotated[int, Field(ge=1, le=10)] = 5, include_historical: bool = False) -> dict:
         """检索旅行专业知识/官方公告快照。传旅行日期及层级地区如CN/北京；过滤不适用或过期资料。查不到不代表没有公告。"""
         embedding = Embeddings()
+        for attribute, value in inherited_embeddings.items():
+            setattr(embedding, attribute, value)
         return TravelKnowledge(config, embedding if embedding.model else None).search(
             query, travel_date=travel_date, region=region, top_k=top_k, include_historical=include_historical)
 

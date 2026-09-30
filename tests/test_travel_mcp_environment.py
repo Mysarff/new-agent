@@ -1,14 +1,19 @@
 """Embedding configuration survives filtered stdio environments without API calls."""
+import asyncio
 import copy
 import json
 import os
 import subprocess
+import tempfile
+import textwrap
 import sys
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from wayloom.mcp_client import stdio_environment
+from wayloom.config import load_config
+from wayloom.knowledge import ingest
 from wayloom.model import Embeddings
 
 
@@ -59,6 +64,7 @@ class TravelMCPEnvironmentTests(unittest.TestCase):
                           {'args': ['-m', 'wayloom.tools', '--extra']}]:
             with self.subTest(overrides=overrides), patch.dict(os.environ, self.dialogue, clear=True):
                 environment = stdio_environment(dict(self.server, **overrides))
+                self.assertNotIn('WAYLOOM_MCP_RESOLVED_EMBEDDINGS', environment)
                 self.assertNotIn('WAYLOOM_API_KEY', environment)
                 self.assertNotIn('WAYLOOM_EMBEDDING_API_KEY', environment)
                 self.assertNotIn('WAYLOOM_EMBEDDING_BASE_URL', environment)
@@ -69,3 +75,70 @@ class TravelMCPEnvironmentTests(unittest.TestCase):
         with patch.dict(os.environ, self.dialogue, clear=True):
             environment = stdio_environment(server)
         self.assertFalse(any(key.startswith('WAYLOOM_EMBEDDING_') for key in environment))
+        self.assertNotIn('WAYLOOM_MCP_RESOLVED_EMBEDDINGS', environment)
+
+
+    def test_real_server_preserves_mixed_dotenv_embedding_handoff(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'docs').mkdir()
+            (root / 'docs/rule.txt').write_text('existing travel rule', encoding='utf-8')
+            (root / 'config.json').write_text(json.dumps({
+                'agents': [], 'mcp_servers': [], 'knowledge_dir': 'docs',
+                'index_path': 'index.json', 'booking_db': 'booking.sqlite3'}))
+            # Supported partial .env: dialogue credentials are supplied only by
+            # the container environment, while blank embeddings request fallback.
+            (root / '.env').write_text('WAYLOOM_EMBEDDING_MODEL=fake-embedding\n'
+                                      'WAYLOOM_EMBEDDING_BASE_URL=\n'
+                                      'WAYLOOM_EMBEDDING_API_KEY=\n')
+            settings = dict(self.dialogue, WAYLOOM_CONFIG=str(root / 'config.json'))
+            with patch.dict(os.environ, settings, clear=True), patch('wayloom.config.ROOT', root):
+                config = load_config()
+                parent = Embeddings()
+                with patch.object(Embeddings, 'encode', return_value=[[1.0, 0.0]]):
+                    ingest(config, parent)
+                environment = stdio_environment(self.server)
+            code = textwrap.dedent("""
+                import asyncio, json, sys
+                from pathlib import Path
+                from unittest.mock import patch
+                import wayloom.config as config
+                from wayloom.model import Embeddings
+                from wayloom.tools import build_server
+                config.ROOT = Path(sys.argv[1])
+                seen = []
+                def encode(self, texts):
+                    seen.append([self.identity, self.key])
+                    return [[1.0, 0.0] for _ in texts]
+                with patch.object(Embeddings, 'encode', encode):
+                    server = build_server()
+                    asyncio.run(server.call_tool('search_knowledge', {'query': 'travel'}))
+                print(json.dumps(seen))
+            """)
+            child = subprocess.run([sys.executable, '-c', code, str(root)], env=environment,
+                                   capture_output=True, text=True)
+            self.assertEqual(child.returncode, 0, child.stderr)
+            self.assertEqual(json.loads(child.stdout), [[parent.identity, parent.key]])
+
+    def test_standalone_server_keeps_dotenv_precedence(self):
+        from wayloom.tools import build_server
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'config.json').write_text(json.dumps({
+                'agents': [], 'mcp_servers': [], 'knowledge_dir': 'docs',
+                'index_path': 'index.json', 'booking_db': 'booking.sqlite3'}))
+            (root / '.env').write_text('WAYLOOM_EMBEDDING_MODEL=dotenv-model\n'
+                                      'WAYLOOM_EMBEDDING_BASE_URL=https://dotenv.invalid/v1\n'
+                                      'WAYLOOM_EMBEDDING_API_KEY=fake-dotenv-key\n')
+            settings = dict(self.dialogue, WAYLOOM_CONFIG=str(root / 'config.json'),
+                            WAYLOOM_EMBEDDING_BASE_URL='https://env.invalid/v1',
+                            WAYLOOM_EMBEDDING_API_KEY='fake-env-key')
+            with patch.dict(os.environ, settings, clear=True), patch('wayloom.config.ROOT', root), \
+                    patch('wayloom.tools.TravelKnowledge') as knowledge:
+                knowledge.return_value.search.return_value = {'status': 'no_evidence'}
+                server = build_server()
+                asyncio.run(server.call_tool('search_knowledge', {'query': 'travel'}))
+                embedding = knowledge.call_args.args[1]
+                self.assertEqual(embedding.identity, 'https://dotenv.invalid/v1|dotenv-model')
+                self.assertEqual(embedding.key, 'fake-dotenv-key')

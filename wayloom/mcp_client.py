@@ -31,6 +31,9 @@ def stdio_environment(server):
         value = resolved.get(key) if key in resolved else (env_value(key) if key.startswith('WAYLOOM_') else os.getenv(key))
         if value is not None:
             environment[key] = value
+    if resolved and any(key in environment for key in resolved):
+        # build_server reloads .env; these opted-in values are already resolved.
+        environment['WAYLOOM_MCP_RESOLVED_EMBEDDINGS'] = '1'
     environment['PYTHONUTF8'] = '1'
     return environment
 
