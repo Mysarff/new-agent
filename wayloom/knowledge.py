@@ -10,6 +10,7 @@ import math
 import os
 import re
 import tempfile
+import uuid
 from collections import Counter
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -90,6 +91,45 @@ def _document(raw, local_path):
             raise ValueError(f'{local_path}: {key} must be a list of strings')
     record['local_path'] = local_path
     return record
+
+
+def save_upload(config, filename, content):
+    """Validate the entire upload before atomically publishing any knowledge file.
+
+    Reuse ingestion's document schema so a rejected upload cannot invalidate the
+    current index. Successful imports still require an explicit index rebuild.
+    """
+    suffix = Path(filename).suffix.lower()
+    if suffix not in DOCUMENT_SUFFIXES or len(content) > 2_000_000:
+        raise ValueError('Unsupported upload type or size')
+    text = content.decode('utf-8-sig')
+    raw = json.loads(text) if suffix == '.json' else {'title': Path(filename).name, 'text': text}
+    items = raw if isinstance(raw, list) else [raw]
+    if not items:
+        raise ValueError('Upload must contain at least one document')
+    target = Path(config['knowledge_dir']) / ('upload-' + uuid.uuid4().hex + '.json')
+    documents = []
+    for item in items:
+        if not isinstance(item, dict):
+            raise ValueError('Upload documents must be objects')
+        document = dict(item, id='upload-' + uuid.uuid4().hex,
+                        source_type='user_supplied_unverified')
+        documents.append(_document(document, target.name))
+    # Serialize before touching the directory, including unknown metadata fields.
+    payload = json.dumps(documents, ensure_ascii=False, indent=2, allow_nan=False)
+    temp = None
+    try:
+        with tempfile.NamedTemporaryFile(mode='w', encoding='utf-8', dir=target.parent,
+                                         prefix='.travel-upload-', delete=False) as handle:
+            temp = handle.name
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temp, target)
+    finally:
+        if temp and Path(temp).exists():
+            Path(temp).unlink()
+    return target
 
 
 def _load_documents(directory, files):

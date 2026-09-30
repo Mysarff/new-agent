@@ -2,7 +2,6 @@
 import asyncio
 import json
 import os
-import uuid
 from datetime import date, timedelta
 from pathlib import Path
 
@@ -11,7 +10,7 @@ import streamlit as st
 
 from wayloom.config import integrations, load_config, env_value
 from wayloom.engine import TravelSession
-from wayloom.knowledge import ingest
+from wayloom.knowledge import ingest, save_upload
 from wayloom.model import Embeddings
 from wayloom.presentation import format_answer, safe_source_url, source_catalog, trip_overview
 from wayloom.runtime import chat, direct_tool
@@ -284,19 +283,7 @@ with knowledge_tab:
         uploaded = st.file_uploader('旅行资料（JSON、Markdown、TXT，最多 2 MB）', type=['json', 'md', 'txt'])
         if st.button('保存这份资料', disabled=uploaded is None):
             try:
-                if uploaded.size > 2_000_000:
-                    raise ValueError('文件超过2 MB')
-                text = uploaded.getvalue().decode('utf-8-sig')
-                if uploaded.name.lower().endswith('.json'):
-                    documents = json.loads(text)
-                    documents = documents if isinstance(documents, list) else [documents]
-                else:
-                    documents = [{'title': Path(uploaded.name).name, 'text': text}]
-                for document in documents:
-                    document['id'] = 'upload-' + uuid.uuid4().hex
-                    document['source_type'] = 'user_supplied_unverified'
-                path = Path(config['knowledge_dir']) / ('upload-' + uuid.uuid4().hex + '.json')
-                path.write_text(json.dumps(documents, ensure_ascii=False, indent=2), encoding='utf-8')
+                save_upload(config, uploaded.name, uploaded.getvalue())
                 st.success('资料已保存，请重建索引后查询。')
             except (ValueError, TypeError, UnicodeError):
                 st.error('资料格式不正确，请检查 UTF-8 编码、JSON 格式和文件大小。')

@@ -13,6 +13,29 @@ from mcp.client.stdio import stdio_client
 from mcp.client.streamable_http import streamablehttp_client
 
 from .config import ROOT, env_value
+from .model import Embeddings
+
+
+def stdio_environment(server):
+    """Pass only opted-in settings, resolving embeddings for our built-in tool."""
+    environment = {key: value for key, value in os.environ.items()
+                   if key in ('PATH', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'HOME', 'USERPROFILE', 'WAYLOOM_CONFIG')}
+    resolved = {}
+    # The server ID alone is not a trust boundary: match the actual executable.
+    if server['command'] == '{python}' and server.get('args') == ['-m', 'wayloom.tools']:
+        embeddings = Embeddings()
+        resolved = {'WAYLOOM_EMBEDDING_BASE_URL': embeddings.base,
+                    'WAYLOOM_EMBEDDING_API_KEY': embeddings.key,
+                    'WAYLOOM_EMBEDDING_MODEL': embeddings.model}
+    for key in server.get('pass_env', []):
+        value = resolved.get(key) if key in resolved else (env_value(key) if key.startswith('WAYLOOM_') else os.getenv(key))
+        if value is not None:
+            environment[key] = value
+    if resolved and any(key in environment for key in resolved):
+        # build_server reloads .env; these opted-in values are already resolved.
+        environment['WAYLOOM_MCP_RESOLVED_EMBEDDINGS'] = '1'
+    environment['PYTHONUTF8'] = '1'
+    return environment
 
 
 class ToolHub:
@@ -27,14 +50,7 @@ class ToolHub:
             for server in self.config['mcp_servers']:
                 if server['transport'] == 'stdio':
                     command = sys.executable if server['command'] == '{python}' else server['command']
-                    # Do not pass LLM credentials to every third-party child process.
-                    environment = {key: value for key, value in os.environ.items()
-                                   if key in ('PATH', 'SYSTEMROOT', 'WINDIR', 'TEMP', 'TMP', 'HOME', 'USERPROFILE', 'WAYLOOM_CONFIG')}
-                    for key in server.get('pass_env', []):
-                        value = env_value(key) if key.startswith('WAYLOOM_') else os.getenv(key)
-                        if value is not None:
-                            environment[key] = value
-                    environment['PYTHONUTF8'] = '1'
+                    environment = stdio_environment(server)
                     streams = await self.stack.enter_async_context(stdio_client(StdioServerParameters(
                         command=command, args=server.get('args', []), cwd=str(ROOT), env=environment)))
                     read, write = streams
