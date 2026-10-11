@@ -1,0 +1,103 @@
+{
+  "recorded_at": "2026-10-11T13:33:38.680713+00:00",
+  "scope": "Synthetic booking storage, migration, UI and MCP correctness; no live LLM accuracy or purchase evaluation",
+  "mysql_version": "8.4.11",
+  "tests": {
+    "windows_offline": {
+      "discovered": 159,
+      "passed": 138,
+      "skipped": 21,
+      "failed": 0,
+      "suite_elapsed_seconds": 35.83
+    },
+    "docker_linux_offline": {
+      "discovered": 159,
+      "passed": 138,
+      "skipped": 21,
+      "failed": 0,
+      "suite_elapsed_seconds": 9.528
+    },
+    "real_mysql_integration": {
+      "discovered": 21,
+      "passed": 21,
+      "skipped": 0,
+      "failed": 0,
+      "suite_elapsed_seconds": 20.886
+    }
+  },
+  "migration": {
+    "source_preserved": true,
+    "tables": {
+      "demo_tickets": {
+        "source_rows": 5,
+        "target_rows": 5,
+        "exact_match": true
+      },
+      "demo_quotes": {
+        "source_rows": 1,
+        "target_rows": 1,
+        "exact_match": true
+      },
+      "demo_orders": {
+        "source_rows": 1,
+        "target_rows": 1,
+        "exact_match": true
+      },
+      "demo_request_keys": {
+        "source_rows": 1,
+        "target_rows": 1,
+        "exact_match": true
+      }
+    },
+    "mysql_version": "8.4.11",
+    "legacy_order_replay_preserved": true
+  },
+  "concurrency_assertions": {
+    "same_quote_same_request": {
+      "simultaneous_requests": 12,
+      "created_orders": 1,
+      "quantity": 2,
+      "inventory_deduction": 2
+    },
+    "different_quotes_competing_stock": {
+      "simultaneous_requests": 12,
+      "initial_stock": 5,
+      "quantity_per_request": 1,
+      "successful_orders": 5,
+      "insufficient_stock": 7,
+      "final_stock": 0
+    },
+    "same_request_different_quotes": {
+      "simultaneous_requests": 8,
+      "successful_orders": 1,
+      "rejected_key_reuse": 7
+    },
+    "quote_expired_while_waiting_for_stock_lock": "rejected_without_order_or_stock_change"
+  },
+  "deployment": {
+    "fresh_docker_image_built": true,
+    "mysql_healthy": true,
+    "container_ui_render_exceptions": 0,
+    "container_mcp_mysql_query": "no_data (expected for an unseeded route)",
+    "host_ui_health_http_status": 200,
+    "four_a2a_agent_cards_http_status": [
+      200,
+      200,
+      200,
+      200
+    ]
+  },
+  "resolved_verification_issues": [
+    "Retried Docker Hub network timeout",
+    "Preserved Windows SYSTEMROOT/WINDIR in isolated child-process tests",
+    "Included evaluation fixtures in the Docker image",
+    "Retained remote upload validation and embedding configuration fixes"
+  ],
+  "limitations": [
+    "Offline and integration suites are different execution scopes; skipped MySQL cases are not counted as offline passes.",
+    "Durations measure test suites, not chat latency or database throughput.",
+    "No new live-model semantic accuracy or response-speed comparison was run.",
+    "Knowledge remains JSON/NumPy; MySQL stores simulated business data only.",
+    "This report records local verification, not GitHub Actions completion."
+  ]
+}

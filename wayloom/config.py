@@ -18,8 +18,14 @@ def env_value(name, default=None):
 
 
 def load_config():
-    # Container/service environment must win over the developer's local .env.
-    load_dotenv(ROOT / '.env', override=False)
+    # Database service settings must survive .env reload (mysql:3306 in Docker,
+    # a disposable schema in tests). Preserve the established .env precedence
+    # for model/provider settings and the resolved MCP embedding handoff.
+    database_environment = {key: value for key, value in os.environ.items()
+                            if key.startswith(('WAYLOOM_MYSQL_', 'SMARTVOYAGE_MYSQL_'))
+                            or key in ('WAYLOOM_BOOKING_BACKEND', 'SMARTVOYAGE_BOOKING_BACKEND')}
+    load_dotenv(ROOT / '.env', override=True)
+    os.environ.update(database_environment)
     path = Path(env_value('WAYLOOM_CONFIG', 'config/travel.json'))
     if not path.is_absolute():
         path = ROOT / path

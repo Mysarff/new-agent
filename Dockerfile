@@ -11,6 +11,7 @@ RUN useradd --create-home appuser && mkdir -p /app/var && chown -R appuser:appus
 COPY --chown=appuser:appuser wayloom ./wayloom
 COPY --chown=appuser:appuser config/travel.json ./config/travel.json
 COPY --chown=appuser:appuser travel_knowledge ./travel_knowledge
+COPY --chown=appuser:appuser evaluations ./evaluations
 COPY --chown=appuser:appuser app.py ./app.py
 COPY --chown=appuser:appuser .streamlit ./.streamlit
 USER appuser

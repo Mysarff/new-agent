@@ -17,6 +17,13 @@ from wayloom.knowledge import ingest
 from wayloom.model import Embeddings
 
 
+def child_environment(environment):
+    # Credential-isolation tests clear os.environ. Windows still needs its OS
+    # directory to initialize Winsock when the child imports asyncio.
+    platform = {key: os.environ[key] for key in ('SYSTEMROOT', 'WINDIR') if key in os.environ}
+    return {**platform, **environment}
+
+
 class TravelMCPEnvironmentTests(unittest.TestCase):
     def setUp(self):
         root = Path(__file__).resolve().parents[1]
@@ -34,7 +41,7 @@ class TravelMCPEnvironmentTests(unittest.TestCase):
         # Real subprocess without loading .env, matching an env-only container.
         result = subprocess.run([sys.executable, '-c',
             'import json; from wayloom.model import Embeddings; e=Embeddings(); '
-            'print(json.dumps([e.identity, e.key]))'], env=environment,
+            'print(json.dumps([e.identity, e.key]))'], env=child_environment(environment),
             check=True, capture_output=True, text=True)
         self.assertEqual(json.loads(result.stdout), [parent.identity, parent.key])
 
@@ -115,7 +122,7 @@ class TravelMCPEnvironmentTests(unittest.TestCase):
                     asyncio.run(server.call_tool('search_knowledge', {'query': 'travel'}))
                 print(json.dumps(seen))
             """)
-            child = subprocess.run([sys.executable, '-c', code, str(root)], env=environment,
+            child = subprocess.run([sys.executable, '-c', code, str(root)], env=child_environment(environment),
                                    capture_output=True, text=True)
             self.assertEqual(child.returncode, 0, child.stderr)
             self.assertEqual(json.loads(child.stdout), [[parent.identity, parent.key]])
