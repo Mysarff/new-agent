@@ -15,7 +15,7 @@ from wayloom.knowledge import ingest
 from wayloom.model import Embeddings
 from wayloom.presentation import format_answer, safe_source_url, source_catalog, trip_overview
 from wayloom.runtime import chat, direct_tool
-from wayloom.tickets import DemoBookingStore
+from wayloom.booking import booking_action
 
 st.set_page_config(page_title='Wayloom 旅知 · 旅行助手', page_icon='🧭', layout='wide')
 st.markdown('''<style>
@@ -44,7 +44,6 @@ for key, value in [('messages', []), ('journey', TravelSession()), ('weather_can
 if not Path(config['index_path']).exists():
     ingest(config)
 journey = st.session_state.journey
-store = DemoBookingStore(config['booking_db'])
 
 
 def call_tool(name, arguments):
@@ -133,7 +132,7 @@ def confirm_quote(quote, prefix):
     st.warning('本地模拟报价 · 不是真实余票，不会购买或付款')
     st.json(quote, expanded=False)
     if st.button('确认这笔模拟订单', key=prefix + quote['quote_id']):
-        result = store.confirm(quote['quote_id'], request_id='ui-' + quote['quote_id'])
+        result = booking_action(config, 'confirm', quote['quote_id'], request_id='ui-' + quote['quote_id'])
         if result.get('status') == 'success':
             st.success('模拟订单已记录。重复确认不会重复扣减库存。')
         else:
@@ -332,13 +331,18 @@ with ticket_tab:
             seed = st.form_submit_button('为这条路线创建并查询模拟数据')
         if seed:
             try:
-                store.seed_demo(origin, destination, day.isoformat())
-                tickets = store.query(kind, origin, destination, day.isoformat())['tickets']
-                st.session_state.demo_tickets = tickets
-                st.session_state.page_quote = None
-                journey.update({'departure': origin, 'destination': destination, 'start_date': day.isoformat(), 'end_date': day.isoformat()})
-                journey.candidates = tickets
-                st.rerun()
+                result = booking_action(config, 'seed_demo', origin, destination, day.isoformat())
+                if result['status'] == 'success':
+                    result = booking_action(config, 'query', kind, origin, destination, day.isoformat())
+                if result['status'] == 'success':
+                    tickets = result['tickets']
+                    st.session_state.demo_tickets = tickets
+                    st.session_state.page_quote = None
+                    journey.update({'departure': origin, 'destination': destination, 'start_date': day.isoformat(), 'end_date': day.isoformat()})
+                    journey.candidates = tickets
+                    st.rerun()
+                else:
+                    st.warning(result.get('message', '模拟票务查询未完成。'))
             except (ValueError, TypeError):
                 st.warning('请填写有效的出发地、目的地和日期。')
         if st.session_state.demo_tickets:
@@ -348,7 +352,7 @@ with ticket_tab:
                 quantity = st.number_input('模拟数量', 1, 5, 1)
                 prepare = st.form_submit_button('查看模拟报价')
             if prepare:
-                result = store.prepare(ticket['id'], int(quantity))
+                result = booking_action(config, 'prepare', ticket['id'], int(quantity))
                 st.session_state.page_quote = result.get('quote')
                 if not result.get('quote'):
                     st.warning(result.get('message', '未取得报价，请重新查询。'))

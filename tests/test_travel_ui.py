@@ -13,6 +13,7 @@ from unittest.mock import AsyncMock, patch
 from streamlit.testing.v1 import AppTest
 
 from wayloom.knowledge import TravelKnowledge
+from wayloom.tickets import DemoBookingStore
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,7 +35,8 @@ class TravelUITests(unittest.TestCase):
         }, ensure_ascii=False), encoding='utf-8')
         self.config = json.loads((ROOT / 'config' / 'travel.json').read_text(encoding='utf-8'))
         self.config.update(knowledge_dir=str(docs), index_path=str(self.directory / 'index.json'),
-                           booking_db=str(self.directory / 'demo.sqlite3'))
+                           booking_db=str(self.directory / 'demo.sqlite3'), booking_backend='sqlite')
+        DemoBookingStore(self.config['booking_db'])
         self.network_calls = []
 
         def no_network(*args, **kwargs):
@@ -51,7 +53,7 @@ class TravelUITests(unittest.TestCase):
             patch('wayloom.runtime.direct_tool', self.tool),
             patch('httpx.Client.request', side_effect=no_network),
             patch('httpx.AsyncClient.request', side_effect=no_network),
-            patch.dict(os.environ, {'WAYLOOM_A2A': '0'}),
+            patch.dict(os.environ, {'WAYLOOM_A2A': '0', 'WAYLOOM_BOOKING_BACKEND': 'sqlite'}),
         ]
         for mocked in patches:
             mocked.start()
@@ -100,6 +102,20 @@ class TravelUITests(unittest.TestCase):
         self.assertTrue(Path(self.config['index_path']).exists())
         with closing(sqlite3.connect(self.config['booking_db'])) as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM demo_tickets').fetchone()[0], 0)
+
+    def test_database_outage_does_not_break_page_or_knowledge_search(self):
+        from wayloom.booking import BookingUnavailable
+        with patch.dict(os.environ, {'WAYLOOM_BOOKING_BACKEND': 'mysql'}):
+            with patch('wayloom.booking.MySQLBookingStore.seed_demo', side_effect=BookingUnavailable('offline')):
+                self.app.run()
+                self.assert_clean()
+                self.create_route()
+                self.assertTrue(any('数据库暂不可用' in item.value for item in self.app.warning))
+                self.assertEqual(self.app.session_state['demo_tickets'], [])
+                self.widget('text_input', '要查什么？').set_value('携带测试电池')
+                self.widget('text_input', '适用地区（可选）').set_value('CN')
+                self.click('检索知识与公告')
+                self.assertEqual(self.app.session_state['knowledge_result']['status'], 'candidates')
 
     def test_saved_answer_formats_temperature_sources_and_trip_without_new_api_calls(self):
         self.app.session_state['journey'].update({'destination':'西安','start_date':'2026-09-28',

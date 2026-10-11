@@ -9,7 +9,8 @@ from pydantic import Field
 from .config import load_config
 from .knowledge import TravelKnowledge
 from .model import Embeddings
-from .tickets import DemoBookingStore, query_tickets as provider_tickets
+from .tickets import query_tickets as provider_tickets
+from .booking import booking_action
 from .travel_web import search_places as places, search_travel_web as web_search
 from .weather import geocode as geo, forecast as weather
 
@@ -59,12 +60,12 @@ def build_server():
     @server.tool(annotations=READ)
     def query_demo_tickets(kind: str, departure: str, arrival: str, date: str) -> dict:
         """仅查询用户主动创建的本地模拟票务；不代表真实余票，不能购票或支付。"""
-        return DemoBookingStore(config['booking_db']).query(kind, departure, arrival, date)
+        return booking_action(config, 'query', kind, departure, arrival, date)
 
     @server.tool(annotations=PREPARE)
     def prepare_demo_booking(ticket_id: str, quantity: Annotated[int, Field(ge=1, le=5)]) -> dict:
         """为已展示的模拟票号和用户明确数量准备5分钟报价。必须由页面显示并由用户点击确认，当前调用不预订。"""
-        return DemoBookingStore(config['booking_db']).prepare(ticket_id, quantity)
+        return booking_action(config, 'prepare', ticket_id, quantity)
 
     return server
 

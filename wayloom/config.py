@@ -18,7 +18,8 @@ def env_value(name, default=None):
 
 
 def load_config():
-    load_dotenv(ROOT / '.env', override=True)
+    # Container/service environment must win over the developer's local .env.
+    load_dotenv(ROOT / '.env', override=False)
     path = Path(env_value('WAYLOOM_CONFIG', 'config/travel.json'))
     if not path.is_absolute():
         path = ROOT / path

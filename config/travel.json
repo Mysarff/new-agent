@@ -3,6 +3,7 @@
   "knowledge_dir": "travel_knowledge",
   "index_path": "var/travel_index.json",
   "booking_db": "var/demo_booking.sqlite3",
+  "booking_backend": "mysql",
   "chunk_size": 650,
   "chunk_overlap": 100,
   "top_k": 5,
@@ -84,7 +85,13 @@
         "AMAP_API_KEY",
         "TAVILY_API_KEY",
         "WAYLOOM_TICKET_BASE_URL",
-        "WAYLOOM_TICKET_API_KEY"
+        "WAYLOOM_TICKET_API_KEY",
+        "WAYLOOM_BOOKING_BACKEND",
+        "WAYLOOM_MYSQL_HOST",
+        "WAYLOOM_MYSQL_PORT",
+        "WAYLOOM_MYSQL_DATABASE",
+        "WAYLOOM_MYSQL_USER",
+        "WAYLOOM_MYSQL_PASSWORD"
       ]
     }
   ]

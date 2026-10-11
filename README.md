@@ -36,11 +36,18 @@ python -m venv .venv
 .venv/Scripts/Activate.ps1
 python -m pip install -r requirements.txt
 Copy-Item .env.example .env
+python -m wayloom.database setup
+docker compose up -d mysql --wait
+python -m wayloom.database init
 python -m wayloom.main ingest
 python -m wayloom.stack
 ```
 
 已有 `.env` 时保留自己的配置，不要用示例覆盖。Linux/macOS 激活命令为 `source .venv/bin/activate`，首次复制用 `cp .env.example .env`。
+
+票务演练默认使用项目独立的 **Docker MySQL 8.4**，需要先启动 Docker Desktop（或 Linux Docker Engine）。默认仅暴露本机 `127.0.0.1:3309`，数据写入独立持久卷；不会连接其他项目的 MySQL。`database setup` 只补齐缺失配置，生成随机密码，不覆盖已有 API Key。若 3309 已被占用，先修改 `.env` 的 `WAYLOOM_MYSQL_PORT`。数据库失败会明确显示票务不可用，天气和知识查询仍可使用。
+
+整个页面也可容器运行：完成 `database setup` 后执行 `docker compose up -d --build --wait`，访问 [本机页面](http://127.0.0.1:8501)。这是本机专家 + MCP 模式；四个独立 A2A 服务仍使用下方的 `wayloom.stack`。已有 SQLite 数据时，先按 [MySQL 迁移说明](docs/mysql.md) 导入空库，再启动页面；旧文件保留。
 
 完整启动器打开 [本机页面](http://127.0.0.1:8510)，并启动四个独立专家服务，默认端口为8611—8614。用 Ctrl+C 停止启动器及其创建的子进程。端口可在配置中调整；页面端口可用 `python -m wayloom.stack --port 8511` 指定。
 
@@ -159,7 +166,7 @@ GET <WAYLOOM_TICKET_BASE_URL>/tickets
 
 每张票需包含 `id/kind/departure/arrival/date/service/seat/source/price/currency/remaining`，可附 `booking_url`。币种为三位大写代码；未知库存应为 `null`，不能填0；结果的票种、路线和日期须与查询一致。完整校验和边界见 `docs/architecture.md`。
 
-未配置、供应方报错或数据不匹配时，系统明确报告未取得可用票务，不回退为假价格。真实查询不会创建订单。演练只在本地 SQLite 保存虚构库存与订单，报价最长5分钟有效；确认由页面处理，确认操作不在模型的 MCP 工具目录中。
+未配置、供应方报错或数据不匹配时，系统明确报告未取得可用票务，不回退为假价格。真实查询不会创建订单。演练默认在独立 MySQL 中保存虚构库存、报价、订单与幂等请求，报价最长5分钟有效；确认由页面处理，确认操作不在模型的 MCP 工具目录中。确认使用 InnoDB 事务与行锁，库存扣减、订单和请求记录一并提交或回滚。SQLite 仅保留为显式离线测试/兼容后端，不是数据库故障时的隐式兜底。
 
 ## 架构、扩展与验证
 
@@ -174,15 +181,20 @@ GET <WAYLOOM_TICKET_BASE_URL>/tickets
 | `wayloom/weather.py`、`travel_web.py` | 天气、地点、公开资料接口 |
 | `wayloom/knowledge.py` | 切分、日期/地区过滤、BM25与可选向量 |
 | `wayloom/tickets.py` | 只读真实票务适配器、本地确认式演练 |
+| `wayloom/booking.py`、`database.py` | MySQL 事务、行锁、初始化与旧库迁移 |
 | `app.py` | 多轮对话、直接查询、来源展示和演练确认 |
 
 添加专家可修改配置的能力描述和工具权限；添加 MCP 工具后由运行时发现其参数，不用往协调器添加关键词分支。真正的新能力仍需实现相应工具。参数约束、权限、预报窗口与确认流程属于必要业务边界，不是把城市或答案写死。
 
 ```powershell
-python -m unittest discover -s tests -v
+python -m unittest discover -s tests -p 'test_travel_*.py' -v
+# 启动项目 MySQL 后，在临时测试库中运行真实事务、迁移、MCP 和 UI 检查
+python scripts/test_mysql.py
 ```
 
 自动化测试检查天气位置与日期、资料有效期与切分、上下文和权限、工具协议以及票务演练的报价与重复确认。受控模型/向量夹具用于验证流程；通过这些测试不等于真实 LLM 回答质量或外部供应商已验收。真实模型、各外部 API 与向量服务应按各自配置另做联网验证，失败需保留原始状态。
+
+普通测试会明确跳过真实 MySQL 检查；`scripts/test_mysql.py` 使用当前项目容器中的临时数据库，结束后只删除这份临时库，不修改业务库。CI 另设 MySQL 8.4 服务运行同一组事务测试。详见 [数据库部署、迁移与验证](docs/mysql.md)。
 
 ### 真实模型与 A2A 联调验收
 

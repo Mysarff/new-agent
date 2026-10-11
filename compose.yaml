@@ -1,4 +1,24 @@
 services:
+  mysql:
+    image: mysql:8.4
+    ports:
+      - "127.0.0.1:${WAYLOOM_MYSQL_PORT:-3309}:3306"
+    environment:
+      MYSQL_DATABASE: ${WAYLOOM_MYSQL_DATABASE:-wayloom}
+      MYSQL_USER: ${WAYLOOM_MYSQL_USER:-wayloom}
+      MYSQL_PASSWORD: ${WAYLOOM_MYSQL_PASSWORD:?Run python -m wayloom.database setup first}
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mysql-root-password
+    secrets:
+      - mysql-root-password
+    volumes:
+      - wayloom-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=\"$$MYSQL_PASSWORD\" mysql --protocol=TCP -h 127.0.0.1 -u\"$$MYSQL_USER\" \"$$MYSQL_DATABASE\" -e 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    restart: unless-stopped
   wayloom:
     build: .
     ports:
@@ -11,10 +31,21 @@ services:
       # Independent A2A services use the separate wayloom.stack launcher.
       WAYLOOM_A2A: "0"
       WAYLOOM_CONFIG: config/travel.json
+      WAYLOOM_BOOKING_BACKEND: mysql
+      WAYLOOM_MYSQL_HOST: mysql
+      WAYLOOM_MYSQL_PORT: "3306"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: ["sh", "-c", "python -m wayloom.database init && exec streamlit run app.py --server.address=0.0.0.0 --server.port=8501 --server.headless=true --browser.gatherUsageStats=false"]
     volumes:
-      - ./travel_knowledge:/app/travel_knowledge:ro
+      - ./travel_knowledge:/app/travel_knowledge
       - smartvoyage-data:/app/var
     init: true
     restart: unless-stopped
 volumes:
   smartvoyage-data:
+  wayloom-mysql-data:
+secrets:
+  mysql-root-password:
+    file: ./var/mysql-root-password

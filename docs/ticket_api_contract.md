@@ -47,7 +47,7 @@ await query_tickets(kind, departure, arrival, date, client=None,
 
 ## 本地模拟：用户主动开启，页面单独确认
 
-`DemoBookingStore(path, max_quantity=5, quote_ttl_seconds=300)` 构造时只建表，不初始化票。页面只有在用户点击“开启模拟演练”后，才调用 `seed_demo(departure, arrival, date)`。演练线路和日期来自本次输入，价格、班次和库存采用固定虚构模板。重复开启相同线路不会补回已消耗的库存。
+默认通过 `booking_store(config)` 创建 `MySQLBookingStore`，构造不连接数据库或建表，部署时显式执行 `python -m wayloom.database init`。最大单次数量默认5，报价有效期默认300秒。`DemoBookingStore(path, ...)` 仅供 SQLite 兼容与离线测试。页面只有在用户点击“开启模拟演练”后，才调用 `seed_demo(departure, arrival, date)`。演练线路和日期来自本次输入，价格、班次和库存采用固定虚构模板。重复开启相同线路不会补回已消耗的库存。
 
 - `query(kind, departure, arrival, date)`：查询已开启的模拟数据；返回 `tickets`（以及兼容别名 `data`）。
 - `prepare(ticket_id, quantity)`：创建报价，返回 `quote` 与 `requires_confirmation=true`。数量必须为整数并符合配置上限，报价最多 5 分钟有效，不锁库存、不扣款。

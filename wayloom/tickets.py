@@ -147,17 +147,26 @@ async def query_tickets(kind, departure, arrival, date, client=None, *,
 
 
 class DemoBookingStore:
-    """Local synthetic data. Construction creates tables, never tickets or orders."""
+    """Explicit SQLite compatibility backend; production uses MySQLBookingStore."""
+
+    lock_clause = ""
+    seed_sql = "INSERT OR IGNORE INTO demo_tickets VALUES (?,?,?,?,?,?,?,?,?,?)"
 
     def __init__(self, path, max_quantity=5, quote_ttl_seconds=300):
+        self._configure_limits(max_quantity, quote_ttl_seconds)
+        self.path = str(path)
+        Path(self.path).parent.mkdir(parents=True, exist_ok=True)
+        self.initialize()
+
+    def _configure_limits(self, max_quantity, quote_ttl_seconds):
         if type(max_quantity) is not int or not 1 <= max_quantity <= 1000:
             raise ValueError("max_quantity必须为1至1000的整数")
         if type(quote_ttl_seconds) is not int or not 1 <= quote_ttl_seconds <= 300:
             raise ValueError("模拟报价有效期必须为1至300秒")
-        self.path = str(path)
         self.max_quantity = max_quantity
         self.quote_ttl_seconds = quote_ttl_seconds
-        Path(self.path).parent.mkdir(parents=True, exist_ok=True)
+
+    def initialize(self):
         with self.connection() as db:
             db.execute("PRAGMA journal_mode=WAL")
             db.executescript("""
@@ -223,7 +232,7 @@ class DemoBookingStore:
         ]
         with self.connection(write=True) as db:
             for index, (kind, service, seat, price_cents, remaining) in enumerate(templates):
-                db.execute("INSERT OR IGNORE INTO demo_tickets VALUES (?,?,?,?,?,?,?,?,?,?)",
+                db.execute(self.seed_sql,
                            (f"DEMO-{route_id}-{index}", kind, params["departure"], params["arrival"],
                             params["date"], service, seat, price_cents, "CNY", remaining))
         return self._result("success", message="已为指定城市与日期开启本地模拟演练；所有票务数据均为虚构。",
@@ -269,7 +278,7 @@ class DemoBookingStore:
                 if previous["quote_id"] != quote_id:
                     raise ValueError("相同请求ID不能用于不同报价单")
                 return {**json.loads(previous["payload"]), "replayed": True}
-            record = db.execute("SELECT * FROM demo_quotes WHERE id=?", (quote_id,)).fetchone()
+            record = db.execute("SELECT * FROM demo_quotes WHERE id=?" + self.lock_clause, (quote_id,)).fetchone()
             if not record:
                 return self._result("no_data", message="模拟报价单不存在，请重新查询并确认；未创建订单。")
             if record["used_order_id"]:
@@ -281,7 +290,11 @@ class DemoBookingStore:
                 return self._result("expired", message="模拟报价单已过期，请重新查询并确认；未创建订单。")
             quote = json.loads(record["payload"])
             ticket, quantity = quote["ticket"], quote["quantity"]
-            row = db.execute("SELECT * FROM demo_tickets WHERE id=?", (ticket["id"],)).fetchone()
+            row = db.execute("SELECT * FROM demo_tickets WHERE id=?" + self.lock_clause, (ticket["id"],)).fetchone()
+            # A MySQL inventory lock can take time; do not accept a quote that
+            # expired while this transaction was waiting for another buyer.
+            if record["expires_at"] <= time.time():
+                return self._result("expired", message="模拟报价单已过期，请重新查询并确认；未创建订单。")
             if not row or row["remaining"] < quantity:
                 return self._result("no_data", message="模拟库存不足或票已移除，请重新查询；未创建订单。")
             current = self._ticket(row)
