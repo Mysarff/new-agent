@@ -41,6 +41,20 @@
       "observed_result": "仅返回天气；因预报无降雨而省略用户请求的雨天备选安排。",
       "coverage": "failed_missing_rain_alternative",
       "decision": "保持实验标签与默认关闭，不能将此样本称为同等质量下的性能提升。"
+    },
+    {
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "response_mode": "环境配置（修复后第二次页面复测）",
+      "enable_thinking": null,
+      "observed_from": "真实 Streamlit 页面回答及展开的执行详情",
+      "elapsed_seconds": 153.2,
+      "model_calls": 10,
+      "business_tool_calls": 3,
+      "total_tokens": 44733,
+      "agents": ["weather", "itinerary"],
+      "observed_result": "模型和专家完成处理，返回天气来源和一般雨天备选建议，没有提供具体场所候选。",
+      "coverage": "weather_and_general_rain_alternative_present",
+      "manual_limit": "回答包含“目前预报无雨，无需防雨准备”的过度确定建议，与天气不确定性要求不符；不能把接口执行成功视为回答完全正确。"
     }
   ],
   "knowledge_verification": {
