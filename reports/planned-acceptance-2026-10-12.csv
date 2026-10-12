@@ -1,0 +1,6 @@
+﻿case_id,repeat,profile,status,seconds,model_calls,total_tokens,failed_checks
+rain_plan,1,planned,passed,33.906,8,36650,
+knowledge_powerbank,1,planned,passed,10.688,4,8915,
+tickets_unavailable,1,planned,passed,8.265,4,6081,
+context_day_after,1,planned,passed,13.484,5,14776,
+missing_destination,1,planned,passed,3.391,2,3174,

@@ -113,7 +113,7 @@ class TravelUITests(unittest.TestCase):
             patch('wayloom.diagnostics.check_connections', probe):
             self.app.run()
             probe.assert_not_awaited()
-            self.widget('checkbox', '快速回答（实验）').check().run()
+            self.widget('selectbox', '回答模式').select('减少思考等待').run()
             self.click('检查模型与专家连接')
             probe.assert_awaited_once()
             self.assertIs(probe.call_args.args[0]['enable_thinking'], False)

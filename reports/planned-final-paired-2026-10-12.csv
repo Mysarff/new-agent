@@ -1,0 +1,3 @@
+﻿case_id,repeat,profile,status,seconds,model_calls,total_tokens,failed_checks
+rain_plan,1,baseline,passed,154.5,10,51747,
+rain_plan,1,planned,passed,24.234,8,32451,

@@ -1,0 +1,2 @@
+﻿case_id,repeat,profile,status,seconds,model_calls,total_tokens,failed_checks
+rain_plan,1,planned,passed,31.422,8,39424,

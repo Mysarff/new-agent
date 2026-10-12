@@ -1,0 +1,3 @@
+﻿case_id,repeat,profile,status,seconds,model_calls,total_tokens,failed_checks
+rain_plan,1,baseline,passed,81.656,10,46558,
+rain_plan,1,planned,failed,32.375,8,,no_incomplete_event;tool:travel__search_places;evidence_cited;place_review_completed;cited_weather_matches_target

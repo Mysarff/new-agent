@@ -1,0 +1,7 @@
+﻿case_id,repeat,profile,status,seconds,model_calls,total_tokens,failed_checks
+rain_plan,1,planned,passed,37.813,8,31710,
+knowledge_powerbank,1,planned,passed,19.797,6,24483,
+tickets_unavailable,1,planned,failed,10.922,5,8048,no_incomplete_event
+context_day_after,1,planned,failed,4.656,2,3376,routing_exact;tool:travel__forecast;context:start_date;context:end_date;cited_weather_matches_target
+missing_destination,1,planned,passed,3.125,2,3034,
+rain_chengdu,1,planned,passed,50.11,11,61069,

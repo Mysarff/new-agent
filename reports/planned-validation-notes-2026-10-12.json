@@ -1,0 +1,125 @@
+{
+  "scope": "Development investigation with changing implementations; not an independent accuracy evaluation.",
+  "stages": [
+    {
+      "report": "planned-acceptance-2026-10-12.json",
+      "attempts": 5,
+      "automatic_passed": 5,
+      "automatic_failed": 0
+    },
+    {
+      "report": "planned-controls-2026-10-12.json",
+      "attempts": 6,
+      "automatic_passed": 4,
+      "automatic_failed": 2
+    },
+    {
+      "report": "planned-diagnosis-2026-10-12.json",
+      "attempts": 1,
+      "automatic_passed": 1,
+      "automatic_failed": 0
+    },
+    {
+      "report": "planned-final-controls-2026-10-12.json",
+      "attempts": 6,
+      "automatic_passed": 4,
+      "automatic_failed": 2
+    },
+    {
+      "report": "planned-final-paired-2026-10-12.json",
+      "attempts": 2,
+      "automatic_passed": 2,
+      "automatic_failed": 0
+    },
+    {
+      "report": "planned-paired-initial-2026-10-12.json",
+      "attempts": 2,
+      "automatic_passed": 1,
+      "automatic_failed": 1
+    },
+    {
+      "report": "planned-pilot-2026-10-12.json",
+      "attempts": 1,
+      "automatic_passed": 1,
+      "automatic_failed": 0
+    },
+    {
+      "report": "planned-repeat-2026-10-12.json",
+      "attempts": 2,
+      "automatic_passed": 0,
+      "automatic_failed": 2
+    }
+  ],
+  "total_benchmark_attempts": 25,
+  "assistant_review": {
+    "independent_human_review": false,
+    "semantic_accuracy": null,
+    "known_false_positive": {
+      "report": "planned-pilot-2026-10-12.json",
+      "case_id": "rain_plan",
+      "covers_user_request": false,
+      "reason": "Automatic checks passed, but the final answer called the requested contingency not triggered. Preserve the original automatic result; do not count it as semantic success."
+    },
+    "acceptance_observations": [
+      "The five final acceptance answers were read against the requests and recorded evidence.",
+      "Original example retains forecast and contingency candidates; knowledge cites the dated source; follow-up updates the date; missing location asks a question; unavailable tickets are disclosed.",
+      "This inspection does not establish correctness for arbitrary questions or all venue attributes."
+    ]
+  },
+  "historical_failures": [
+    {
+      "report": "planned-paired-initial-2026-10-12.json",
+      "finding": "Skipped contingency lookup and final model ConnectError; kept as failed."
+    },
+    {
+      "report": "planned-repeat-2026-10-12.json",
+      "finding": "One run skipped place lookup; another failed final validation."
+    },
+    {
+      "report": "planned-controls-2026-10-12.json",
+      "finding": "Knowledge and ticket experts returned generic A2A failures. Original lower-level cause was not captured and remains unconfirmed; direct knowledge request succeeded after restart."
+    },
+    {
+      "report": "planned-final-controls-2026-10-12.json",
+      "finding": "Unconfigured tickets invented citation IDs; date follow-up asked unnecessarily and retained the wrong date. Both failed automatic checks."
+    }
+  ],
+  "final_regression": {
+    "tests_discovered": 184,
+    "passed": 163,
+    "skipped": 21,
+    "skipped_scope": "MySQL integration tests; database layer unchanged in this patch."
+  },
+  "performance_scope": "Same question/model/date and sequential profiles; planned combines task planning, compact handoffs and enable_thinking=false. One paired sample is not a production latency guarantee.",
+  "browser_attempts": [
+    {
+      "attempt": 1,
+      "outcome": "failed",
+      "elapsed_seconds_displayed": 40.0,
+      "model_calls": 9,
+      "business_tool_calls": 4,
+      "total_tokens": 44728,
+      "observation": "Map provider returned invalid data; web search returned excerpts, but final answer did not pass validation. No failed draft was shown.",
+      "validation_reason": "ValidationError in both attempts; earlier version did not retain specific field or constraint."
+    },
+    {
+      "attempt": 2,
+      "outcome": "completed_after_schema_repair",
+      "elapsed_seconds_displayed": 31.7,
+      "model_calls": 9,
+      "business_tool_calls": 4,
+      "total_tokens": 38590,
+      "observation": "Forecast and venue candidates displayed with source links and uncertainty. A missing required root field was repaired. Conditional label was still implicit; the next UI patch labels each conditional section from its plan."
+    },
+    {
+      "attempt": 3,
+      "outcome": "completed",
+      "elapsed_seconds_displayed": 25.2,
+      "model_calls": 8,
+      "business_tool_calls": 4,
+      "total_tokens": 30787,
+      "observation": "Final browser shows exact original prompt, raw weather with uncertainty, an explicitly labelled rainy-day contingency, source links, and unavailable venue conditions. No final-validation retry was shown. This is an observed demo, not independent factual accuracy scoring.",
+      "screenshot": "docs/images/wayloom-planned-demo-2026-10-12.png"
+    }
+  ]
+}

@@ -14,7 +14,9 @@ from wayloom.engine import CONTEXT_SCHEMA, Engine, TravelSession
 def configuration(**overrides):
     # Read the non-secret catalog directly; do not load .env or call a provider.
     value = json.loads((Path(__file__).resolve().parents[1] / "config" / "travel.json").read_text(encoding="utf-8"))
-    return {**value, **overrides}
+    # Retain regression coverage of the legacy baseline; the planned executor
+    # has its own contract and failure tests.
+    return {**value, 'planned_execution': False, 'compact_handoffs': False, **overrides}
 
 
 def invoke(name, arguments, call_id="fixture-call"):

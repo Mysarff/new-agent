@@ -4,7 +4,7 @@
 
 ## 一条命令运行
 
-本次真实结果、失败案例和修复阶段见[2026-09-28实测记录](evaluation-results-2026-09-28.md)。
+最新流程的真实结果、失败案例和修复阶段见[2026-10-12实测记录](evaluation-results-2026-10-12.md)；[2026-09-28历史记录](evaluation-results-2026-09-28.md)保留原样。
 
 先按 README 安装依赖。下面默认不调用外部模型，只列出可测场景：
 
@@ -62,7 +62,7 @@ python -m wayloom.benchmark --live --network --profile baseline --cases rain_pla
 
 ### 模型思考模式
 
-页面侧栏“服务连接与设置”提供“快速回答（实验）”，默认关闭，仅影响当前会话后续请求。它显式关闭支持该参数的模型思考；关闭勾选则继续使用本地配置。当前小样本出现过质量退化，所以没有自动开启，也没有替用户修改`.env`。
+页面侧栏“服务连接与设置”提供“沿用本地配置 / 减少思考等待 / 加强思考”。所有模式使用相同的任务覆盖、工具权限和来源约束。没有服务商兼容性保证，部署时需用自己的模型实测；仓库 `.env.example` 仍默认留空。本机已在验证当前模型支持后设置 `WAYLOOM_ENABLE_THINKING=false`。
 
 支持此参数的模型可以在本地`.env`设置`WAYLOOM_ENABLE_THINKING=false`关闭思考模式；留空则不发送参数，沿用服务商默认值。`true`明确开启。参数是否支持取决于实际服务商和模型，不通过模型名或关键词自动猜测；不支持时可能报错，应保持留空。
 
@@ -74,14 +74,19 @@ python -m wayloom.benchmark --live --network --profile both --comparison respons
 
 这个对照仅改变思考参数：`baseline`不发送`enable_thinking`、`responsive`发送false，均不启用精简交接；不更换模型、资料、工具或预算。`compact`对照也不发送思考参数。评测显式覆盖本地思考设置，避免本地改成false后连基线也一起变快。每条记录保存实际请求选项；服务商若返回`reasoning_tokens`则保存数量，不保存或展示内部思考文本。单独运行某个配置可用`--profile responsive`等。
 
-### 精简中间交接
+### 计划执行流程（当前默认）
 
-该实验默认关闭。需要复现时使用`--profile both --comparison compact`；不要把它作为通用提速默认项。
+`config/travel.json` 默认开启 `planned_execution` 和 `compact_handoffs`。一次模型请求同时提取行程并列出任务，程序按依赖顺序执行所有任务；专家只做简短证据交接，最后一次模型请求合并来源核对与最终回答。没有并发执行，也没有丢弃原始工具证据。仅删除和 evidence 完全相同的重复顶层数据。
 
-`compact_handoffs`控制一项减少重复生成的优化：专家仅交接简短事实和缺口；包含地点证据时，协调器可调用`finalize_answer`直接将各专家交接、原始证据、警告及待确认报价送给来源编辑。仍由模型决定是否继续查询，不按城市或关键词路由。模型若未使用该入口，继续走原来的草稿加复核路径。
+任务覆盖检查要求每项任务恰有一节，假设备选不能因实际预报未触发就取消；未知引用或已发现的确定性天气措辞最多修正一次，仍失败则说明未完成。天气数值直接使用原始预报，知识资料补充核验日期。失败的已列任务不应被当作遗漏需求反复委派。模型服务只对连接尚未建立的 ConnectError/ConnectTimeout 重试一次，读取超时、HTTP 错误与业务工具不自动重放。
 
-来源复核没有取消，事实限制和模拟订单确认边界没有放宽。最终复核失败仍不展示原草稿。该优化主要减少中间生成文本，不能承诺每轮都减少模型请求次数，也不能保证服务商排队时仍然更快。将`config/travel.json`中的`compact_handoffs`设为false并重启服务即可回退；评测两种流程会显式覆盖这个值。
+```sh
+python -m wayloom.benchmark --live --network --dataset evaluations/planning_cases.json --cases rain_plan --profile both --comparison planned --output var/planned_pair.json
+python -m wayloom.benchmark --live --network --dataset evaluations/planning_cases.json --cases rain_plan,rain_chengdu,knowledge_powerbank,context_day_after,missing_destination,tickets_unavailable --profile planned --output var/planned_controls.json
+```
 
-页面发送后立即展示问题并显示等待计时；执行详情展示本轮耗时、模型调用次数和完整可得的Token用量。这改善可观察性，不作为提速成绩。
+`planned` 是新计划流程、精简交接与关闭思考的组合，不能将总提速全部归因于某一项。`baseline` 使用旧协调器、完整交接且不发送思考参数。`responsive` 只关闭思考；`compact` 仅测旧协调器精简交接。各档显式覆盖本地配置，避免改变 `.env` 后对照基线也一起变化。设置 `planned_execution=false` 与 `compact_handoffs=false` 可回退旧流程。
 
-参数与失败处理也纳入回归：知识检索的可选日期在工具Schema中声明ISO格式，字符串`"None"`会返回具体参数校验错误，不再让它进入检索器后只报通用工具失败。业务工具失败且没有任何可核验来源、候选或报价时，协调器直接说明未完成，不能用模型常识补出具体规则。它不会将“供应商未配置”的正常业务状态误判为工具异常。
+新开发集增加原页面完整示例及成都条件备选。要求 `require_complete_plan` 的用例会检查计划任务是否全部 answered；该标注不影响模型运行，也不能发现计划本身漏掉的需求。真正的答案完整性仍需对照原问题与证据审阅。
+
+页面发送后显示等待时间，执行详情保存本轮墙钟耗时、模型请求数、工具调用、Token 与失败诊断。显示计时本身不算提速；单元测试和自动执行通过率不等于答案准确率。

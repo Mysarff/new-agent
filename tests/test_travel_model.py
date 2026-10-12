@@ -60,6 +60,26 @@ class ModelOptionsTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(ModelResponseError):
                     await ChatModel().complete([{'role': 'user', 'content': 'hello'}], [])
 
+    async def test_only_connection_establishment_failure_is_retried_once(self):
+        client = httpx.AsyncClient
+        for failure, expected in ((httpx.ConnectError, 2), (httpx.ReadTimeout, 1)):
+            requests = []
+            def handler(request):
+                requests.append(request)
+                if len(requests) == 1:
+                    raise failure('temporary', request=request)
+                return httpx.Response(200, json={'choices': [{'message': {'role': 'assistant', 'content': 'ok'}}]})
+            with patch.dict(os.environ, {'WAYLOOM_MODEL': 'test', 'WAYLOOM_API_KEY': 'fixture',
+                 'WAYLOOM_BASE_URL': 'https://model.test/v1'}), patch('wayloom.model.httpx.AsyncClient',
+                 side_effect=lambda **kw: client(transport=httpx.MockTransport(handler), **kw)):
+                if failure is httpx.ConnectError:
+                    result = await ChatModel().complete([{'role': 'user', 'content': 'hello'}], [])
+                    self.assertEqual(result['_connection_retries'], 1)
+                else:
+                    with self.assertRaises(httpx.ReadTimeout):
+                        await ChatModel().complete([{'role': 'user', 'content': 'hello'}], [])
+            self.assertEqual(len(requests), expected)
+
     def test_knowledge_optional_date_schema_rejects_string_none(self):
         adapter=TypeAdapter(ISODate | None)
         self.assertIsNone(adapter.validate_python(None))

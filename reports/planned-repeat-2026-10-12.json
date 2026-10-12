@@ -1,0 +1,1283 @@
+{
+  "version": 1,
+  "status": "completed",
+  "started_at": "2026-10-12T12:38:00.558283+08:00",
+  "scope": "开发回归集，人工编写；不是独立测试集，不代表真实用户问题分布。agents为必要专家集合，自动规则仅核查执行契约。",
+  "dataset_sha256": "eada57fbe7e4a1c6c356c84e8e31dc4cb6655162add067121c43166946650b1b",
+  "implementation_sha256": {
+    "benchmark.py": "902661b2e3a5f52774f45ec8eecf8181ac055463aa3c992a724e23e61b044e42",
+    "engine.py": "5c1ad2e1d3a92dcc2e201f12dfe1931c99df15ff96efd5c51c1b60952784e89e",
+    "planning.py": "0f133b35e2e5f6b279fa4d52a5ab450187ad1758ddce2a475cb6fcf0e5f5b926",
+    "model.py": "2212bfdcc1f818e387b2fa7ec4587007e21487d766d9f3d3e82400908574f84e",
+    "metrics.py": "97e384fa79aab7dcba9e958e91df7dd2ab8f50139aa5efe1f50b58ae09db3eb7",
+    "grounding.py": "6e536f8e3e72dd375cd322b6e11f21aaa9c9ff4e3b7d43f4e049e40f79bd32c7",
+    "a2a.py": "18a9812b4d24d6ac7327bb5aa87ad3bda346e4a65191c28b01872c2d8fc65e38",
+    "runtime.py": "a583c7f1e2a76edda309c99896c2f17bbb0178aba73b8b588bb55acab23f8976"
+  },
+  "configuration_sha256": "c7823d01bbeeac0e3cdfc0add7193fbc55be5faf6175a7c2c9a97795ee85ac80",
+  "transport": "a2a_mcp",
+  "model": "qwen3.7-flash",
+  "repeats": 2,
+  "profile_order": "AB/BA alternating by case and repeat, sequential execution",
+  "notes": [
+    "No paid model judge; semantic accuracy requires manual review.",
+    "Wall-clock latency includes MCP startup/cleanup; no TTFT or currency cost inferred.",
+    "Live API data and provider load can change between paired runs."
+  ],
+  "records": [
+    {
+      "case_id": "rain_plan",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "西安 · 陕西 · 西安市 · 中国 · 2026-10-13：预报为阴天，气温 12.6℃～23.2℃，当日最高降水概率 0%，预计降水量 0 mm，最大风速 8.8 km/h。[W39a2c9f0a275]\n以上是当前预报，并非确定结果；即使降水概率为 0% 也不保证无雨，建议出发前再次查看并备好便携雨具。\n\n基于“假设下雨”的条件，建议参考以下室内或半室内备选活动：\n1. 博物馆参观：如陕西历史博物馆、西安博物院等文化场所。\n2. 商业休闲：大型购物中心（如SKP、赛格国际）或部分地下/半室内结构的区域（如大唐不夜城部分区域）。\n\n以上为地图找到的地点候选及常规建议，具体是否全室内、开放时间、门票预约要求及客流情况均待核实，请以官方最新公告为准。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "W39a2c9f0a275",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:38:12.652920+00:00"
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 24969,
+        "model_calls": 6,
+        "model_elapsed_ms": 15750,
+        "leaf_tool_calls": 2,
+        "leaf_tool_elapsed_ms": 4203,
+        "usage_reported_calls": 6,
+        "prompt_tokens": 18015,
+        "completion_tokens": 989,
+        "total_tokens": 19004,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 24969
+      },
+      "retrieved_evidence": [
+        {
+          "id": "Wfdb9fe45a5d1",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：西安",
+          "data": {
+            "candidates": [
+              {
+                "id": 1790630,
+                "name": "西安",
+                "latitude": 34.25833,
+                "longitude": 108.92861,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "陕西",
+                "admin2": "西安市",
+                "feature_code": "PPLA",
+                "population": 9600000,
+                "elevation": 416.0,
+                "location_id": 1790630,
+                "label": "西安 · 陕西 · 西安市 · 中国"
+              },
+              {
+                "id": 1790631,
+                "name": "西安",
+                "latitude": 28.46667,
+                "longitude": 111.05,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "湖南",
+                "admin2": "常德市",
+                "feature_code": "PPLA4",
+                "elevation": 541.0,
+                "location_id": 1790631,
+                "label": "西安 · 湖南 · 常德市 · 中国"
+              },
+              {
+                "id": 1551730,
+                "name": "西安",
+                "latitude": 27.5351,
+                "longitude": 106.422,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "贵州",
+                "admin2": "遵义市",
+                "feature_code": "PPL",
+                "elevation": 880.0,
+                "location_id": 1551730,
+                "label": "西安 · 贵州 · 遵义市 · 中国"
+              },
+              {
+                "id": 1913787,
+                "name": "西安",
+                "latitude": 22.93439,
+                "longitude": 112.79641,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "佛山市",
+                "feature_code": "PPL",
+                "elevation": 6.0,
+                "location_id": 1913787,
+                "label": "西安 · 广东 · 佛山市 · 中国"
+              },
+              {
+                "id": 1984210,
+                "name": "西安村",
+                "latitude": 27.01623,
+                "longitude": 119.54361,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "宁德市",
+                "feature_code": "PPL",
+                "elevation": 206.0,
+                "location_id": 1984210,
+                "label": "西安村 · 福建省 · 宁德市 · 中国"
+              },
+              {
+                "id": 2005499,
+                "name": "西安",
+                "latitude": 25.81766,
+                "longitude": 117.5648,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "三明市",
+                "feature_code": "PPL",
+                "elevation": 575.0,
+                "location_id": 2005499,
+                "label": "西安 · 福建省 · 三明市 · 中国"
+              },
+              {
+                "id": 2048018,
+                "name": "西安",
+                "latitude": 40.32369,
+                "longitude": 117.63465,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "河北省",
+                "admin2": "承德市",
+                "feature_code": "PPL",
+                "elevation": 377.0,
+                "location_id": 2048018,
+                "label": "西安 · 河北省 · 承德市 · 中国"
+              },
+              {
+                "id": 6793014,
+                "name": "西安",
+                "latitude": 20.7254,
+                "longitude": 110.14886,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "湛江市",
+                "feature_code": "PPL",
+                "elevation": 60.0,
+                "location_id": 6793014,
+                "label": "西安 · 广东 · 湛江市 · 中国"
+              },
+              {
+                "id": 6854552,
+                "name": "西安",
+                "latitude": 22.29999,
+                "longitude": 112.78035,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "江门市",
+                "feature_code": "PPL",
+                "elevation": 9.0,
+                "location_id": 6854552,
+                "label": "西安 · 广东 · 江门市 · 中国"
+              },
+              {
+                "id": 7628804,
+                "name": "西安",
+                "latitude": 45.00241,
+                "longitude": 127.3179,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "黑龙江",
+                "admin2": "哈尔滨市",
+                "feature_code": "PPL",
+                "elevation": 183.0,
+                "location_id": 7628804,
+                "label": "西安 · 黑龙江 · 哈尔滨市 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:38:08.869509+00:00"
+        },
+        {
+          "id": "W39a2c9f0a275",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:38:12.652920+00:00"
+        }
+      ],
+      "warnings": [],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3656,
+          "usage": {
+            "prompt_tokens": 1226,
+            "total_tokens": 1482,
+            "completion_tokens": 256
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户询问明天（2026-10-13）去西安的天气，并询问如果下雨如何安排。需要查询天气和雨天备选方案。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度等），以回答用户关于明天天气的提问。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null,
+              "requires_evidence": true
+            },
+            {
+              "id": "t2",
+              "task": "基于‘如果下雨’的假设条件，为陕西西安提供适合雨天的室内活动或备选行程安排建议。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "假设明日西安下雨",
+              "requires_evidence": false
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 719,
+          "usage": {
+            "prompt_tokens": 1446,
+            "total_tokens": 1486,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "西安",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 1625
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1203,
+          "usage": {
+            "prompt_tokens": 3081,
+            "total_tokens": 3157,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1790630,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 2578
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 3516,
+          "usage": {
+            "prompt_tokens": 4204,
+            "total_tokens": 4393,
+            "completion_tokens": 189
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度等），以回答用户关于明天天气的提问。"
+          },
+          "status": "success",
+          "elapsed_ms": 12125
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 2859,
+          "usage": {
+            "prompt_tokens": 3782,
+            "total_tokens": 3933,
+            "completion_tokens": 151
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于‘如果下雨’的假设条件，为陕西西安提供适合雨天的室内活动或备选行程安排建议。"
+          },
+          "status": "success",
+          "elapsed_ms": 5344
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3797,
+          "usage": {
+            "prompt_tokens": 4276,
+            "total_tokens": 4553,
+            "completion_tokens": 277
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度等），以回答用户关于明天天气的提问。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t2",
+              "task": "基于‘如果下雨’的假设条件，为陕西西安提供适合雨天的室内活动或备选行程安排建议。",
+              "status": "answered"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 5,
+      "delegations": 2,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "陕西西安",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户询问明天（2026-10-13）去西安的天气，并询问如果下雨如何安排。需要查询天气和雨天备选方案。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": false,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "place_review_completed": true,
+        "all_planned_tasks_answered": true,
+        "cited_weather_matches_target": true
+      },
+      "status": "failed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 24.969
+    },
+    {
+      "case_id": "rain_plan",
+      "repeat": 2,
+      "profile": "planned",
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "已处理部分任务，但最终回答尚未通过完整性与来源校验。请查看已取得资料后重试。",
+      "answer_review": "incomplete",
+      "citations": [],
+      "metrics": {
+        "engine_elapsed_ms": 37312,
+        "model_calls": 10,
+        "model_elapsed_ms": 27014,
+        "leaf_tool_calls": 5,
+        "leaf_tool_elapsed_ms": 6251,
+        "usage_reported_calls": 10,
+        "prompt_tokens": 45134,
+        "completion_tokens": 2031,
+        "total_tokens": 47165,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 37312
+      },
+      "retrieved_evidence": [
+        {
+          "id": "Wed5a503483af",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：西安",
+          "data": {
+            "candidates": [
+              {
+                "id": 1790630,
+                "name": "西安",
+                "latitude": 34.25833,
+                "longitude": 108.92861,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "陕西",
+                "admin2": "西安市",
+                "feature_code": "PPLA",
+                "population": 9600000,
+                "elevation": 416.0,
+                "location_id": 1790630,
+                "label": "西安 · 陕西 · 西安市 · 中国"
+              },
+              {
+                "id": 1790631,
+                "name": "西安",
+                "latitude": 28.46667,
+                "longitude": 111.05,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "湖南",
+                "admin2": "常德市",
+                "feature_code": "PPLA4",
+                "elevation": 541.0,
+                "location_id": 1790631,
+                "label": "西安 · 湖南 · 常德市 · 中国"
+              },
+              {
+                "id": 1551730,
+                "name": "西安",
+                "latitude": 27.5351,
+                "longitude": 106.422,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "贵州",
+                "admin2": "遵义市",
+                "feature_code": "PPL",
+                "elevation": 880.0,
+                "location_id": 1551730,
+                "label": "西安 · 贵州 · 遵义市 · 中国"
+              },
+              {
+                "id": 1913787,
+                "name": "西安",
+                "latitude": 22.93439,
+                "longitude": 112.79641,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "佛山市",
+                "feature_code": "PPL",
+                "elevation": 6.0,
+                "location_id": 1913787,
+                "label": "西安 · 广东 · 佛山市 · 中国"
+              },
+              {
+                "id": 1984210,
+                "name": "西安村",
+                "latitude": 27.01623,
+                "longitude": 119.54361,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "宁德市",
+                "feature_code": "PPL",
+                "elevation": 206.0,
+                "location_id": 1984210,
+                "label": "西安村 · 福建省 · 宁德市 · 中国"
+              },
+              {
+                "id": 2005499,
+                "name": "西安",
+                "latitude": 25.81766,
+                "longitude": 117.5648,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "三明市",
+                "feature_code": "PPL",
+                "elevation": 575.0,
+                "location_id": 2005499,
+                "label": "西安 · 福建省 · 三明市 · 中国"
+              },
+              {
+                "id": 2048018,
+                "name": "西安",
+                "latitude": 40.32369,
+                "longitude": 117.63465,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "河北省",
+                "admin2": "承德市",
+                "feature_code": "PPL",
+                "elevation": 377.0,
+                "location_id": 2048018,
+                "label": "西安 · 河北省 · 承德市 · 中国"
+              },
+              {
+                "id": 6793014,
+                "name": "西安",
+                "latitude": 20.7254,
+                "longitude": 110.14886,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "湛江市",
+                "feature_code": "PPL",
+                "elevation": 60.0,
+                "location_id": 6793014,
+                "label": "西安 · 广东 · 湛江市 · 中国"
+              },
+              {
+                "id": 6854552,
+                "name": "西安",
+                "latitude": 22.29999,
+                "longitude": 112.78035,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "江门市",
+                "feature_code": "PPL",
+                "elevation": 9.0,
+                "location_id": 6854552,
+                "label": "西安 · 广东 · 江门市 · 中国"
+              },
+              {
+                "id": 7628804,
+                "name": "西安",
+                "latitude": 45.00241,
+                "longitude": 127.3179,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "黑龙江",
+                "admin2": "哈尔滨市",
+                "feature_code": "PPL",
+                "elevation": 183.0,
+                "location_id": 7628804,
+                "label": "西安 · 黑龙江 · 哈尔滨市 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:38:32.962565+00:00"
+        },
+        {
+          "id": "W2365e5727a2b",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:38:36.805109+00:00"
+        },
+        {
+          "id": "Wbe31796128756b83",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内景点 博物馆 美术馆",
+          "data": {
+            "query": "室内景点 博物馆 美术馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B001D04JH6",
+                "name": "陕西省美术博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安北路14号(体育场地铁站B西南口步行360米)",
+                "location": "108.944213,34.230996",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:38:43.287577+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "W2de4161742eb459e",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内娱乐 购物商场",
+          "data": {
+            "query": "室内娱乐 购物商场",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0GKUUIIIX",
+                "name": "悠悠茂购物中心",
+                "type": "购物服务;商场;普通商场",
+                "address": "丈八街道丈八北路89号西安高新方圆荟购物中心B1层",
+                "location": "108.871778,34.226229",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:38:44.557187+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "W95a4f262cc73ec17",
+          "source": "https://www.getyourguide.com/zh-cn/xi-an-l270/rainy-day-activities-tc269",
+          "title": "最佳西安市雨天活动- 2026年（真实点评）",
+          "data": {
+            "snippet": "从西安市出发，由私人导游陪同，近距离欣赏这场宏伟的展览，享受个性化的关注和最佳的当地知识。 陕西历史博物馆是一座综合性历史博物馆。从第一个开放日开始，这里就展出",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:38:47.656604+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W26258b3bb2bbcbe9",
+          "source": "https://www.reddit.com/r/travelchina/comments/1k3gpe9/xi_an_on_a_rainy_day?tl=zh-hans",
+          "title": "西安雨天游玩: r/travelchina",
+          "data": {
+            "snippet": "你可以去小雁塔和西安博物馆（博物馆就在塔里面）。带把伞，这样你就能从入口走到博物馆了。这个博物馆是免费的——在售票处出示你的护照就可以领免费票了。",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:38:47.657146+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W3ebdaae61dc8f6a9",
+          "source": "https://www.kkday.com/zh-my/destination/cn-xian",
+          "title": "西安旅游指南 - KKday",
+          "data": {
+            "snippet": "### 西安全年气候\n\n 春季（3–5月）：平均12.7–21.1°C，气候温和，雨量渐增，春暖花开，适合踏青赏花。常见活动：赏花、户外郊游、参观古迹。建议穿着：薄外套、长袖衫、舒适的鞋子。\n 夏季（6–8月）：平均26.5–28.1°C，炎热干燥，雨量集中在七月，偶有雷阵雨。常见活动：躲避暑热，游览室内景点，夜游。建议穿着：轻薄透气的衣物、遮阳帽、太阳镜。\n 秋季（9–11月）：平均15.0–22.9°C，凉爽宜人，秋高气爽，是旅游的最佳季节。常见活动：赏秋景、登高远眺、品尝秋季美食。建议穿着：舒适的长袖衫、薄外套。\n 冬季（12–2月）：平均1.4–4.1°C，寒冷干燥，降水稀少。常见活动：体验古城冬日风情，参观博物馆等室内景点。建议穿着：保暖的厚外套、毛衣、围巾、手套、帽子。\n\n### 西安气候平均值\n\n年均温：约 15.6°C / 年降水量：约 656 mm / 夏季湿度：50%–60% / 最多雨月份：七月\n\n### 西安月平均气温和降水量\n\n月\n\n气温 (°C)\n\n降水量(毫米)\n\n一月\n\n1.4°C\n\n7.1\n\n二月\n\n4.1°C\n\n9.6\n\n三月\n\n12.7°C [...] 起\n\n兵马俑和成西安城墙高铁之旅\n\n### 兵马俑和成西安城墙高铁之旅\n\nRM\n\n2,016\n\n起\n\n兵马俑博物馆门票\n\n### 兵马俑博物馆门票\n\nRM\n\n105\n\n西好午后之旅:陶俑和回民街晚餐\n\n### 西好午后之旅:陶俑和回民街晚餐\n\nRM\n\n1,211\n\n起\n\n中国西安私人订制旅行(兵马俑/华清宫/法门寺)\n\n### 中国西安私人订制旅行(兵马俑/华清宫/法门寺)\n\nRM\n\n0\n\n☆【专属包车】☆|西安博物馆之旅\n\n### ☆【专属包车】☆|西安博物馆之旅\n\nRM\n\n521\n\n起\n\n## 西安近郊与周边旅游推荐\n\n### 衡水市\n\n44 活动\n\n### 廊坊市\n\n100+ 活动\n\n### 聊城市\n\n50+ 活动\n\n### 北京\n\n2800+ 活动\n\n### 保定市\n\n50+ 活动\n\n### 济南\n\n400+ 活动\n\n### 天津\n\n500+ 活动\n\n### 濮阳市\n\n20 活动\n\n### 邢台市\n\n50+ 活动\n\n### 邯鄲市\n\n50+ 活动\n\n更多目的地\n\n## 西安天气、气候与最佳旅游季节\n\n数据源：Meteostat   \n 更新日期：2025-09 [...] 3.0\n(1)\n\nRM\n\n137\n\n起\n\n## 西安热门景點\n\n### 兵马俑\n\n15 活动\n\n### 西安钟楼\n\n50+ 活动\n\n### 大雁塔\n\n41 活动\n\n### 大唐不夜城\n\n17 活动\n\n## 西安最新上架活动与优惠\n\n全天西安私人中转市区游览,含机场接送\n\n### 全天西安私人中转市区游览,含机场接送\n\nRM\n\n686\n\n起\n\n西安半日私人中转游 - 陶俑博物馆(含机场接送)\n\n### 西安半日私人中转游 - 陶俑博物馆(含机场接送)\n\nRM\n\n594\n\n起\n\n【西安旅游包车】包车一日/多日游带司机 |多种车型可选 | 多线路可选\n\n### 【西安旅游包车】包车一日/多日游带司机 |多种车型可选 | 多线路可选\n\nRM\n\n298\n\n起\n\n中国西安| 西安咸阳国际机场(XIY)至西安市区等区域接送 | 机场包车接送\n\n### 中国西安| 西安咸阳国际机场(XIY)至西安市区等区域接送 | 机场包车接送\n\n5.0\n(2)\n\nRM\n\n90\n\n西安兵马俑和梨山园之旅\n\n### 西安兵马俑和梨山园之旅\n\nRM\n\n1,006\n\n起\n\n兵马俑和成西安城墙高铁之旅",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:38:47.657146+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W308895d42245decb",
+          "source": "https://www.youtube.com/watch?v=P1MIgS3x5HI",
+          "title": "谁说下雨天只能宅家？收好这份西安雨天漫游指南，5个免费好去处带你解锁雨天的别样打开方式西安旅游攻略西安雨天去哪玩西安小众景点西安下雨",
+          "data": {
+            "snippet": "# 谁说下雨天只能宅家？收好这份西安雨天漫游指南，5个免费好去处带你解锁雨天的别样打开方式西安旅游攻略西安雨天去哪玩西安小众景点西安下雨\n## Channel: 刘刚战损版\n116 subscribers\n1 likes\n\n### Description\n28 views\nPosted: 2026-09-15\n谁说下雨天只能宅家？收好这份西安雨天漫游指南，5个免费好去处带你解锁雨天的别样打开方式西安旅游攻略西安雨天去哪玩西安小众景点西安下雨\n谁说下雨天只能宅家？收好这份西安雨天漫游指南，5个免费好去处带你解锁雨天的别样打开方式西安旅游攻略西安雨天去哪玩西安小众景点西安下雨",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:38:47.657146+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wecd12eb5b0fbe6d5",
+          "source": "https://www.expedia.com/cn/Xian-Xian-City-Center.dx3000663930",
+          "title": "前往西安市中心：西安市中心西安之旅精选 2026 | Expedia 旅行",
+          "data": {
+            "snippet": "Expedia 徽标\n美国\n\n# 西安市中心\n\n## 西安\n\n西安市中心\n西安市中心\n西安市中心\n西安市中心\n西安市中心\n\n## 游览西安市中心\n\n### 旅游活动\n\nClay soldiers in Xian\n\n#### 兵马俑一日游\n\nMini Group Xian Day Tour to Terracotta Army, City Wall, Pagoda and Muslim Bazaar\n\n#### 迷你团西安一日游,参观兵马俑,城墙,宝塔和穆斯林集市\n\nXi'an Most Popular Tour\n\n#### 特拉科塔勇士博物馆穿梭巴士与英语向导者\n\nEat where the locals eat and try the best authentic food in Xian!\n\n#### TukTuk的西安晚餐美食之旅\n\nHappy travellers\n\n#### 兵马俑和西安的私人导游或接送服务\n\nLuoyang Longmen & Shaolin Private Day Tour from Xian by HSR Train [...] #### 洛阳龙门&少林私人一日游从西安乘坐高铁列车\n\n## 西安市中心热销酒店\n\n西安钟楼诺富特酒店\n\n### 西安钟楼诺富特酒店\n\n西安钟楼永宁门漫心酒店 - 免费英语服务 - 禁烟酒店\n\n### 西安钟楼永宁门漫心酒店 - 免费英语服务 - 禁烟酒店\n\n点评日期：2026 年 10 月 9 日\n\n西安市希尔顿酒店（西安城墙店）\n\n### 西安市希尔顿酒店（西安城墙店）\n\n点评日期：2026 年 10 月 4 日\n\n锦江西京国际饭店\n\n### 锦江西京国际饭店\n\n西安索菲特传奇饭店\n\n### 西安索菲特传奇饭店\n\n西安索菲特人民大厦\n\n### 西安索菲特人民大厦\n\n点评日期：2025 年 12 月 29 日\n\n## 查看西安市中心酒店的可订空房\n\n# 西安市中心\n\n### 旅客\n\n### 第 1 间客房\n\n我只有部分日期需要预订住宿\n\n## Expedia 带您探索世界\n\n## 借助 Expedia App 走得更远\n\n用于下载 App 的二维码",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:38:47.657146+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        }
+      ],
+      "warnings": [
+        "地点信息不等于门票余量或实时营业保证；开放与预约请核对景区官方公告。",
+        "搜索摘录可能不完整，需检查原站、发布日期与适用范围；无结果不代表没有公告。",
+        "回答未通过完整性或来源校验，未展示未通过的草稿。",
+        "获得了资料，但回答没有有效引用，请核对来源面板。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3234,
+          "usage": {
+            "prompt_tokens": 1226,
+            "total_tokens": 1480,
+            "completion_tokens": 254
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户询问明天（2026-10-13）去西安的天气，并询问如果下雨的备选安排。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026-10-13陕西西安的天气情况（包括降雨概率、温度等），以回答用户关于天气的问题。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null,
+              "requires_evidence": true
+            },
+            {
+              "id": "t2",
+              "task": "基于2026-10-13陕西西安可能下雨的情况，推荐适合的室内景点或雨天活动安排，作为用户的备选方案。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "假设明天西安下雨",
+              "requires_evidence": true
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 938,
+          "usage": {
+            "prompt_tokens": 1436,
+            "total_tokens": 1476,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "西安",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 1359
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1296,
+          "usage": {
+            "prompt_tokens": 3071,
+            "total_tokens": 3147,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1790630,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 2532
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 2984,
+          "usage": {
+            "prompt_tokens": 4194,
+            "total_tokens": 4442,
+            "completion_tokens": 248
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026-10-13陕西西安的天气情况（包括降雨概率、温度等），以回答用户关于天气的问题。"
+          },
+          "status": "success",
+          "elapsed_ms": 11203
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1172,
+          "usage": {
+            "prompt_tokens": 3888,
+            "total_tokens": 3932,
+            "completion_tokens": 44
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内景点 博物馆 美术馆",
+            "city": "西安"
+          },
+          "elapsed_ms": 344
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1031,
+          "usage": {
+            "prompt_tokens": 4225,
+            "total_tokens": 4268,
+            "completion_tokens": 43
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内娱乐 购物商场",
+            "city": "西安"
+          },
+          "elapsed_ms": 250
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1328,
+          "usage": {
+            "prompt_tokens": 4556,
+            "total_tokens": 4593,
+            "completion_tokens": 37
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "success",
+          "arguments": {
+            "query": "西安 雨天活动推荐 室内博物馆 商场"
+          },
+          "elapsed_ms": 1766
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 5547,
+          "usage": {
+            "prompt_tokens": 7094,
+            "total_tokens": 7476,
+            "completion_tokens": 382
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于2026-10-13陕西西安可能下雨的情况，推荐适合的室内景点或雨天活动安排，作为用户的备选方案。"
+          },
+          "status": "success",
+          "elapsed_ms": 13359
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 4547,
+          "usage": {
+            "prompt_tokens": 7673,
+            "total_tokens": 8138,
+            "completion_tokens": 465
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "retry"
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 4937,
+          "usage": {
+            "prompt_tokens": 7771,
+            "total_tokens": 8213,
+            "completion_tokens": 442
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "incomplete"
+        }
+      ],
+      "tool_calls": 8,
+      "delegations": 2,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "陕西西安",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户询问明天（2026-10-13）去西安的天气，并询问如果下雨的备选安排。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": false,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": true,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": false,
+        "place_review_completed": false,
+        "cited_weather_matches_target": false
+      },
+      "status": "failed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 37.328
+    }
+  ],
+  "summary": {
+    "profiles": {
+      "planned": {
+        "attempted": 2,
+        "skipped": 0,
+        "execution_passed": 0,
+        "execution_pass_rate": 0.0,
+        "routing_exact_rate": 1.0,
+        "timeout_rate": 0.0,
+        "latency_p50_seconds": 24.969,
+        "latency_p95_seconds": 37.328,
+        "latency_mean_seconds": 31.148500000000002,
+        "mean_model_calls": 8,
+        "token_complete_records": 2,
+        "mean_total_tokens": 33084.5,
+        "manual_reviewed_records": 0,
+        "semantic_accuracy": null,
+        "request_coverage_rate": null,
+        "supported_claim_rate": null
+      }
+    },
+    "paired_attempts": 0,
+    "comparison": "planned",
+    "paired_delta_mean_seconds": null,
+    "paired_regressions": [],
+    "quantile_method": "nearest_rank; all attempted runs, including failures"
+  },
+  "completed_at": "2026-10-12T12:39:02.880083+08:00"
+}

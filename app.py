@@ -121,6 +121,9 @@ def render_answer(result, scope):
                     st.caption(f"模型服务返回的 Token 用量：{metrics['total_tokens']}。包含各专家和来源复核。")
                 else:
                     st.caption('部分请求未返回用量，无法计算完整 Token 总数。')
+            for row in result['trace']:
+                if row.get('event') in ('plan_validation', 'answer_validation') and row.get('reason'):
+                    st.caption('检查记录：' + row['reason'])
             st.dataframe(pd.DataFrame([{k: json.dumps(v, ensure_ascii=False) if isinstance(v, dict) else v
                                        for k, v in row.items()} for row in result['trace']]), hide_index=True)
     if catalog:
@@ -169,13 +172,16 @@ with st.sidebar:
             st.caption(f'{label} · {status}')
         st.caption('配置存在不代表调用成功；具体结果以本轮响应为准。')
         st.caption('服务模式：' + ('独立 Agent 服务' if env_value('WAYLOOM_A2A') == '1' else '本机协作'))
-        fast_response = st.checkbox('快速回答（实验）', value=False)
-        st.caption('减少模型思考等待，复杂问题可能更容易遗漏。需要模型支持关闭思考；如报错请关闭。默认沿用本地模型配置。')
+        response_mode = st.selectbox('回答模式', ['沿用本地配置', '减少思考等待', '加强思考'])
+        mode_options = {'减少思考等待': False, '加强思考': True}
+        request_config = {**config, 'enable_thinking': mode_options[response_mode]} if response_mode in mode_options else config
+        configured_thinking = str(env_value('WAYLOOM_ENABLE_THINKING', '')).lower()
+        configured_label = {'false': '减少思考等待', 'true': '加强思考'}.get(configured_thinking, '服务商默认')
+        st.caption('本地配置：' + configured_label + '。各模式都逐项处理需求并核对来源；手动切换需模型支持。')
         if st.button('检查模型与专家连接', disabled=not available['model']):
             with st.spinner('正在检查连接（会调用一次模型 API，最多等待 30 秒）…'):
-                probe_config = {**config, 'enable_thinking': False} if fast_response else config
                 st.session_state.connection_check = asyncio.run(check_connections(
-                    probe_config, network=env_value('WAYLOOM_A2A') == '1'))
+                    request_config, network=env_value('WAYLOOM_A2A') == '1'))
         if st.session_state.get('connection_check'):
             check = st.session_state.connection_check
             st.caption('最近自检时间：' + check['checked_at'])
@@ -211,9 +217,8 @@ with conversation:
             st.write(query)
         try:
             with st.spinner('正在选择助手、查询证据并整理回答…', show_time=True):
-                request_config = {**config, 'enable_thinking': False} if fast_response else config
                 result = asyncio.run(chat(query, history, journey, network=env_value('WAYLOOM_A2A') == '1', config=request_config))
-                result['response_mode'] = '快速回答（实验）' if fast_response else '环境配置'
+                result['response_mode'] = response_mode if response_mode in mode_options else '本地配置：' + configured_label
             st.session_state.messages.append({'role': 'assistant', 'content': result['answer'], 'result': result})
             st.rerun()
         except Exception as exc:

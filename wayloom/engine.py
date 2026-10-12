@@ -139,6 +139,9 @@ class Engine:
         messages.extend(history)
         messages.append({'role': 'user', 'content': query})
         async def coordinate():
+            if self.config.get('planned_execution', False):
+                from .planning import run_planned
+                return await run_planned(self, query, history, state)
             answer = await self.loop('coordinator', messages, self.coordinator_tools(), state, history)
             evidence = list(state.evidence.values())
             if (not evidence and not self.session.candidates and not self.session.quotes
@@ -174,7 +177,7 @@ class Engine:
         if state.evidence and not valid:
             state.warnings.append('获得了资料，但回答没有有效引用，请核对来源面板。')
         review_status = next((event['status'] for event in reversed(state.trace)
-                              if event.get('event') == 'evidence_review'), 'not_run')
+                              if event.get('event') in ('evidence_review', 'answer_validation')), 'not_run')
         return {'answer': answer, 'answer_review': review_status, 'citations': [state.evidence[x] for x in valid],
                 'metrics': summarize_trace(state.trace, round((time.monotonic()-run_started)*1000)),
                 'retrieved_evidence': list(state.evidence.values()), 'warnings': list(dict.fromkeys(state.warnings)),
@@ -188,6 +191,8 @@ class Engine:
         messages = [{'role': 'system', 'content': BASE_PROMPT + '\n' + agent['prompt']}]
         if self.config.get('compact_handoffs', False):
             messages[0]['content'] += '\n' + COMPACT_HANDOFF
+        if self.config.get('require_task_evidence', False):
+            messages[0]['content'] += '\n本任务明确要求查询证据，必须先调用获准工具；条件备选也必须查询，不因当前预报未触发而跳过。工具失败或信息缺失时如实交接。'
         messages.extend(history)
         messages.append({'role': 'user', 'content': json.dumps(payload, ensure_ascii=False)})
         available = self.hub.available(agent['tools'])
@@ -252,6 +257,12 @@ class Engine:
                     state.warnings.append('模型未遵循上下文工具协议，本轮未进入专家处理。')
                     state.trace.append({'actor': actor, 'event': 'context_error', 'status': 'incomplete'})
                     return '本轮未能确认行程上下文，请重试或检查模型是否支持指定工具调用。'
+                if (actor != 'coordinator' and self.config.get('require_task_evidence', False)
+                        and not any(row.get('event') == 'tool' and row.get('actor') == actor
+                                    and row.get('status') not in ('error', 'date_mismatch') for row in state.trace)):
+                    messages.append({'role': 'system', 'content': '尚未执行本任务要求的工具查询，不能直接结束。请调用获准工具取得证据；即使当前条件不触发，也要处理明确要求的备选任务。'})
+                    state.trace.append({'actor': actor, 'event': 'evidence_required', 'status': 'retry'})
+                    continue
                 return message.get('content') or '模型未返回回答。'
             if (not isinstance(calls, list) or len(calls) > self.config['max_tool_calls']
                     or any(not isinstance(c, dict) or not isinstance(c.get('id'), str)
@@ -345,6 +356,9 @@ class Engine:
                     trace.update({key: result[key] for key in ('error', 'field', 'constraint', 'expected')})
                 state.trace.append(trace)
                 content = json.dumps(result, ensure_ascii=False)
+                if self.config.get('compact_handoffs', False):
+                    from .planning import compact_result
+                    content = json.dumps(compact_result(result), ensure_ascii=False)
                 if len(content) > 55000:
                     content = json.dumps({'status': 'too_large', 'message': '结果过大，请缩小检索范围。'}, ensure_ascii=False)
                 messages.append({'role': 'tool', 'tool_call_id': call['id'], 'content': content})

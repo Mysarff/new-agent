@@ -47,7 +47,8 @@ def score_execution(case, result):
     alternatives = expected if expected and isinstance(expected[0], list) else [expected]
     checks = {'routing_exact': any(selected == set(option) for option in alternatives),
               'no_incomplete_event': not any(row.get('event') in INCOMPLETE or
-                  (row.get('event') == 'evidence_review' and row.get('status') != 'completed') for row in trace),
+                  (row.get('event') in ('evidence_review', 'answer_validation', 'plan_validation')
+                   and row.get('status') == 'incomplete') for row in trace),
               'answer_nonempty': bool(answer.strip())}
     tool_rows = [row for row in trace if row.get('event') == 'tool']
     for tool, statuses in case.get('tools', {}).items():
@@ -67,6 +68,12 @@ def score_execution(case, result):
         checks['expected_document_cited'] = bool(cited_docs & set(case['documents']))
     if case.get('place_review'):
         checks['place_review_completed'] = result.get('answer_review') == 'completed'
+    if case.get('require_complete_plan'):
+        coverage = next((row for row in reversed(trace) if row.get('event') == 'task_coverage'), None)
+        if coverage is not None:
+            checks['all_planned_tasks_answered'] = all(row['status'] == 'answered' for row in coverage['tasks'])
+        # Legacy runs have no task ledger. Their semantic completeness must
+        # still be reviewed against the question, not inferred from tool calls.
     if case.get('weather'):
         target = case['weather']
         def matches(item):
@@ -126,7 +133,7 @@ def summarize(records):
     pairs = {}
     for row in records:
         pairs.setdefault((row['case_id'], row['repeat']), {})[row['profile']] = row
-    comparison = 'responsive' if 'responsive' in groups else 'compact' if 'compact' in groups else None
+    comparison = next((name for name in ('planned', 'responsive', 'compact') if name in groups), None)
     comparable = [pair for pair in pairs.values() if all(pair.get(p, {}).get('status') not in (None, 'skipped')
                   for p in ('baseline', comparison))]
     return {'profiles': groups, 'paired_attempts': len(comparable),
@@ -164,7 +171,7 @@ async def run_live(args, dataset, config):
     report = {'version': 1, 'status': 'running', 'started_at': now.isoformat(), 'scope': dataset['scope'],
               'dataset_sha256': hashlib.sha256(Path(args.dataset).read_bytes()).hexdigest(),
               'implementation_sha256': {name: hashlib.sha256((ROOT/'wayloom'/name).read_bytes()).hexdigest()
-                  for name in ('benchmark.py','engine.py','model.py','metrics.py','grounding.py','a2a.py','runtime.py')},
+                  for name in ('benchmark.py','engine.py','planning.py','model.py','metrics.py','grounding.py','a2a.py','runtime.py')},
               'configuration_sha256': hashlib.sha256(json.dumps(config, sort_keys=True, ensure_ascii=False).encode()).hexdigest(),
               'transport': 'a2a_mcp' if args.network else 'local_mcp',
               'model': env_value('WAYLOOM_MODEL'), 'repeats': args.repeats,
@@ -180,8 +187,9 @@ async def run_live(args, dataset, config):
                 profiles.reverse()
             for profile in profiles:
                 record = {'case_id': case['id'], 'repeat': repeat + 1, 'profile': profile, 'query': case['query'],
-                          'model_options': {'enable_thinking': False if profile == 'responsive' else None,
-                                            'compact_handoffs': profile == 'compact'}}
+                          'model_options': {'enable_thinking': False if profile in ('responsive', 'planned') else None,
+                                            'planned_execution': profile == 'planned',
+                                            'compact_handoffs': profile in ('compact', 'planned')}}
                 if case.get('requires_unconfigured_tickets') and env_value('WAYLOOM_TICKET_BASE_URL'):
                     record.update(status='skipped', reason='Supplier is configured; missing-supplier case is not applicable.')
                 else:
@@ -255,8 +263,8 @@ def main():
     parser.add_argument('--dense', action='store_true', help='Compare BM25 with configured embeddings; requires --live')
     parser.add_argument('--dataset', type=Path, default=DEFAULT_CASES)
     parser.add_argument('--cases', help='Comma-separated IDs, or all; defaults to 5 smoke cases')
-    parser.add_argument('--profile', choices=('baseline','compact','responsive','both'), default='baseline')
-    parser.add_argument('--comparison', choices=('compact','responsive'), default='responsive',
+    parser.add_argument('--profile', choices=('baseline','compact','responsive','planned','both'), default='baseline')
+    parser.add_argument('--comparison', choices=('compact','responsive','planned'), default='planned',
                         help='responsive explicitly disables thinking; only use with a provider that supports enable_thinking')
     parser.add_argument('--repeats', type=int, choices=range(1, 11), default=1)
     parser.add_argument('--output', type=Path)

@@ -1,5 +1,6 @@
 """Provider-neutral Chat Completions and embeddings adapters; no fake model fallback."""
 import os
+import asyncio
 
 from .config import env_value
 from .diagnostics import ModelResponseError
@@ -36,8 +37,17 @@ class ChatModel:
         if tools:
             payload.update(tools=tools, tool_choice=tool_choice)
         async with httpx.AsyncClient(timeout=90, follow_redirects=False) as client:
-            response = await client.post(self.base + '/chat/completions', json=payload,
-                                         headers={'Authorization': f'Bearer {self.key}'})
+            for attempt in range(2):
+                try:
+                    response = await client.post(self.base + '/chat/completions', json=payload,
+                                                 headers={'Authorization': f'Bearer {self.key}'})
+                    break
+                except (httpx.ConnectError, httpx.ConnectTimeout):
+                    if attempt:
+                        raise
+                    # Only failures before connection establishment. Do not
+                    # replay read timeouts, HTTP failures, or business tools.
+                    await asyncio.sleep(0.25)
             response.raise_for_status()
             try:
                 data = response.json()
@@ -50,6 +60,7 @@ class ChatModel:
                 raise ModelResponseError('Invalid Chat Completions response') from exc
         result = {k: v for k, v in message.items() if k in ('role', 'content', 'tool_calls')}
         result['_usage'] = data.get('usage') if isinstance(data.get('usage'), dict) else {}
+        result['_connection_retries'] = attempt
         details = result['_usage'].get('completion_tokens_details')
         if isinstance(details, dict) and type(details.get('reasoning_tokens')) is int:
             result['_usage']['reasoning_tokens'] = details['reasoning_tokens']

@@ -1,0 +1,2837 @@
+{
+  "version": 1,
+  "status": "completed",
+  "started_at": "2026-10-12T12:50:52.991234+08:00",
+  "scope": "开发回归集，人工编写；不是独立测试集，不代表真实用户问题分布。agents为必要专家集合，自动规则仅核查执行契约。",
+  "dataset_sha256": "eada57fbe7e4a1c6c356c84e8e31dc4cb6655162add067121c43166946650b1b",
+  "implementation_sha256": {
+    "benchmark.py": "902661b2e3a5f52774f45ec8eecf8181ac055463aa3c992a724e23e61b044e42",
+    "engine.py": "5c1ad2e1d3a92dcc2e201f12dfe1931c99df15ff96efd5c51c1b60952784e89e",
+    "planning.py": "80d3caa97ea90e3abcf21b7ca9472134381a4c91eaf63cfce905b0bd20cd8a97",
+    "model.py": "2212bfdcc1f818e387b2fa7ec4587007e21487d766d9f3d3e82400908574f84e",
+    "metrics.py": "97e384fa79aab7dcba9e958e91df7dd2ab8f50139aa5efe1f50b58ae09db3eb7",
+    "grounding.py": "b6718a5cdd5058c3f7f202a9d29f996be3a87d7f768cb8dd9226b9feabaf994a",
+    "a2a.py": "34b14d1b92c6524d81289822d5fbb4b354ffc17a16f271716abc653d1a2f97c2",
+    "runtime.py": "a583c7f1e2a76edda309c99896c2f17bbb0178aba73b8b588bb55acab23f8976"
+  },
+  "configuration_sha256": "c7823d01bbeeac0e3cdfc0add7193fbc55be5faf6175a7c2c9a97795ee85ac80",
+  "transport": "a2a_mcp",
+  "model": "qwen3.7-flash",
+  "repeats": 1,
+  "profile_order": "AB/BA alternating by case and repeat, sequential execution",
+  "notes": [
+    "No paid model judge; semantic accuracy requires manual review.",
+    "Wall-clock latency includes MCP startup/cleanup; no TTFT or currency cost inferred.",
+    "Live API data and provider load can change between paired runs."
+  ],
+  "records": [
+    {
+      "case_id": "rain_plan",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "西安 · 陕西 · 西安市 · 中国 · 2026-10-13：预报为阴天，气温 12.6℃～23.2℃，当日最高降水概率 0%，预计降水量 0 mm，最大风速 8.8 km/h。[W68c6d5fb100a]\n以上是当前预报，并非确定结果；即使降水概率为 0% 也不保证无雨，建议出发前再次查看并备好便携雨具。\n\n基于明日有雨的假设条件，以下地点可作为备选参考：\n- **陕西自然博物馆**：位于雁塔区长安南路88号（电视塔地铁站B西南口旁）[W13716ac0b22aec72]。\n- **陕西历史博物馆**：位于雁塔区小寨东路91号[W13716ac0b22aec72]。\n- **陕西省农业展览馆**：位于莲湖区乐创街区附近[W13716ac0b22aec72]。\n- **灰色博物馆**：位于碑林区骡马市星悦MALL F6层[W13716ac0b22aec72]。\n注：以上仅为地图查询到的场所候选，其室内属性、具体开放时间、门票预约要求及营业状态均待核实。建议出行前再次查看实时天气及场馆官方公告。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "W68c6d5fb100a",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:51:04.608138+00:00"
+        },
+        {
+          "id": "W13716ac0b22aec72",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 博物馆 展览馆 室内娱乐设施",
+          "data": {
+            "query": "博物馆 展览馆 室内娱乐设施",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFF651KQ",
+                "name": "陕西省农业展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "乐创街区Mini(龙首原地铁站A西北口步行60米)",
+                "location": "108.946662,34.292008",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0HKX9S04J",
+                "name": "大风阁博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "二环北路西段汉城湖景区内",
+                "location": "108.918906,34.298811",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0M6ZU1RZQ",
+                "name": "灰色博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "柏树林街道骡马市1号星悦MALLF6层",
+                "location": "108.951136,34.258026",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0M275K3PS",
+                "name": "陕西历史博物馆-展览主题展板(打卡点)",
+                "type": "风景名胜;风景名胜;观景点",
+                "address": "小寨东路91号陕西历史博物馆",
+                "location": "108.954741,34.224194",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D03PEX",
+                "name": "陕西历史博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "小寨东路91号",
+                "location": "108.955044,34.224199",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:51:17.277433+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 37813,
+        "model_calls": 8,
+        "model_elapsed_ms": 29484,
+        "leaf_tool_calls": 3,
+        "leaf_tool_elapsed_ms": 4656,
+        "usage_reported_calls": 8,
+        "prompt_tokens": 30065,
+        "completion_tokens": 1645,
+        "total_tokens": 31710,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 37813
+      },
+      "retrieved_evidence": [
+        {
+          "id": "Wf6618912091b",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：西安",
+          "data": {
+            "candidates": [
+              {
+                "id": 1790630,
+                "name": "西安",
+                "latitude": 34.25833,
+                "longitude": 108.92861,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "陕西",
+                "admin2": "西安市",
+                "feature_code": "PPLA",
+                "population": 9600000,
+                "elevation": 416.0,
+                "location_id": 1790630,
+                "label": "西安 · 陕西 · 西安市 · 中国"
+              },
+              {
+                "id": 1790631,
+                "name": "西安",
+                "latitude": 28.46667,
+                "longitude": 111.05,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "湖南",
+                "admin2": "常德市",
+                "feature_code": "PPLA4",
+                "elevation": 541.0,
+                "location_id": 1790631,
+                "label": "西安 · 湖南 · 常德市 · 中国"
+              },
+              {
+                "id": 1551730,
+                "name": "西安",
+                "latitude": 27.5351,
+                "longitude": 106.422,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "贵州",
+                "admin2": "遵义市",
+                "feature_code": "PPL",
+                "elevation": 880.0,
+                "location_id": 1551730,
+                "label": "西安 · 贵州 · 遵义市 · 中国"
+              },
+              {
+                "id": 1913787,
+                "name": "西安",
+                "latitude": 22.93439,
+                "longitude": 112.79641,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "佛山市",
+                "feature_code": "PPL",
+                "elevation": 6.0,
+                "location_id": 1913787,
+                "label": "西安 · 广东 · 佛山市 · 中国"
+              },
+              {
+                "id": 1984210,
+                "name": "西安村",
+                "latitude": 27.01623,
+                "longitude": 119.54361,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "宁德市",
+                "feature_code": "PPL",
+                "elevation": 206.0,
+                "location_id": 1984210,
+                "label": "西安村 · 福建省 · 宁德市 · 中国"
+              },
+              {
+                "id": 2005499,
+                "name": "西安",
+                "latitude": 25.81766,
+                "longitude": 117.5648,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "三明市",
+                "feature_code": "PPL",
+                "elevation": 575.0,
+                "location_id": 2005499,
+                "label": "西安 · 福建省 · 三明市 · 中国"
+              },
+              {
+                "id": 2048018,
+                "name": "西安",
+                "latitude": 40.32369,
+                "longitude": 117.63465,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "河北省",
+                "admin2": "承德市",
+                "feature_code": "PPL",
+                "elevation": 377.0,
+                "location_id": 2048018,
+                "label": "西安 · 河北省 · 承德市 · 中国"
+              },
+              {
+                "id": 6793014,
+                "name": "西安",
+                "latitude": 20.7254,
+                "longitude": 110.14886,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "湛江市",
+                "feature_code": "PPL",
+                "elevation": 60.0,
+                "location_id": 6793014,
+                "label": "西安 · 广东 · 湛江市 · 中国"
+              },
+              {
+                "id": 6854552,
+                "name": "西安",
+                "latitude": 22.29999,
+                "longitude": 112.78035,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "江门市",
+                "feature_code": "PPL",
+                "elevation": 9.0,
+                "location_id": 6854552,
+                "label": "西安 · 广东 · 江门市 · 中国"
+              },
+              {
+                "id": 7628804,
+                "name": "西安",
+                "latitude": 45.00241,
+                "longitude": 127.3179,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "黑龙江",
+                "admin2": "哈尔滨市",
+                "feature_code": "PPL",
+                "elevation": 183.0,
+                "location_id": 7628804,
+                "label": "西安 · 黑龙江 · 哈尔滨市 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:51:00.824666+00:00"
+        },
+        {
+          "id": "W68c6d5fb100a",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:51:04.608138+00:00"
+        },
+        {
+          "id": "W13716ac0b22aec72",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 博物馆 展览馆 室内娱乐设施",
+          "data": {
+            "query": "博物馆 展览馆 室内娱乐设施",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFF651KQ",
+                "name": "陕西省农业展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "乐创街区Mini(龙首原地铁站A西北口步行60米)",
+                "location": "108.946662,34.292008",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0HKX9S04J",
+                "name": "大风阁博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "二环北路西段汉城湖景区内",
+                "location": "108.918906,34.298811",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0M6ZU1RZQ",
+                "name": "灰色博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "柏树林街道骡马市1号星悦MALLF6层",
+                "location": "108.951136,34.258026",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0M275K3PS",
+                "name": "陕西历史博物馆-展览主题展板(打卡点)",
+                "type": "风景名胜;风景名胜;观景点",
+                "address": "小寨东路91号陕西历史博物馆",
+                "location": "108.954741,34.224194",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D03PEX",
+                "name": "陕西历史博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "小寨东路91号",
+                "location": "108.955044,34.224199",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:51:17.277433+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "warnings": [
+        "地点信息不等于门票余量或实时营业保证；开放与预约请核对景区官方公告。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3531,
+          "usage": {
+            "prompt_tokens": 1233,
+            "total_tokens": 1483,
+            "completion_tokens": 250
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": 1,
+            "preferences": [],
+            "notes": "用户询问明天去西安的天气，以及如果下雨的备选安排"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度、风力等），以回答用户关于明天天气的问题。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null
+            },
+            {
+              "id": "t2",
+              "task": "基于天气象结果，若存在降雨可能或明确预报有雨，为陕西西安查询适合雨天进行的室内景点或活动推荐（如博物馆、展览馆、室内娱乐设施等），并说明这些推荐是假设性备选方案。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "假设明天西安下雨的情况"
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1031,
+          "usage": {
+            "prompt_tokens": 1427,
+            "total_tokens": 1467,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "西安",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 1578
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1094,
+          "usage": {
+            "prompt_tokens": 3065,
+            "total_tokens": 3141,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1790630,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 2687
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 3985,
+          "usage": {
+            "prompt_tokens": 4187,
+            "total_tokens": 4489,
+            "completion_tokens": 302
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度、风力等），以回答用户关于明天天气的问题。"
+          },
+          "status": "success",
+          "elapsed_ms": 12172
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 6484,
+          "usage": {
+            "prompt_tokens": 3950,
+            "total_tokens": 3995,
+            "completion_tokens": 45
+          },
+          "connection_retries": 1
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "博物馆 展览馆 室内娱乐设施",
+            "city": "西安"
+          },
+          "elapsed_ms": 391
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 4906,
+          "usage": {
+            "prompt_tokens": 5001,
+            "total_tokens": 5286,
+            "completion_tokens": 285
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于天气象结果，若存在降雨可能或明确预报有雨，为陕西西安查询适合雨天进行的室内景点或活动推荐（如博物馆、展览馆、室内娱乐设施等），并说明这些推荐是假设性备选方案。"
+          },
+          "status": "success",
+          "elapsed_ms": 13625
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3703,
+          "usage": {
+            "prompt_tokens": 5552,
+            "total_tokens": 5818,
+            "completion_tokens": 266
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "retry",
+          "reason": "A prepared contingency must not be dismissed because the scenario is not occurring"
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 4750,
+          "usage": {
+            "prompt_tokens": 5650,
+            "total_tokens": 6031,
+            "completion_tokens": 381
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气情况（包括降雨概率、温度、风力等），以回答用户关于明天天气的问题。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t2",
+              "task": "基于天气象结果，若存在降雨可能或明确预报有雨，为陕西西安查询适合雨天进行的室内景点或活动推荐（如博物馆、展览馆、室内娱乐设施等），并说明这些推荐是假设性备选方案。",
+              "status": "answered"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 6,
+      "delegations": 2,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "陕西西安",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": 1,
+          "preferences": [],
+          "notes": "用户询问明天去西安的天气，以及如果下雨的备选安排"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": true,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "place_review_completed": true,
+        "all_planned_tasks_answered": true,
+        "cited_weather_matches_target": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 37.813
+    },
+    {
+      "case_id": "knowledge_powerbank",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "乘坐中国境内航班，没有3C标识的充电宝可以带吗？请查知识库，注明来源和资料核验日期。",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "根据中国民航局2025年6月28日起生效的最新规定，境内航班旅客不得携带没有3C标识、标识无法辨认或属于召回型号/批次的充电宝 [K-faf599d7fcd980e35c99]。因此，无3C标识的充电宝既不允许随身携带，也不允许托运。\n\n此外，充电宝必须为个人自用且只能在手提行李中携带，严禁在托运行李中携带 [W6e22a8a6cc8fef3b] [Wdcc5ddf06cda5559]。额定能量不超过100Wh无需批准；超过100Wh但不超过160Wh需经航空公司批准且每人限带两个；严禁携带超过160Wh的充电宝 [W6e22a8a6cc8fef3b] [Wdcc5ddf06cda5559]。\n\n资料来源：中国民用航空局（官方公告）。\n资料核验日期：知识库快照于2026-09-26更新，网页摘录于2026-10-12获取。建议出行前再次通过航司官网确认是否有临时调整。 \n资料核验记录：2026-09-26、未标明；核验日期不代表持续有效，出行前仍需确认最新要求。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "K-faf599d7fcd980e35c99",
+          "document_id": "caac-power-bank-domestic-20250628",
+          "title": "境内航班充电宝：3C 标识与召回限制",
+          "heading": "境内航班充电宝：3C 标识与召回限制",
+          "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+          "text": "民航局于2025年6月26日发布通知：从6月28日开始，境内航班旅客不得携带没有3C标识、标识无法辨认，或属于召回型号/批次的充电宝。\n这条通知只回答认证标识和召回限制，不能单凭有3C标识就判断某件产品一定符合所有乘机要求。应同时核对其他适用规定及承运航司要求。",
+          "start": 0,
+          "end": 131,
+          "metadata": {
+            "id": "caac-power-bank-domestic-20250628",
+            "source_type": "official_summary",
+            "publisher": "中国民用航空局",
+            "published_at": "2025-06-26",
+            "checked_at": "2026-09-26",
+            "valid_from": "2025-06-28",
+            "valid_to": null,
+            "regions": [
+              "CN",
+              "中国"
+            ],
+            "tags": [
+              "充电宝",
+              "飞机",
+              "航空",
+              "3C",
+              "召回",
+              "境内航班"
+            ],
+            "scope": "中国境内航班；只摘记本通知涉及的3C和召回要求，不代表完整行李规则",
+            "verification_method": "读取官方网页正文并自行归纳；未设置的结束日期不表示永久有效",
+            "local_path": "caac_power_banks.json"
+          },
+          "score": 0.032787,
+          "lexical_score": 16.2545,
+          "dense_similarity": 0.8197029527797148,
+          "temporal_status": "within_recorded_period",
+          "evidence_status": "official_summary"
+        },
+        {
+          "id": "W6e22a8a6cc8fef3b",
+          "source": "https://www.caac.gov.cn/big5/www.caac.gov.cn/XXGK/XXGK/TZTG/201511/t20151105_11173.html",
+          "title": "關於民航旅客攜帶“充電寶”乘機規定的公告",
+          "data": {
+            "snippet": "主題分類：通知公告\n 體裁分類：\n\n 辦文單位：\n 發文日期：2014-08-07\n 成文日期：\n\n 發文日期：2014-08-07\n 有效性：有效\n\n 名稱：\n 關於民航旅客攜帶“充電寶”乘機規定的公告\n\n 字號：\n\n 文號：\n 有效性：有效\n\n 部號：\n\n來源：中國民航局 字體：大 ｜ 中 ｜ 小  列印本頁\n\n分享到：\n\n充電寶是指主要功能用於給手機等電子設備提供外部電源的鋰電池移動電源。根據現行有效國際民航組織《危險物品安全航空運輸技術細則》和《中國民用航空危險品運輸管理規定》，旅客攜帶充電寶乘機應遵守以下規定：\n\n　　一、充電寶必須是旅客個人自用攜帶。\n\n　　二、充電寶只能在手提行李中攜帶或隨身攜帶，嚴禁在托運作李中攜帶。\n\n　　三、充電寶額定能量不超過100Wh,無需航空公司批准；額定能量超過100Wh但不超過160Wh，經航空公司批准後方可攜帶，但每名旅客不得攜帶超過兩個充電寶。\n\n　　四、嚴禁攜帶額定能量超過160Wh的充電寶；嚴禁攜帶未標明額定能量同時也未能通過標注的其他參數計算得出額定能量的充電寶。 [...] 五、不得在飛行過程中使用充電寶給電子設備充電。對於有啟動開關的充電寶，在飛行過程中應始終關閉充電寶。\n\n　　上述規定同時適用於機組人員。\n\n　　本公告自公佈之日起施行。\n\n　　附：充電寶額定能量的判定方法\n\n　　民航局\n\n　　2014年8月7日\n\n　　附：\n\n充電寶額定能量的判定方法\n\n　　若充電寶上沒有直接標注額定能量Wh（瓦特小時），則充電寶額定能量可按照以下方式進行換算:\n\n　　1、如果已知充電寶的標稱電壓(V )和標稱容量(Ah)，可以通過計算得到額定能量的數值：\n\n　　Wh= V x Ah\n\n　　標稱電壓和標稱容量通常標記在充電寶上。\n\n　　2、如果充電寶上只標記有毫安培時(mAh)，可將該數值除以1000得到安培小時(Ah) 。\n\n　　例如：充電寶標稱電壓為3.7V，標稱容量為760 mAh ，其額定能量為：\n\n　　760 mAh ÷ 1000 = 0.76Ah\n\n　　3.7V×0.76Ah=2.9Wh\n\n附件： [...] 附件：\n\n 綜合司 航空安全辦公室 政策法規司 發展計劃司 財務司 人事科教司 國際司（港澳臺辦公室） 運輸司 飛行標準司 航空器適航審定司 機場司 低空安全司 空管行業管理辦公室 公安局 直屬機關黨委（思想政治工作辦公室） 全國民航工會 離退休幹部局\n 華北地區管理局 東北地區管理局 華東地區管理局 中南地區管理局 西南地區管理局 西北地區管理局 新疆管理局\n 空中交通管理局 機關服務局 中國民航大學 中國民航飛行學院 中國民航管理幹部學院 廣州民航職業技術學院 上海民航職業技術學院 中國民航科學技術研究院 民航第二研究所 中國民航報社出版社（中國民用航空宣傳教育中心） 清算中心 資訊中心 民航專業工程品質監督總站 首都機場集團 審計中心 國際合作中心 中國民航機場建設集團有限公司 中國民用航空適航審定中心 民航博物館 民航醫學中心(總醫院)”\")\n 中華人民共和國常駐國際民航組織理事會代表處\n 中央政府門戶網站 交通運輸部 國家鐵路局 國家郵政局 民航社團組織 航空運輸企業\n\n 關於我們\n 站點地圖\n\n 地址：北京市東城區東四西大街155號（100710）",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wdcc5ddf06cda5559",
+          "source": "https://www.caac.gov.cn/XXGK/XXGK/TZTG/201511/t20151105_11173.html",
+          "title": "关于民航旅客携带“充电宝”乘机规定的公告",
+          "data": {
+            "snippet": "主题分类：通知公告\n 体裁分类：\n\n 办文单位：\n 发文日期：2014-08-07\n 成文日期：\n\n 发文日期：2014-08-07\n 有效性：有效\n\n 名称：\n 关于民航旅客携带“充电宝”乘机规定的公告\n\n 字号：\n\n 文号：\n 有效性：有效\n\n 部号：\n\n来源：中国民航局 字体：大 ｜ 中 ｜ 小  打印本页\n\n分享到：\n\n充电宝是指主要功能用于给手机等电子设备提供外部电源的锂电池移动电源。根据现行有效国际民航组织《危险物品安全航空运输技术细则》和《中国民用航空危险品运输管理规定》，旅客携带充电宝乘机应遵守以下规定：\n\n　　一、充电宝必须是旅客个人自用携带。\n\n　　二、充电宝只能在手提行李中携带或随身携带，严禁在托运行李中携带。\n\n　　三、充电宝额定能量不超过100Wh,无需航空公司批准；额定能量超过100Wh但不超过160Wh，经航空公司批准后方可携带，但每名旅客不得携带超过两个充电宝。\n\n　　四、严禁携带额定能量超过160Wh的充电宝；严禁携带未标明额定能量同时也未能通过标注的其他参数计算得出额定能量的充电宝。 [...] 五、不得在飞行过程中使用充电宝给电子设备充电。对于有启动开关的充电宝，在飞行过程中应始终关闭充电宝。\n\n　　上述规定同时适用于机组人员。\n\n　　本公告自公布之日起施行。\n\n　　附：充电宝额定能量的判定方法\n\n　　民航局\n\n　　2014年8月7日\n\n　　附：\n\n充电宝额定能量的判定方法\n\n　　若充电宝上没有直接标注额定能量Wh（瓦特小时），则充电宝额定能量可按照以下方式进行换算:\n\n　　1、如果已知充电宝的标称电压(V )和标称容量(Ah)，可以通过计算得到额定能量的数值：\n\n　　Wh= V x Ah\n\n　　标称电压和标称容量通常标记在充电宝上。\n\n　　2、如果充电宝上只标记有毫安时(mAh)，可将该数值除以1000得到安培小时(Ah) 。\n\n　　例如：充电宝标称电压为3.7V，标称容量为760 mAh ，其额定能量为：\n\n　　760 mAh ÷ 1000 = 0.76Ah\n\n　　3.7V×0.76Ah=2.9Wh\n\n附件： [...] 附件：\n\n 综合司 航空安全办公室 政策法规司 发展计划司 财务司 人事科教司 国际司（港澳台办公室） 运输司 飞行标准司 航空器适航审定司 机场司 低空安全司 空管行业管理办公室 公安局 直属机关党委（思想政治工作办公室） 全国民航工会 离退休干部局\n 华北地区管理局 东北地区管理局 华东地区管理局 中南地区管理局 西南地区管理局 西北地区管理局 新疆管理局\n 空中交通管理局 机关服务局 中国民航大学 中国民航飞行学院 中国民航管理干部学院 广州民航职业技术学院 上海民航职业技术学院 中国民航科学技术研究院 民航第二研究所 中国民航报社出版社（中国民用航空宣传教育中心） 清算中心 信息中心 民航专业工程质量监督总站 首都机场集团 审计中心 国际合作中心 中国民航机场建设集团有限公司 中国民用航空适航审定中心 民航博物馆 民航医学中心(总医院)”\")\n 中华人民共和国常驻国际民航组织理事会代表处\n 中央政府门户网站 交通运输部 国家铁路局 国家邮政局 民航社团组织 航空运输企业\n\n 关于我们\n 站点地图\n\n 地址：北京市东城区东四西大街155号（100710）",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 19797,
+        "model_calls": 6,
+        "model_elapsed_ms": 15266,
+        "leaf_tool_calls": 3,
+        "leaf_tool_elapsed_ms": 2546,
+        "usage_reported_calls": 6,
+        "prompt_tokens": 23405,
+        "completion_tokens": 1078,
+        "total_tokens": 24483,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 19797
+      },
+      "retrieved_evidence": [
+        {
+          "id": "K-faf599d7fcd980e35c99",
+          "document_id": "caac-power-bank-domestic-20250628",
+          "title": "境内航班充电宝：3C 标识与召回限制",
+          "heading": "境内航班充电宝：3C 标识与召回限制",
+          "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+          "text": "民航局于2025年6月26日发布通知：从6月28日开始，境内航班旅客不得携带没有3C标识、标识无法辨认，或属于召回型号/批次的充电宝。\n这条通知只回答认证标识和召回限制，不能单凭有3C标识就判断某件产品一定符合所有乘机要求。应同时核对其他适用规定及承运航司要求。",
+          "start": 0,
+          "end": 131,
+          "metadata": {
+            "id": "caac-power-bank-domestic-20250628",
+            "source_type": "official_summary",
+            "publisher": "中国民用航空局",
+            "published_at": "2025-06-26",
+            "checked_at": "2026-09-26",
+            "valid_from": "2025-06-28",
+            "valid_to": null,
+            "regions": [
+              "CN",
+              "中国"
+            ],
+            "tags": [
+              "充电宝",
+              "飞机",
+              "航空",
+              "3C",
+              "召回",
+              "境内航班"
+            ],
+            "scope": "中国境内航班；只摘记本通知涉及的3C和召回要求，不代表完整行李规则",
+            "verification_method": "读取官方网页正文并自行归纳；未设置的结束日期不表示永久有效",
+            "local_path": "caac_power_banks.json"
+          },
+          "score": 0.032787,
+          "lexical_score": 16.2545,
+          "dense_similarity": 0.8197029527797148,
+          "temporal_status": "within_recorded_period",
+          "evidence_status": "official_summary"
+        },
+        {
+          "id": "K-ee81b0d57ddfbd25f135",
+          "document_id": "rail-disruption-refund-checked-20260926",
+          "title": "国铁列车晚点或停运：退票办理时限",
+          "heading": "国铁列车晚点或停运：退票办理时限",
+          "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+          "text": "国铁旅客运输规程区分晚点与停运。未乘车旅客因列车晚点退票，应在出发站该列车实际开车前办理，免收退票费并退还全部票款。\n列车停运时，可从停运信息公布起到票面乘车日期后30日以内办理免手续费退票。联程票有额外条件，不能将上述规定直接套用于所有自愿退票或所有境外铁路订单。实际办理应查看12306订单与最新公告。",
+          "start": 0,
+          "end": 153,
+          "metadata": {
+            "id": "rail-disruption-refund-checked-20260926",
+            "source_type": "official_summary",
+            "publisher": "中国铁路12306",
+            "published_at": null,
+            "checked_at": "2026-09-26",
+            "valid_from": null,
+            "valid_to": null,
+            "regions": [
+              "CN",
+              "中国"
+            ],
+            "tags": [
+              "铁路",
+              "火车",
+              "高铁",
+              "晚点",
+              "停运",
+              "退票",
+              "12306"
+            ],
+            "scope": "国铁集团所属铁路运输企业及控股合资铁路公司境内旅客运输；只摘记第51、52条有关情形",
+            "verification_method": "读取官方网页铁路旅客运输规程第51、52条并自行归纳；页面对应版本发布日期未明确，不猜测生效日",
+            "local_path": "rail_refund_disruption.json"
+          },
+          "score": 0.032258,
+          "lexical_score": 1.610586,
+          "dense_similarity": 0.29778977651194694,
+          "temporal_status": "validity_not_specified",
+          "evidence_status": "official_summary"
+        },
+        {
+          "id": "W6e22a8a6cc8fef3b",
+          "source": "https://www.caac.gov.cn/big5/www.caac.gov.cn/XXGK/XXGK/TZTG/201511/t20151105_11173.html",
+          "title": "關於民航旅客攜帶“充電寶”乘機規定的公告",
+          "data": {
+            "snippet": "主題分類：通知公告\n 體裁分類：\n\n 辦文單位：\n 發文日期：2014-08-07\n 成文日期：\n\n 發文日期：2014-08-07\n 有效性：有效\n\n 名稱：\n 關於民航旅客攜帶“充電寶”乘機規定的公告\n\n 字號：\n\n 文號：\n 有效性：有效\n\n 部號：\n\n來源：中國民航局 字體：大 ｜ 中 ｜ 小  列印本頁\n\n分享到：\n\n充電寶是指主要功能用於給手機等電子設備提供外部電源的鋰電池移動電源。根據現行有效國際民航組織《危險物品安全航空運輸技術細則》和《中國民用航空危險品運輸管理規定》，旅客攜帶充電寶乘機應遵守以下規定：\n\n　　一、充電寶必須是旅客個人自用攜帶。\n\n　　二、充電寶只能在手提行李中攜帶或隨身攜帶，嚴禁在托運作李中攜帶。\n\n　　三、充電寶額定能量不超過100Wh,無需航空公司批准；額定能量超過100Wh但不超過160Wh，經航空公司批准後方可攜帶，但每名旅客不得攜帶超過兩個充電寶。\n\n　　四、嚴禁攜帶額定能量超過160Wh的充電寶；嚴禁攜帶未標明額定能量同時也未能通過標注的其他參數計算得出額定能量的充電寶。 [...] 五、不得在飛行過程中使用充電寶給電子設備充電。對於有啟動開關的充電寶，在飛行過程中應始終關閉充電寶。\n\n　　上述規定同時適用於機組人員。\n\n　　本公告自公佈之日起施行。\n\n　　附：充電寶額定能量的判定方法\n\n　　民航局\n\n　　2014年8月7日\n\n　　附：\n\n充電寶額定能量的判定方法\n\n　　若充電寶上沒有直接標注額定能量Wh（瓦特小時），則充電寶額定能量可按照以下方式進行換算:\n\n　　1、如果已知充電寶的標稱電壓(V )和標稱容量(Ah)，可以通過計算得到額定能量的數值：\n\n　　Wh= V x Ah\n\n　　標稱電壓和標稱容量通常標記在充電寶上。\n\n　　2、如果充電寶上只標記有毫安培時(mAh)，可將該數值除以1000得到安培小時(Ah) 。\n\n　　例如：充電寶標稱電壓為3.7V，標稱容量為760 mAh ，其額定能量為：\n\n　　760 mAh ÷ 1000 = 0.76Ah\n\n　　3.7V×0.76Ah=2.9Wh\n\n附件： [...] 附件：\n\n 綜合司 航空安全辦公室 政策法規司 發展計劃司 財務司 人事科教司 國際司（港澳臺辦公室） 運輸司 飛行標準司 航空器適航審定司 機場司 低空安全司 空管行業管理辦公室 公安局 直屬機關黨委（思想政治工作辦公室） 全國民航工會 離退休幹部局\n 華北地區管理局 東北地區管理局 華東地區管理局 中南地區管理局 西南地區管理局 西北地區管理局 新疆管理局\n 空中交通管理局 機關服務局 中國民航大學 中國民航飛行學院 中國民航管理幹部學院 廣州民航職業技術學院 上海民航職業技術學院 中國民航科學技術研究院 民航第二研究所 中國民航報社出版社（中國民用航空宣傳教育中心） 清算中心 資訊中心 民航專業工程品質監督總站 首都機場集團 審計中心 國際合作中心 中國民航機場建設集團有限公司 中國民用航空適航審定中心 民航博物館 民航醫學中心(總醫院)”\")\n 中華人民共和國常駐國際民航組織理事會代表處\n 中央政府門戶網站 交通運輸部 國家鐵路局 國家郵政局 民航社團組織 航空運輸企業\n\n 關於我們\n 站點地圖\n\n 地址：北京市東城區東四西大街155號（100710）",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wdcc5ddf06cda5559",
+          "source": "https://www.caac.gov.cn/XXGK/XXGK/TZTG/201511/t20151105_11173.html",
+          "title": "关于民航旅客携带“充电宝”乘机规定的公告",
+          "data": {
+            "snippet": "主题分类：通知公告\n 体裁分类：\n\n 办文单位：\n 发文日期：2014-08-07\n 成文日期：\n\n 发文日期：2014-08-07\n 有效性：有效\n\n 名称：\n 关于民航旅客携带“充电宝”乘机规定的公告\n\n 字号：\n\n 文号：\n 有效性：有效\n\n 部号：\n\n来源：中国民航局 字体：大 ｜ 中 ｜ 小  打印本页\n\n分享到：\n\n充电宝是指主要功能用于给手机等电子设备提供外部电源的锂电池移动电源。根据现行有效国际民航组织《危险物品安全航空运输技术细则》和《中国民用航空危险品运输管理规定》，旅客携带充电宝乘机应遵守以下规定：\n\n　　一、充电宝必须是旅客个人自用携带。\n\n　　二、充电宝只能在手提行李中携带或随身携带，严禁在托运行李中携带。\n\n　　三、充电宝额定能量不超过100Wh,无需航空公司批准；额定能量超过100Wh但不超过160Wh，经航空公司批准后方可携带，但每名旅客不得携带超过两个充电宝。\n\n　　四、严禁携带额定能量超过160Wh的充电宝；严禁携带未标明额定能量同时也未能通过标注的其他参数计算得出额定能量的充电宝。 [...] 五、不得在飞行过程中使用充电宝给电子设备充电。对于有启动开关的充电宝，在飞行过程中应始终关闭充电宝。\n\n　　上述规定同时适用于机组人员。\n\n　　本公告自公布之日起施行。\n\n　　附：充电宝额定能量的判定方法\n\n　　民航局\n\n　　2014年8月7日\n\n　　附：\n\n充电宝额定能量的判定方法\n\n　　若充电宝上没有直接标注额定能量Wh（瓦特小时），则充电宝额定能量可按照以下方式进行换算:\n\n　　1、如果已知充电宝的标称电压(V )和标称容量(Ah)，可以通过计算得到额定能量的数值：\n\n　　Wh= V x Ah\n\n　　标称电压和标称容量通常标记在充电宝上。\n\n　　2、如果充电宝上只标记有毫安时(mAh)，可将该数值除以1000得到安培小时(Ah) 。\n\n　　例如：充电宝标称电压为3.7V，标称容量为760 mAh ，其额定能量为：\n\n　　760 mAh ÷ 1000 = 0.76Ah\n\n　　3.7V×0.76Ah=2.9Wh\n\n附件： [...] 附件：\n\n 综合司 航空安全办公室 政策法规司 发展计划司 财务司 人事科教司 国际司（港澳台办公室） 运输司 飞行标准司 航空器适航审定司 机场司 低空安全司 空管行业管理办公室 公安局 直属机关党委（思想政治工作办公室） 全国民航工会 离退休干部局\n 华北地区管理局 东北地区管理局 华东地区管理局 中南地区管理局 西南地区管理局 西北地区管理局 新疆管理局\n 空中交通管理局 机关服务局 中国民航大学 中国民航飞行学院 中国民航管理干部学院 广州民航职业技术学院 上海民航职业技术学院 中国民航科学技术研究院 民航第二研究所 中国民航报社出版社（中国民用航空宣传教育中心） 清算中心 信息中心 民航专业工程质量监督总站 首都机场集团 审计中心 国际合作中心 中国民航机场建设集团有限公司 中国民用航空适航审定中心 民航博物馆 民航医学中心(总医院)”\")\n 中华人民共和国常驻国际民航组织理事会代表处\n 中央政府门户网站 交通运输部 国家铁路局 国家邮政局 民航社团组织 航空运输企业\n\n 关于我们\n 站点地图\n\n 地址：北京市东城区东四西大街155号（100710）",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W9dd4475a18d22152",
+          "source": "http://www.caac.gov.cn/WZWSREL1hYR0svWFhHSy9UWlRHLzIwMTUxMS90MjAxNTExMDVfMTEwMzYuaHRtbD93aW56b29tPTE=",
+          "title": "关于重申民航旅客携带“充电宝”乘机规定的公告",
+          "data": {
+            "snippet": "主题分类：通知公告\n 体裁分类：\n\n 办文单位：\n 发文日期：2015-08-17\n 成文日期：\n\n 发文日期：2015-08-17\n 有效性：有效\n\n 名称：\n 关于重申民航旅客携带“充电宝”乘机规定的公告\n\n 字号：\n\n 文号：\n 有效性：有效\n\n 部号：\n\n关于重申民航旅客携带“充电宝”乘机规定的公告\n\n来源：中国民航局 字体：大 ｜ 中 ｜ 小  打印本页\n\n分享到：\n\n2015年5月份以来，民航航班上发生了多起充电宝引发的不安全事件，给航空运输安全带来安全隐患。为确保航空运输安全，现将旅客携带充电宝乘机的规定重申如下：\n\n　　一、严禁在托运行李中携带充电宝。\n\n　　二、严禁携带额定能量超过160Wh的充电宝；携带额定能量超过100Wh但不超过160Wh的充电宝，必须经航空公司批准且不得超过两个。\n\n　　三、严禁携带标识不清的充电宝。\n\n　　四、严禁在飞行过程中使用充电宝。\n\n　　五、严禁非个人自用目的携带充电宝。\n\n　　对于违反上述规定者，公安机关将根据情节，依照国家有关法律、法规严肃处理。\n\n　　上述规定同时适用于机组人员。\n\n　　本公告自公布之日起施行。 [...] 本公告自公布之日起施行。\n\n　　中国民用航空局\n\n　　2015年8月14日\n\n附件： [...] 2015年8月14日\n\n附件：\n\n 综合司 航空安全办公室 政策法规司 发展计划司 财务司 人事科教司 国际司（港澳台办公室） 运输司 飞行标准司 航空器适航审定司 机场司 低空安全司 空管行业管理办公室 公安局 直属机关党委（思想政治工作办公室） 全国民航工会 离退休干部局\n 华北地区管理局 东北地区管理局 华东地区管理局 中南地区管理局 西南地区管理局 西北地区管理局 新疆管理局\n 空中交通管理局 机关服务局 中国民航大学 中国民航飞行学院 中国民航管理干部学院 广州民航职业技术学院 上海民航职业技术学院 中国民航科学技术研究院 民航第二研究所 中国民航报社出版社（中国民用航空宣传教育中心） 清算中心 信息中心 民航专业工程质量监督总站 首都机场集团 审计中心 国际合作中心 中国民航机场建设集团有限公司 中国民用航空适航审定中心 民航博物馆 民航医学中心(总医院)”\")\n 中华人民共和国常驻国际民航组织理事会代表处\n 中央政府门户网站 交通运输部 国家铁路局 国家邮政局 民航社团组织 航空运输企业 民用机场 民航运输保障企业\n\n 关于我们\n 站点地图",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W3365a25b746b4050",
+          "source": "https://newyork.china-consulate.gov.cn/xw/201408/t20140809_4250970.htm",
+          "title": "民航局对携带“充电宝”登机发布明确规定_中华人民共和国驻纽约总领事馆",
+          "data": {
+            "snippet": "规定对带上飞机的“充电宝”额定能量也有所限制。额定能量不超过１００Ｗｈ的“充电宝”无需航空公司批准；额定能量超过１００Ｗｈ但不超过１６０Ｗｈ，经航空公司批准后方可携带，但每名旅客不得携带超过两个“充电宝”；严禁旅客携带额定能量超过１６０Ｗｈ的“充电宝”登机，未标明额定能量同时也未能通过标注的其他参数计算得出额定能量的“充电宝”也严禁携带乘机。\n\n　　规定还明确指出，旅客不得在飞行过程中使用“充电宝”给电子设备充电，对于有启动开关的“充电宝”，在飞行过程中应始终保持关闭。\n\n　　据了解，对于机组人员，该规定同样适用。\n\n### 附件：\n\n中华人民共和国驻纽约总领事馆 版权所有 京ICP备06038296号 京公网安备110105002097 [...] English\n\n 首页\n 关于我们\n 领事服务\n 新闻媒体\n 经贸商务\n 教育留学\n 科技合作\n 文化交流\n\n;)  \n\n;) []( []( []( []( [](\n\n首页 > 中国要闻\n\n### 民航局对携带“充电宝”登机发布明确规定\n\n2014-08-09 04:00\n\n新华网北京８月８日电（记者樊曦）记者８日了解到，为了确保航空运输安全，民航局已专门发布公告，严禁旅客携带额定能量超过１６０Ｗｈ（瓦特小时）的“充电宝”（又称移动电源）乘机。\n\n　　根据现行有效国际民航组织《危险物品安全航空运输技术细则》和《中国民用航空危险品运输管理规定》，民航局规定旅客乘机时携带的“充电宝”必须是用于个人自用，并只能在手提行李中携带或随身携带，严禁在托运行李中携带。",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wa3ffa218dce7957c",
+          "source": "https://baike.baidu.com/item/%E5%85%B3%E4%BA%8E%E6%B0%91%E8%88%AA%E6%97%85%E5%AE%A2%E6%90%BA%E5%B8%A6%E2%80%9C%E5%85%85%E7%94%B5%E5%AE%9D%E2%80%9D%E4%B9%98%E6%9C%BA%E8%A7%84%E5%AE%9A%E7%9A%84%E5%85%AC%E5%91%8A/15282836",
+          "title": "关于民航旅客携带“充电宝”乘机规定的公告",
+          "data": {
+            "snippet": "三、充电宝额定能量不超过100Wh,无需航空公司批准；额定能量超过100Wh但不超过160Wh，经航空公司批准后方可携带，但每名旅客不得携带超过两个充电宝。\n\n四、严禁携带额定能量超过160Wh的充电宝；严禁携带未标明额定能量同时也未能通过标注的其他参数计算得出额定能量的充电宝。\n\n五、不得在飞行过程中使用充电宝给电子设备充电。对于有启动开关的充电宝，在飞行过程中应始终关闭充电宝。\n\n上述规定同时适用于机组人员。\n\n本公告自公布之日起施行。\n\n附：充电宝额定能量的判定方法\n\n民航局\n\n2014年8月7日\n\n附：\n\n充电宝额定能量的判定方法\n\n若充电宝上没有直接标注额定能量Wh（瓦特小时），则充电宝额定能量可按照以下方式进行换算:\n\n1、如果已知充电宝的标称电压(V )和标称容量(Ah)，可以通过计算得到额定能量的数值：\n\nWh= V x Ah\n\n标称电压和标称容量通常标记在充电宝上。\n\n2、如果充电宝上只标记有毫安时(mAh)，可将该数值除以1000得到安培小时(Ah) 。\n\n例如：充电宝标称电压为3.7V，标称容量为760 mAh ，其额定能量为： [...] 查看全部\n\nImage 3\n\nImage 4\n\n2167播放\n\n00:12\n\nVideo 1\n\n近日，民航局发布紧急通知，自6月28日起禁止旅客携带没有3C标识、3C标识不清晰、被召回型号或批次的充电宝乘坐境内航班。需要注意的是，可以登机的充电宝不仅要带有3C标识，而且要符合容量规定。根据《关于民航旅客携带“充电宝”乘机规定的公告》：充电宝只能在手提行李中携带或随身携带，严禁在托运行李中携带。充电宝额定能量不超过100Wh，无需航空公司批准；额定能量超过100Wh但不超过160Wh，经航空公司批准后方可携带，但每名旅客不得携带超过两个充电宝。严禁携带额定能量超过160Wh的充电宝，严禁携带\n\n充电宝是指主要功能用于给手机等电子设备提供外部电源的锂电池移动电源。根据现行有效国际民航组织《危险物品安全航空运输技术细则》和《中国民用航空危险品运输管理规定》，旅客携带充电宝乘机应遵守以下规定：\n\n一、充电宝必须是旅客个人自用携带。\n\n二、充电宝只能在手提行李中携带或随身携带，严禁在托运行李中携带。 [...] 760 mAh ÷ 1000 = 0.76Ah\n\n3.7V×0.76Ah=2.9Wh \n\n参考资料\n\n   1\n\n（2025-11-27）\n\n突出贡献榜\n\n望星空X探银河\n\nImage 5\n\n\n\n1059783988\n\nImage 6\n\n\n\n###### 相关搜索\n\n   飞机携带充电宝规定\n   航空携带充电宝\n   司考培训机构哪个靠谱\n   永久vps免费\n   在线检测仪\n   至尊传奇激活码\n   石墨板电极\n   宝宝英语\n   综合布线与弱电工程\n\nImage 7: 图片\n\n关于民航旅客携带“充电宝”乘机规定的公告\n\n选择朗读音色\n\nImage 8: 成熟女声\n\n成熟女声\n\nImage 9: 成熟男声\n\n成熟男声\n\nImage 10: 磁性男声\n\n磁性男声\n\nImage 11: 年轻女声\n\n年轻女声\n\nImage 12: 情感男声\n\n情感男声\n\n0\n\n0\n\n2x\n\n1.5x\n\n1.25x\n\n1x\n\n0.75x\n\n0.5x\n\nAudio 1Audio 2\n\n分享到微信朋友圈\n\n打开微信“扫一扫”即可将网页分享至朋友圈\n\n新手上路",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:51:41.851841+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        }
+      ],
+      "warnings": [
+        "检索结果是本地资料候选证据，分数不是事实置信度；核验日期不代表持续有效。需核对来源、适用地区和行程日期，出行前复核官方最新信息。未检索到证据不等于没有公告；历史资料不能当作当前公告。",
+        "MCP 工具返回失败，请检查服务或查询参数。",
+        "搜索摘录可能不完整，需检查原站、发布日期与适用范围；无结果不代表没有公告。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 2875,
+          "usage": {
+            "prompt_tokens": 1244,
+            "total_tokens": 1405,
+            "completion_tokens": 161
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": null,
+            "start_date": null,
+            "end_date": null,
+            "travelers": null,
+            "preferences": [],
+            "notes": "查询中国境内航班关于无3C标识充电宝的携带规定"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "检索中国民航局及航空公司关于旅客携带充电宝的规定，重点核实无3C标识充电宝是否允许随身携带或托运，以及额定能量限制、数量限制等具体要求。需明确资料来源（如民航局公告、各航司官网）及资料核验日期。",
+              "agent": "knowledge",
+              "depends_on": [],
+              "condition": null
+            }
+          ]
+        },
+        {
+          "actor": "knowledge",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "knowledge",
+          "event": "model",
+          "elapsed_ms": 1547,
+          "usage": {
+            "prompt_tokens": 1422,
+            "total_tokens": 1506,
+            "completion_tokens": 84
+          }
+        },
+        {
+          "actor": "knowledge",
+          "event": "tool",
+          "tool": "travel__search_knowledge",
+          "status": "candidates",
+          "arguments": {
+            "query": "中国民航局 旅客携带充电宝 3C标识 额定能量 数量限制 规定",
+            "region": "CN",
+            "top_k": 5,
+            "include_historical": false
+          },
+          "elapsed_ms": 312
+        },
+        {
+          "actor": "knowledge",
+          "event": "model",
+          "elapsed_ms": 1454,
+          "usage": {
+            "prompt_tokens": 2659,
+            "total_tokens": 2731,
+            "completion_tokens": 72
+          }
+        },
+        {
+          "actor": "knowledge",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "tool_error",
+          "arguments": {
+            "query": "中国民航局 旅客携带充电宝 额定能量 数量限制 规定",
+            "official_domains": [
+              "https://www.caac.gov.cn",
+              "https://www.airchina.com.cn"
+            ]
+          },
+          "elapsed_ms": 15
+        },
+        {
+          "actor": "knowledge",
+          "event": "model",
+          "elapsed_ms": 766,
+          "usage": {
+            "prompt_tokens": 2775,
+            "total_tokens": 2817,
+            "completion_tokens": 42
+          }
+        },
+        {
+          "actor": "knowledge",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "success",
+          "arguments": {
+            "query": "中国民航局 旅客携带充电宝 额定能量 数量限制 规定"
+          },
+          "elapsed_ms": 2219
+        },
+        {
+          "actor": "knowledge",
+          "event": "model",
+          "elapsed_ms": 4812,
+          "usage": {
+            "prompt_tokens": 7518,
+            "total_tokens": 7866,
+            "completion_tokens": 348
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__knowledge",
+          "task_id": "t1",
+          "arguments": {
+            "task": "检索中国民航局及航空公司关于旅客携带充电宝的规定，重点核实无3C标识充电宝是否允许随身携带或托运，以及额定能量限制、数量限制等具体要求。需明确资料来源（如民航局公告、各航司官网）及资料核验日期。"
+          },
+          "status": "success",
+          "elapsed_ms": 13110
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3812,
+          "usage": {
+            "prompt_tokens": 7787,
+            "total_tokens": 8158,
+            "completion_tokens": 371
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "检索中国民航局及航空公司关于旅客携带充电宝的规定，重点核实无3C标识充电宝是否允许随身携带或托运，以及额定能量限制、数量限制等具体要求。需明确资料来源（如民航局公告、各航司官网）及资料核验日期。",
+              "status": "answered"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 5,
+      "delegations": 1,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": null,
+          "start_date": null,
+          "end_date": null,
+          "travelers": null,
+          "preferences": [],
+          "notes": "查询中国境内航班关于无3C标识充电宝的携带规定"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__search_knowledge": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "expected_document_cited": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 19.797
+    },
+    {
+      "case_id": "tickets_unavailable",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "请查2026-10-13北京到上海的真实火车票票价和余票，不要模拟，也不要替我下单。",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "已处理部分任务，但最终回答尚未通过完整性与来源校验。请查看已取得资料后重试。",
+      "answer_review": "incomplete",
+      "citations": [],
+      "metrics": {
+        "engine_elapsed_ms": 10922,
+        "model_calls": 5,
+        "model_elapsed_ms": 9047,
+        "leaf_tool_calls": 1,
+        "leaf_tool_elapsed_ms": 0,
+        "usage_reported_calls": 5,
+        "prompt_tokens": 7401,
+        "completion_tokens": 647,
+        "total_tokens": 8048,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 10922
+      },
+      "retrieved_evidence": [],
+      "warnings": [
+        "尚未接入真实票务接口。请配置 WAYLOOM_TICKET_BASE_URL；如供应方需要认证，再配置 WAYLOOM_TICKET_API_KEY。没有查询到真实票价或库存。",
+        "回答未通过完整性或来源校验，未展示未通过的草稿。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 2031,
+          "usage": {
+            "prompt_tokens": 1249,
+            "total_tokens": 1406,
+            "completion_tokens": 157
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": "北京",
+            "destination": "上海",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": 1,
+            "preferences": [],
+            "notes": "用户要求查询真实火车票票价和余票，明确不要模拟，不要下单。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026-10-13从北京到上海的真实火车票票价和余票信息。",
+              "agent": "tickets",
+              "depends_on": [],
+              "condition": null
+            }
+          ]
+        },
+        {
+          "actor": "tickets",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "tickets",
+          "event": "model",
+          "elapsed_ms": 1453,
+          "usage": {
+            "prompt_tokens": 1149,
+            "total_tokens": 1221,
+            "completion_tokens": 72
+          }
+        },
+        {
+          "actor": "tickets",
+          "event": "tool",
+          "tool": "travel__query_tickets",
+          "status": "unavailable",
+          "arguments": {
+            "kind": "train",
+            "departure": "北京",
+            "arrival": "上海",
+            "date": "2026-10-13"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "tickets",
+          "event": "model",
+          "elapsed_ms": 2219,
+          "usage": {
+            "prompt_tokens": 1349,
+            "total_tokens": 1474,
+            "completion_tokens": 125
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__tickets",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026-10-13从北京到上海的真实火车票票价和余票信息。"
+          },
+          "status": "unavailable",
+          "elapsed_ms": 5531
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 1750,
+          "usage": {
+            "prompt_tokens": 1778,
+            "total_tokens": 1915,
+            "completion_tokens": 137
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "retry",
+          "reason": "Unknown evidence ID"
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 1594,
+          "usage": {
+            "prompt_tokens": 1876,
+            "total_tokens": 2032,
+            "completion_tokens": 156
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "incomplete",
+          "reason": "Unknown evidence ID"
+        }
+      ],
+      "tool_calls": 3,
+      "delegations": 1,
+      "context": {
+        "trip": {
+          "departure": "北京",
+          "destination": "上海",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": 1,
+          "preferences": [],
+          "notes": "用户要求查询真实火车票票价和余票，明确不要模拟，不要下单。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": false,
+        "answer_nonempty": true,
+        "tool:travel__query_tickets": true,
+        "forbidden:travel__query_demo_tickets": true,
+        "forbidden:travel__prepare_demo_booking": true,
+        "citation_ids_valid": true
+      },
+      "status": "failed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 10.922
+    },
+    {
+      "case_id": "context_day_after",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "那后天呢？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "待补充：基于当前时间2026-10-12推算，“后天”为2026-10-14。请问您是否要查询陕西西安 2026-10-14 的天气？",
+      "answer_review": "completed",
+      "citations": [],
+      "metrics": {
+        "engine_elapsed_ms": 4656,
+        "model_calls": 2,
+        "model_elapsed_ms": 4640,
+        "leaf_tool_calls": 0,
+        "leaf_tool_elapsed_ms": 0,
+        "usage_reported_calls": 2,
+        "prompt_tokens": 3011,
+        "completion_tokens": 365,
+        "total_tokens": 3376,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 4656
+      },
+      "retrieved_evidence": [],
+      "warnings": [],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3031,
+          "usage": {
+            "prompt_tokens": 1288,
+            "total_tokens": 1544,
+            "completion_tokens": 256
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-15",
+            "end_date": "2026-10-15",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户基于历史查询（2026-10-13）询问“后天”的天气。当前时间为2026-10-12，故“后天”指2026-10-14。需澄清用户具体指代日期或确认是否查询2026-10-14西安天气。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "确认用户所指‘后天’的具体日期：基于当前时间2026-10-12，后天为2026-10-14。请向用户确认是否查询陕西西安 2026-10-14 的天气，或是否存在其他指代歧义。",
+              "agent": null,
+              "depends_on": [],
+              "condition": null
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 1609,
+          "usage": {
+            "prompt_tokens": 1723,
+            "total_tokens": 1832,
+            "completion_tokens": 109
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "确认用户所指‘后天’的具体日期：基于当前时间2026-10-12，后天为2026-10-14。请向用户确认是否查询陕西西安 2026-10-14 的天气，或是否存在其他指代歧义。",
+              "status": "needs_input"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 1,
+      "delegations": 0,
+      "context": {
+        "trip": {
+          "destination": "陕西西安",
+          "start_date": "2026-10-15",
+          "end_date": "2026-10-15",
+          "departure": null,
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户基于历史查询（2026-10-13）询问“后天”的天气。当前时间为2026-10-12，故“后天”指2026-10-14。需澄清用户具体指代日期或确认是否查询2026-10-14西安天气。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": false,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": false,
+        "context:destination": true,
+        "context:start_date": false,
+        "context:end_date": false,
+        "citation_ids_valid": true,
+        "cited_weather_matches_target": false
+      },
+      "status": "failed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 4.656
+    },
+    {
+      "case_id": "missing_destination",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "帮我查一下明天的天气。",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "待补充：请提供您想要查询天气的具体城市或地区名称。",
+      "answer_review": "completed",
+      "citations": [],
+      "metrics": {
+        "engine_elapsed_ms": 3125,
+        "model_calls": 2,
+        "model_elapsed_ms": 3110,
+        "leaf_tool_calls": 0,
+        "leaf_tool_elapsed_ms": 0,
+        "usage_reported_calls": 2,
+        "prompt_tokens": 2815,
+        "completion_tokens": 219,
+        "total_tokens": 3034,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 3125
+      },
+      "retrieved_evidence": [],
+      "warnings": [],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 2000,
+          "usage": {
+            "prompt_tokens": 1225,
+            "total_tokens": 1373,
+            "completion_tokens": 148
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": null,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户查询明天（2026-10-13）的天气，但未指定具体城市或地区。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "澄清用户想要查询天气的具体城市或地区名称。",
+              "agent": null,
+              "depends_on": [],
+              "condition": null
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 1110,
+          "usage": {
+            "prompt_tokens": 1590,
+            "total_tokens": 1661,
+            "completion_tokens": 71
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "澄清用户想要查询天气的具体城市或地区名称。",
+              "status": "needs_input"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 1,
+      "delegations": 0,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": null,
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户查询明天（2026-10-13）的天气，但未指定具体城市或地区。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "forbidden:travel__forecast": true,
+        "context:destination": true,
+        "citation_ids_valid": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 3.125
+    },
+    {
+      "case_id": "rain_chengdu",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "明天去四川成都看看天气。即便预报晴朗，也给我备好下雨的室内游方案。",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "成都 · 四川 · 成都市 · 中国 · 2026-10-13：预报为阴天，气温 17℃～26.6℃，当日最高降水概率 8%，预计降水量 0 mm，最大风速 6.5 km/h。[Wd8a97396b992]\n以上是当前预报，并非确定结果；即使降水概率为 0% 也不保证无雨，建议出发前再次查看并备好便携雨具。\n\n以下地点为地图查询到的室内场馆候选（科教文化类），其具体室内条件、开放情况及预约要求仍待核实：\n*   **成都自然博物馆**：成华区十里店路88号 [W6687869690c8125c]。\n*   **成都博物馆**：青羊区小河街1号 [W6687869690c8125c]。\n*   **立巢航空博物馆**：武侯区天府大道1700号环球中心D馆 [W6687869690c8125c]。\n建议顺序：若偏好科普可前往自然博物馆或成都博物馆；两者均位于市中心区域，交通较为便利。\n\n除上述博物馆外，雨天备选还可考虑商场内的娱乐设施，以下为地图查询到的候选：\n*   **英皇电影城(悠方店)**：武侯区交子大道300号悠方购物中心L515 [W9b81a9b4467dc704]。\n*   **中影紫荆国际影城**：武侯区天府大道北段1700号新世纪环球中心4F层 [W9b81a9b4467dc704]。\n*   **光影未来游乐汇**：武侯区二环路南四段51号莱蒙都会3栋 [W9b81a9b4467dc704]。\n这些场所位于大型商业综合体内部，受天气影响较小。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "Wd8a97396b992",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=30.66667&longitude=104.06667&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "成都 · 四川 · 成都市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1815286,
+              "name": "成都",
+              "latitude": 30.66667,
+              "longitude": 104.06667,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "四川",
+              "admin2": "成都市",
+              "feature_code": "PPLA",
+              "population": 13568357,
+              "elevation": 499.0,
+              "location_id": 1815286,
+              "label": "成都 · 四川 · 成都市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 26.6,
+                "temperature_2m_min": 17.0,
+                "precipitation_probability_max": 8,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 6.5,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:52:22.087660+00:00"
+        },
+        {
+          "id": "W6687869690c8125c",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：成都 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "成都",
+            "places": [
+              {
+                "id": "B0FFLA0FTW",
+                "name": "成都自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "成华大道十里店路88号(十里店地铁站B口步行110米)",
+                "location": "104.144295,30.678210",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "成华区",
+                "business": null
+              },
+              {
+                "id": "B001C8SBG2",
+                "name": "成都博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "小河街1号",
+                "location": "104.063749,30.657297",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "青羊区",
+                "business": null
+              },
+              {
+                "id": "B0M29DU5QQ",
+                "name": "成都武侯祠博物馆-室内雕塑夜景(打卡点)",
+                "type": "风景名胜;风景名胜;观景点",
+                "address": "武侯祠大街231号成都武侯祠博物馆",
+                "location": "104.049361,30.646054",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFFODHAQ",
+                "name": "世纪城国际展览中心9号馆",
+                "type": "科教文化服务;会展中心;会展中心",
+                "address": "新会展中心世纪城路198号时尚天街",
+                "location": "104.075498,30.553679",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFFW1R35",
+                "name": "体育博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "体育场路1号",
+                "location": "104.069820,30.663619",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "青羊区",
+                "business": null
+              },
+              {
+                "id": "B0KKAMANUS",
+                "name": "双楠悦天地Pandaful展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "二环路西一段33号负1层(下沉公园)",
+                "location": "104.024181,30.642230",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFK5Q1NR",
+                "name": "立巢航空博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "天府大道1700号环球中心D馆",
+                "location": "104.060695,30.569163",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFHJ45XR",
+                "name": "四川大学博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "望江路19号",
+                "location": "104.090711,30.636303",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:52:28.087008+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "W9b81a9b4467dc704",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：成都 室内景点 电影院 游乐场",
+          "data": {
+            "query": "室内景点 电影院 游乐场",
+            "city": "成都",
+            "places": [
+              {
+                "id": "B0HD71R37U",
+                "name": "英皇电影城(悠方店)",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "交子大道300号悠方购物中心L515",
+                "location": "104.056175,30.583278",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0K2KUZ9BF",
+                "name": "光影未来游乐汇(莱蒙都会店)",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "二环路南四段51号莱蒙都会3栋3楼3001BC",
+                "location": "104.033865,30.631944",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0L03PCCPO",
+                "name": "电影院",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "正兴街道夔州大道与兴康三街交界处东侧天府大悦城B馆5楼",
+                "location": "104.088875,30.434225",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "双流区",
+                "business": null
+              },
+              {
+                "id": "B0HD39R88U",
+                "name": "水上游乐区(新世纪环球购物中心店)",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "天府大道北段1700号环球中心1F层",
+                "location": "104.062075,30.569475",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B001C933WD",
+                "name": "太平洋影城",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "科华路高阳路38号附501号万科金色海蓉2期汇智中心5层(近火车南站)",
+                "location": "104.08348,30.611341",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFJCB6OW",
+                "name": "橙天国际影城(UPARK公园店)",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "高新区盛治街838号C栋3楼",
+                "location": "104.038993,30.553931",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0L22Z00NY",
+                "name": "儿童游乐场",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "龙灯山路一段297号(四河地铁站C口步行390米)",
+                "location": "104.069495,30.511595",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "双流区",
+                "business": null
+              },
+              {
+                "id": "B0K0XSTSXF",
+                "name": "中影紫荆国际影城4K激光IMAX环球中心旗舰店",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "天府大道北段1700号新世纪环球中心4F层",
+                "location": "104.064825,30.569275",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:52:46.907634+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 50110,
+        "model_calls": 11,
+        "model_elapsed_ms": 33109,
+        "leaf_tool_calls": 6,
+        "leaf_tool_elapsed_ms": 11328,
+        "usage_reported_calls": 11,
+        "prompt_tokens": 58625,
+        "completion_tokens": 2444,
+        "total_tokens": 61069,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 50110
+      },
+      "retrieved_evidence": [
+        {
+          "id": "W37f404afdb3d",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E6%88%90%E9%83%BD&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：成都",
+          "data": {
+            "candidates": [
+              {
+                "id": 1815286,
+                "name": "成都",
+                "latitude": 30.66667,
+                "longitude": 104.06667,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "四川",
+                "admin2": "成都市",
+                "feature_code": "PPLA",
+                "population": 13568357,
+                "elevation": 499.0,
+                "location_id": 1815286,
+                "label": "成都 · 四川 · 成都市 · 中国"
+              },
+              {
+                "id": 9614220,
+                "name": "成都",
+                "latitude": 26.983,
+                "longitude": 114.207,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "江西",
+                "admin2": "吉安市",
+                "feature_code": "PPL",
+                "elevation": 138.0,
+                "location_id": 9614220,
+                "label": "成都 · 江西 · 吉安市 · 中国"
+              },
+              {
+                "id": 10154883,
+                "name": "成都",
+                "latitude": 31.11537,
+                "longitude": 107.44296,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "四川",
+                "admin2": "达州市",
+                "feature_code": "PPL",
+                "elevation": 322.0,
+                "location_id": 10154883,
+                "label": "成都 · 四川 · 达州市 · 中国"
+              },
+              {
+                "id": 10198468,
+                "name": "成都",
+                "latitude": 30.7673,
+                "longitude": 102.121,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "四川",
+                "admin2": "阿坝藏族羌族自治州",
+                "feature_code": "PPL",
+                "elevation": 2518.0,
+                "location_id": 10198468,
+                "label": "成都 · 四川 · 阿坝藏族羌族自治州 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:52:17.773942+00:00"
+        },
+        {
+          "id": "Wd8a97396b992",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=30.66667&longitude=104.06667&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "成都 · 四川 · 成都市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1815286,
+              "name": "成都",
+              "latitude": 30.66667,
+              "longitude": 104.06667,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "四川",
+              "admin2": "成都市",
+              "feature_code": "PPLA",
+              "population": 13568357,
+              "elevation": 499.0,
+              "location_id": 1815286,
+              "label": "成都 · 四川 · 成都市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 26.6,
+                "temperature_2m_min": 17.0,
+                "precipitation_probability_max": 8,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 6.5,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:52:22.087660+00:00"
+        },
+        {
+          "id": "W6687869690c8125c",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：成都 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "成都",
+            "places": [
+              {
+                "id": "B0FFLA0FTW",
+                "name": "成都自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "成华大道十里店路88号(十里店地铁站B口步行110米)",
+                "location": "104.144295,30.678210",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "成华区",
+                "business": null
+              },
+              {
+                "id": "B001C8SBG2",
+                "name": "成都博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "小河街1号",
+                "location": "104.063749,30.657297",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "青羊区",
+                "business": null
+              },
+              {
+                "id": "B0M29DU5QQ",
+                "name": "成都武侯祠博物馆-室内雕塑夜景(打卡点)",
+                "type": "风景名胜;风景名胜;观景点",
+                "address": "武侯祠大街231号成都武侯祠博物馆",
+                "location": "104.049361,30.646054",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFFODHAQ",
+                "name": "世纪城国际展览中心9号馆",
+                "type": "科教文化服务;会展中心;会展中心",
+                "address": "新会展中心世纪城路198号时尚天街",
+                "location": "104.075498,30.553679",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFFW1R35",
+                "name": "体育博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "体育场路1号",
+                "location": "104.069820,30.663619",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "青羊区",
+                "business": null
+              },
+              {
+                "id": "B0KKAMANUS",
+                "name": "双楠悦天地Pandaful展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "二环路西一段33号负1层(下沉公园)",
+                "location": "104.024181,30.642230",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFK5Q1NR",
+                "name": "立巢航空博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "天府大道1700号环球中心D馆",
+                "location": "104.060695,30.569163",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFHJ45XR",
+                "name": "四川大学博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "望江路19号",
+                "location": "104.090711,30.636303",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:52:28.087008+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "Wf2a48074f7bbe9e0",
+          "source": "https://sichuan.scol.com.cn/xwtg/202309/58971124.html",
+          "title": "成都自然博物馆今起收费，门票价格、购票方式→_四川在线",
+          "data": {
+            "snippet": "（一）收费标准：20元/人/场。\n\n（二）正常开馆期间提供定时现场组团讲解服务。场馆开放期间，从10：00起，每个小时发团一次。每个组团人数不超过30人，统一在一楼大厅服务台办理相关手续。\n\n（三）现场组团讲解服务预约及付费流程包括：预约申请、领取耳麦（需抵押有效证件或人民币现金200元/套耳麦）、讲解费支付、候团、出团。\n\n（四）现场组团讲解结束后须配合完成：耳麦退还、有效证件或押金退还。讲解服务中，观众遗失或人为损坏讲解耳麦，原价赔偿。\n\n（五）讲解服务时长：60分钟/场。\n\n（六）讲解范围：地质环境厅、矿产资源厅、龙行川渝厅、恐龙揭秘厅、生命探源厅、缤纷生命厅。\n\n（七）讲解服务付费成功后，可根据我馆提供的小票，自行完成发票开具。\n\n（八）除付费讲解外，自然馆提供定时定点免费公益讲解服务，服务时间分别为开放日上午10：00、下午14：00，共两场；服务受众人数为30－50人/场；另外，观众还可选择免费提供语音导览服务，语音导览服务点全部位于常设展厅内。\n\n（九）其它事项 [...] （二）线下购票\n\n1. 可通过官方微信公众号、官方网站完成线上预约。预约成功后的观众，请到现场票务服务中心“购票窗口”购票入馆。\n\n2. 现场直接前往票务服务中心“购票窗口”购票入馆。\n\n（三）特殊人群\n\n针对老弱病残孕等特殊人群，前往票务服务中心“特殊人群窗口”办理购票入馆。\n\n四 团队预约\n\n（一）社会团队购票预约\n\n1. 社会团队组织团体来馆参观，实行统一安排，购票入馆参观。\n\n2. 预约时需持《成都自然博物馆（成都理工大学博物馆）组织机构社会团队参观承诺书》《成都自然博物馆（成都理工大学博物馆）社会团体参观身份信息登记表》并加盖公章；相关资料可在官方微信公众号发布的《成都自然博物馆（成都理工大学博物馆）关于社会团队预约参观公告》中下载，并将相关材料发送至官方邮箱（cdiranbwg02@163.com），审核通过后以邮箱或电话告知。原则上提前3个工作日到成都自然博物馆（成都理工大学博物馆）票务中心现场办理预约手续。 [...] 3. 预约成功后，团队需要在预约时段内，持预约凭证和有效证件（身份证原件）至成都自然博物馆（成都理工大学博物馆）正大门检票口验证入馆。若实际到达人数超出预约人数，超出部分需另行购票。\n\n（二）大、中、小学生集体免费参观预约\n\n1. 全日制大、中、小学生（成教生、研究生除外）组织团体来馆参观，实行统一安排，免费预约参观。\n\n2. 预约时需持《成都自然博物馆（成都理工大学博物馆）免费团队预约填报表》《成都自然博物馆（成都理工大学博物馆）免费团队预约承诺书》以及学校（院）正规介绍信和教师工作证及学生身份证信息表，并加盖公章；相关资料可在官方微信公众号发布的《成都自然博物馆（成都理工大学博物馆）关于免费团队预约参观公告》中下载，并将相关材料发送至官方邮箱（cdiranbwg01@163.com），审核通过后以邮箱或电话告知。原则上提前3个工作日到成都自然博物馆（成都理工大学博物馆）票务中心现场办理预约。\n\n3. 预约成功后，团队需要在预约时段内，持预约凭证和有效证件（学生证原件）至成都自然博物馆（成都理工大学博物馆）正大门检票口验证入馆。\n\n五 团队预约其他事项",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:52:35.877682+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W1bccdbce71268473",
+          "source": "https://hk.trip.com/travel-guide/attraction/chengdu/chengdu-natural-history-museum-38381108",
+          "title": "成都自然博物館門票【2026】- 預約、開放時間、評論及資訊 | Trip.com",
+          "data": {
+            "snippet": "概要評價贏取獎品Trip Moments詳情附近推介常見問題\n\n分享至\n\n1_成都自然博物館\n\n2_成都自然博物館\n\n3_成都自然博物館\n\n4_成都自然博物館\n\n5_成都自然博物館\n\n1_成都自然博物館\n\n2_成都自然博物館\n\n3_成都自然博物館\n\n4_成都自然博物館\n\n5_成都自然博物館\n\n1_成都自然博物館\n\n2_成都自然博物館\n\n3_成都自然博物館\n\n4_成都自然博物館\n\n5_成都自然博物館\n\n查看全部\n\n# 成都自然博物館\n\n成都自然博物馆\n\n󱌍\n\n󰺂7.5\n\n\n\n4.9/5\n\n9,015則評價\n\n\n\n2026  Asia 100 – 親子景點2026 Asia 100 – 親子景點\n\n## 明日09:00 - 17:00開始營業（16:00停止售票；16:30停止入場）\n\n建議逗留時間： 3 - 5小時\n\n地址：\n\n成都市成華區成華大道十里店路88號\n\n󱰰地圖\n\n電話：票務查詢：+86-28-60828500活動查詢：+86-18284456186\n\n## 其他旅客對成都自然博物館的評價\n\n顯示更多評價\n\n13492134\\\\\\92\n\n5/5\n\n完美 [...] 您可於 Trip.com 預訂成都自然博物館門票，這個深受旅客信賴的全球旅遊平台為國際旅客提供安全預訂服務、極具競爭力的價格及專屬支援。  \n  今日門票價格：HK$23.45  \n  如何預訂：  \n  1. 前往 Trip.com 的成都自然博物館門票頁面。   \n  2. 選擇您的參觀日期及門票選項。   \n  3. 提供所需旅客資料並完成您的訂單。   \n  4. 請於景點出示您的電子票及任何所需證件（如適用）。\n ### 為何使用 Trip.com 預訂成都自然博物館門票？ [...] 5/5\n\n完美\n\n快速核銷入園，工作人員服務態度很好，引導入館，租用了电子設備，講解很及時很方便，自由参觀，孩子們很喜歡！\n\n## 成都自然博物館的景點亮點\n\n部份資訊可能由 Google 翻譯處理\n\n成都自然博物館是一座集科學、教育和文化於一體的重要場所，致力於展示地球的自然歷史和生物多樣性。館內收藏豐富，涵蓋古生物化石、動植物標本及礦物岩石等多種展品，生動再現了地球演化的歷程。展廳設計現代，通過多媒體互動和沉浸式體驗，觀眾可以深入了解自然界的奧秘。博物館不僅是科普教育的重要基地，也是公眾了解自然科學的窗口。其豐富的展覽和活動吸引了各年齡段的觀眾，是探索自然、激發好奇心的理想之地。成都自然博物館以其科學性和趣味性，為遊客提供了一次啟迪心靈的文化之旅。\n\nloading  \n載入中...\n\n## 成都自然博物館常見問題\n\n ### 現時成都自然博物館的價格是多少？\n\n  根據最新 Trip.com 數據，今日成都自然博物館的門票價格為HK$23.45。\n ### 我可以如何購買成都自然博物館的門票？",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:52:35.877682+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W9a69217dbda46a3f",
+          "source": "https://www.nnhm.org.cn/cgzx/cgxx/index.shtml",
+          "title": "参观信息 -国家自然博物馆",
+          "data": {
+            "snippet": "预约采取实名制，请提供参观人的真实姓名、二代身份证号码等信息，每人每日只能预约1次，未成年人（12周岁以下）无法单独预约，退票后将无法重复预约当日门票。老年人、儿童也需提前完成预约。我馆提供个人预约和团体预约，不接受现场预约。\n\n三、个人观众请提前3日在国家自然博物馆官方网站或微信公众号进行预约，每日11:00更新。首次预约需使用本人手机号码进行注册。\n\n四、团体观众请提前4日在国家自然博物馆官方网站预约，每日10:00更新。20人（含）以上可预约团体票。同一账号每天可约一次。团体首次预约时需进行注册。注册时应提交公司营业执照、办学资质、手机号码（更换注册手机号码后需重新注册），经审核通过后方可进行团体预约。我馆对不遵守现场管理、影响观众正常参观的公司进行黑名单管理。\n\n五、预约成功后，系统会自动发送预约成功通知，请妥善保存。参观当日凭预约时使用的本人有效证件原件(未办身份证的观众，携带户口本、医保卡。外籍人士和港、澳、台地区观众携带护照、港澳台通行证原件窗口取票)核验入馆。 [...] EN\n\n|\n\n 首页\n 概况;)\n  + 博物馆简介\n  + 历史回顾\n  + 北京动物学会\n 参观;)\n  + 参观信息\n  + 4D影讯\n  + 地理位置\n  + 服务项目\n  + 学校预约\n  + 文明参观\n 展览;)\n  + 基本陈列\n  + 临时展览\n  + 巡回展览\n  + 虚拟展厅\n 藏品;)\n  + 藏品在说话\n  + 馆藏档案\n  + 藏品征集\n 教育\n 学术\n 文创;)\n  + 文创商城\n  + IP授权展示\n\n所在位置：首页 > 参观> 参观信息\n\n参观信息 4D影讯 地理位置 服务项目 学校预约 文明参观\n\n参观信息\n\n一、为确保观众人身安全，提升观展体验，国家自然博物馆实行“限量、预约、错峰”的政策对外开放。开放时间为每日9:00-17:00（16:30后停止入馆），周一例行闭馆（国家法定节假日除外）。\n\n二、预约参观时，三个参观时段对应的有效入馆时间，分别为：9:00-11:00、11:00-14:00、14:00-16:00。 [...] 六、观众须在预约时间段到馆参观，错过预约时间段将谢绝入馆。如无法按时入馆参观，观众可于参观时段截止时间前申请退票，逾期将无法退票，系统将自动默认该账号爽约1次。当月度内累计3次爽约的账号，90日内无法预约。\n\n国家自然博物馆\n\n2025年6月18日\n\n微信扫描二维码预约参观\n\n手机访客请长按保存此二维码用微信扫一扫打开\n\n 联系我们\n ;)\n\n  官方微博\n ;)\n\n  微信公众号\n ;)\n\n  官方视频号\n\nCopyright © 国家自然博物馆(Natural History Museum of China)  \n京ICP备07033573号-5 京公网安备11010102006642号\n\n网站访问量34441196",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:52:35.877682+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wd35c5659cb086045",
+          "source": "https://www.cdmuseum.com",
+          "title": "成都博物馆",
+          "data": {
+            "snippet": "2022年1月25日-2022年5月18日 一层特展厅\n\n  云想衣裳——丝绸之路服饰文化特展\n \n\n  2021年12月28日-2022年3月20日 三层临展厅\n\n  富贵长春——中国传统财富文化展\n \n\n  2021年6月29日-2021年8月1日 一层特展厅\n\n  红星耀蓉城·百年铸辉煌\n \n\n  2021年6月17日-12月12日 一层特展厅、三层临展厅\n\n  发现中医之美——中国传统医药文物特展\n \n\n  2021年2月9日-2021年5月19日 一层特展厅\n\n  列备五都—秦汉时期的中国都市\n \n\n  2020年12月11日-2021年3月14日 三层临展厅\n\n  玉汝于成——潘玉良的艺术人生\n \n\n  2020年9月29日-2021年1月3日 一层特展厅\n\n  光影浮空：欧洲绘画五百年\n \n\n  2020年6月30日-2020年10月11日 三层临展厅\n\n  竞姸：清代中日伊万里瓷器展\n\n\n\n 在线预约订票\n\n开放时间\n\n周二—周四、周日 9:00-17:00（16:30停止入馆）\n\n周五、周六（周末儿童博物馆）9:00-20:30（20:00停止入馆） [...] 8月6日19点，由四川省人民政府新闻办公室、四川省文化厅（四川省文物局）、陕西省文物局指导，中共 成都市委宣传部、成都市文化广播电视新闻出版局（成都市文物局）、中共宝鸡市委宣传部等单位支持，成 都博物馆、宝鸡青铜器博物院、汉中市博物馆等单位主办，扶风县博物馆、岐山县博物馆、岐山县周原博 物馆等单位共同协办的“秦蜀之路 ...\n\nmore\n\n研究成果\n\nmore\n\n \n \n \n \n\n  成都博物馆馆藏皮影文物精粹 冀东皮影 [...] 周一闭馆（法定节假日除外）\n\n立即预约 \n\n动态\n\n新闻动态 通知公告\n\nmore more\n\n 10\n\n  10 2026\n\n  成都博物馆关于2026年周末儿童博物馆活动素材拍摄及内容制作...\n\n  成都博物馆关于2026年周末儿童博物馆活动素材拍摄及内容制作服务项目价格调查的公告.pdf\n\n  \n 04\n\n  10 2026\n\n  观展指南 | 出片实战攻略&不可错过的细节！\n\n  跨越百年的英伦陶瓷工艺来蓉！国庆前夕，成都博物馆与英国维多利亚与艾尔伯特博物馆（V&amp;amp;amp;amp;amp;amp;amp;amp;A）联袂呈现的“窑火中的艺术匠心：V&amp;amp;amp;amp;amp;amp;amp;amp;A博物馆珍藏威基伍德陶瓷”特展全国首站在成都博物馆免费盛大开启。\n\n  \n 04\n\n  10 2026\n\n  国庆｜国庆过半，欢乐不减！成博“双节雅集”精彩持续上演",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:52:35.877682+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W74bdbcd507bf79c2",
+          "source": "https://nao.snhm.org.cn/foreign/cgfw/wssp.htm",
+          "title": "网上售票",
+          "data": {
+            "snippet": "首 页  常设展览   临展电影   教育活动   藏品精粹   参观服务   博物馆之友\n\n参观服务网上售票\n\n团队预约\n\n### 接上海市文化和旅游局通知：\n\n为贯彻落实文化和旅游部《关于做好旅游景点预约限量开放管理工作的通知》要求,为观众营造舒适、安全的参观体验环境，上海科技馆自2020年6月25日起实行全员实名制分时段预约参观。\n\n### 上海自然博物馆参观服务信息告示：\n\n为贯彻落实文化和旅游部《关于做好旅游景区预约限量开放管理工作的通知》要求，为观众营造舒适、安全的参观体验环境，上海科技馆自2020年6月25日起实行全员实名制分时段预约参观。\n\n1、开放时间: 9:00-17:00 (16:00停止检票入馆) (周一休馆,国定假日除外)。\n\n2、上海自然博物馆实行“线上实名制购票和现场身份证检票”，国内或港澳台观众须携带本人身份证/户口本或港澳台通行证原件，国外观众须携带本人护照原件，购买优惠票或享受免费人群须携带本人优待证件。 [...] 3、所有观众（含免费人群）可提前7日(含当天)，通过上海自然博物馆的官网、微信公众号购票/预约，参观票数量有限，售完为止。为确保您的利益，请通过正规渠道购票。\n\n4、购票/预约时须录入有效身份证件号，填写信息须与参观者所持证件保持一致。同一证件号（身份证、港澳台通行证或护照）每天限购/预约一张参观票。购票/预约时需选定入馆时段，上午时段：9:00-12:30，下午时段：12:30-16:00。参观票仅限预约日当天有效。参观票在未使用的情况下，可于预约日前一天23:30前在原购票平台申请退票，票款将于10个工作日内通过原支付渠道退返。如遇特殊情况请持本人有效证件至场馆游客服务中心办理退票申请。\n\n5、对老年人等特殊需求观众，现场提供购票的咨询或协助服务。\n\n6、团队观众可提前7日通过上海自然博物馆官网预约，预约时需上传团队所有成员实名信息名单（姓名、身份证号码）。参观当日领队/导游需携带与馆方签署的《团队参观安全承诺书》原件及随团游客名单信息，至大厅团体接待处办理团队入场购票事宜。 [...] 7、上海自然博物馆在客流高峰时将采取现场限流措施，如当天网络预约购票（含预约免费参观）总人数达单日最大承载量，馆方将关闭票务通道。\n\n8、影院将按照疫情防控要求实施限流，影院内不得饮食。观众可在官网、微信公众号上实名制购买电影票。电影票非普通商品，其背后承载的文化服务具有时效性、唯一性等特征。如确需退票，可在预约日前一天23:30前在原购票平台申请，票款将于10个工作日内通过原支付渠道退返；超时不可退票。\n\n9、观众须全程佩戴口罩，出示“健康码”及“行程码”绿码，排队保持一米间隔，配合工作人员测量体温，体温异常(≥37.3℃）的观众谢绝入馆。\n\n10、馆内无公众停车场，请尽量搭乘公共交通。\n\n11、上海自然博物馆提供免费无线网络（ SNHM-wifi）接入服务。\n\n12、上海自然博物馆将视疫情变化而调整相关服务措施，敬请关注官网、微信公众号了解最新信息或拨打咨询电话:（021）62620116，服务时间：周二至周日及国定假日9:00-17:00。\n\n参观咨询 推荐攻略 消息中心 场馆日历 网上售票 App下载\n\n热点推荐\n\n##### 关于我们\n\n 历史溯源\n 博物馆简介",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:52:35.877682+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W9b81a9b4467dc704",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：成都 室内景点 电影院 游乐场",
+          "data": {
+            "query": "室内景点 电影院 游乐场",
+            "city": "成都",
+            "places": [
+              {
+                "id": "B0HD71R37U",
+                "name": "英皇电影城(悠方店)",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "交子大道300号悠方购物中心L515",
+                "location": "104.056175,30.583278",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0K2KUZ9BF",
+                "name": "光影未来游乐汇(莱蒙都会店)",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "二环路南四段51号莱蒙都会3栋3楼3001BC",
+                "location": "104.033865,30.631944",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0L03PCCPO",
+                "name": "电影院",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "正兴街道夔州大道与兴康三街交界处东侧天府大悦城B馆5楼",
+                "location": "104.088875,30.434225",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "双流区",
+                "business": null
+              },
+              {
+                "id": "B0HD39R88U",
+                "name": "水上游乐区(新世纪环球购物中心店)",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "天府大道北段1700号环球中心1F层",
+                "location": "104.062075,30.569475",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B001C933WD",
+                "name": "太平洋影城",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "科华路高阳路38号附501号万科金色海蓉2期汇智中心5层(近火车南站)",
+                "location": "104.08348,30.611341",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0FFJCB6OW",
+                "name": "橙天国际影城(UPARK公园店)",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "高新区盛治街838号C栋3楼",
+                "location": "104.038993,30.553931",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              },
+              {
+                "id": "B0L22Z00NY",
+                "name": "儿童游乐场",
+                "type": "体育休闲服务;休闲场所;游乐场",
+                "address": "龙灯山路一段297号(四河地铁站C口步行390米)",
+                "location": "104.069495,30.511595",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "双流区",
+                "business": null
+              },
+              {
+                "id": "B0K0XSTSXF",
+                "name": "中影紫荆国际影城4K激光IMAX环球中心旗舰店",
+                "type": "体育休闲服务;影剧院;电影院",
+                "address": "天府大道北段1700号新世纪环球中心4F层",
+                "location": "104.064825,30.569275",
+                "pname": "四川省",
+                "cityname": "成都市",
+                "adname": "武侯区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:52:46.907634+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "warnings": [
+        "地点信息不等于门票余量或实时营业保证；开放与预约请核对景区官方公告。",
+        "搜索摘录可能不完整，需检查原站、发布日期与适用范围；无结果不代表没有公告。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3703,
+          "usage": {
+            "prompt_tokens": 1239,
+            "total_tokens": 1520,
+            "completion_tokens": 281
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "四川成都",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户要求查询明天（2026-10-13）成都的天气，并准备晴天和雨天两种情况下的室内游方案。"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询四川成都在2026-10-13的天气情况（气温、降水概率等）。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null
+            },
+            {
+              "id": "t2",
+              "task": "基于四川成都的地点，查找适合在晴朗天气下进行的室内游览景点或场所备选。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "假设预报晴朗"
+            },
+            {
+              "id": "t3",
+              "task": "基于四川成都的地点，查找适合在下雨天气下进行的室内游览景点或场所备选。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "假设预报下雨"
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1000,
+          "usage": {
+            "prompt_tokens": 1434,
+            "total_tokens": 1474,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "成都",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 2031
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1157,
+          "usage": {
+            "prompt_tokens": 2321,
+            "total_tokens": 2397,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1815286,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 3172
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 2812,
+          "usage": {
+            "prompt_tokens": 3445,
+            "total_tokens": 3645,
+            "completion_tokens": 200
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询四川成都在2026-10-13的天气情况（气温、降水概率等）。"
+          },
+          "status": "success",
+          "elapsed_ms": 11984
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 875,
+          "usage": {
+            "prompt_tokens": 3079,
+            "total_tokens": 3123,
+            "completion_tokens": 44
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "成都"
+          },
+          "elapsed_ms": 391
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1391,
+          "usage": {
+            "prompt_tokens": 4114,
+            "total_tokens": 4167,
+            "completion_tokens": 53
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "no_data",
+          "arguments": {
+            "query": "成都博物馆 开放时间 门票预约",
+            "official_domains": [
+              "www.cd-museum.com"
+            ]
+          },
+          "elapsed_ms": 2796
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1063,
+          "usage": {
+            "prompt_tokens": 4222,
+            "total_tokens": 4270,
+            "completion_tokens": 48
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "success",
+          "arguments": {
+            "query": "成都自然博物馆 开放时间 门票预约",
+            "official_domains": []
+          },
+          "elapsed_ms": 2547
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 7062,
+          "usage": {
+            "prompt_tokens": 8953,
+            "total_tokens": 9533,
+            "completion_tokens": 580
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于四川成都的地点，查找适合在晴朗天气下进行的室内游览景点或场所备选。"
+          },
+          "status": "success",
+          "elapsed_ms": 18032
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1671,
+          "usage": {
+            "prompt_tokens": 8646,
+            "total_tokens": 8690,
+            "completion_tokens": 44
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内景点 电影院 游乐场",
+            "city": "成都"
+          },
+          "elapsed_ms": 391
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 6734,
+          "usage": {
+            "prompt_tokens": 9770,
+            "total_tokens": 10285,
+            "completion_tokens": 515
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t3",
+          "arguments": {
+            "task": "基于四川成都的地点，查找适合在下雨天气下进行的室内游览景点或场所备选。"
+          },
+          "status": "success",
+          "elapsed_ms": 10734
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 5641,
+          "usage": {
+            "prompt_tokens": 11402,
+            "total_tokens": 11965,
+            "completion_tokens": 563
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "查询四川成都在2026-10-13的天气情况（气温、降水概率等）。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t2",
+              "task": "基于四川成都的地点，查找适合在晴朗天气下进行的室内游览景点或场所备选。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t3",
+              "task": "基于四川成都的地点，查找适合在下雨天气下进行的室内游览景点或场所备选。",
+              "status": "answered"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 10,
+      "delegations": 3,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "四川成都",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户要求查询明天（2026-10-13）成都的天气，并准备晴天和雨天两种情况下的室内游方案。"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": true,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "place_review_completed": true,
+        "all_planned_tasks_answered": true,
+        "cited_weather_matches_target": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 50.11
+    }
+  ],
+  "summary": {
+    "profiles": {
+      "planned": {
+        "attempted": 6,
+        "skipped": 0,
+        "execution_passed": 4,
+        "execution_pass_rate": 0.6666666666666666,
+        "routing_exact_rate": 0.8333333333333334,
+        "timeout_rate": 0.0,
+        "latency_p50_seconds": 10.922,
+        "latency_p95_seconds": 50.11,
+        "latency_mean_seconds": 21.0705,
+        "mean_model_calls": 5.666666666666667,
+        "token_complete_records": 6,
+        "mean_total_tokens": 21953.333333333332,
+        "manual_reviewed_records": 0,
+        "semantic_accuracy": null,
+        "request_coverage_rate": null,
+        "supported_claim_rate": null
+      }
+    },
+    "paired_attempts": 0,
+    "comparison": "planned",
+    "paired_delta_mean_seconds": null,
+    "paired_regressions": [],
+    "quantile_method": "nearest_rank; all attempted runs, including failures"
+  },
+  "completed_at": "2026-10-12T12:52:59.484601+08:00"
+}

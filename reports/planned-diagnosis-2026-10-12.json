@@ -1,0 +1,1194 @@
+{
+  "version": 1,
+  "status": "completed",
+  "started_at": "2026-10-12T12:43:23.090066+08:00",
+  "scope": "开发回归集，人工编写；不是独立测试集，不代表真实用户问题分布。agents为必要专家集合，自动规则仅核查执行契约。",
+  "dataset_sha256": "eada57fbe7e4a1c6c356c84e8e31dc4cb6655162add067121c43166946650b1b",
+  "implementation_sha256": {
+    "benchmark.py": "902661b2e3a5f52774f45ec8eecf8181ac055463aa3c992a724e23e61b044e42",
+    "engine.py": "5c1ad2e1d3a92dcc2e201f12dfe1931c99df15ff96efd5c51c1b60952784e89e",
+    "planning.py": "8d16319da7be6e103f58984914fbb5dc3aa8c8f845c5845494a44deb3e70e1af",
+    "model.py": "2212bfdcc1f818e387b2fa7ec4587007e21487d766d9f3d3e82400908574f84e",
+    "metrics.py": "97e384fa79aab7dcba9e958e91df7dd2ab8f50139aa5efe1f50b58ae09db3eb7",
+    "grounding.py": "b6718a5cdd5058c3f7f202a9d29f996be3a87d7f768cb8dd9226b9feabaf994a",
+    "a2a.py": "18a9812b4d24d6ac7327bb5aa87ad3bda346e4a65191c28b01872c2d8fc65e38",
+    "runtime.py": "a583c7f1e2a76edda309c99896c2f17bbb0178aba73b8b588bb55acab23f8976"
+  },
+  "configuration_sha256": "c7823d01bbeeac0e3cdfc0add7193fbc55be5faf6175a7c2c9a97795ee85ac80",
+  "transport": "a2a_mcp",
+  "model": "qwen3.7-flash",
+  "repeats": 1,
+  "profile_order": "AB/BA alternating by case and repeat, sequential execution",
+  "notes": [
+    "No paid model judge; semantic accuracy requires manual review.",
+    "Wall-clock latency includes MCP startup/cleanup; no TTFT or currency cost inferred.",
+    "Live API data and provider load can change between paired runs."
+  ],
+  "records": [
+    {
+      "case_id": "rain_plan",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "西安 · 陕西 · 西安市 · 中国 · 2026-10-13：预报为阴天，气温 12.6℃～23.2℃，当日最高降水概率 0%，预计降水量 0 mm，最大风速 8.8 km/h。[W9d48d7cf7fdf]\n以上是当前预报，并非确定结果；即使降水概率为 0% 也不保证无雨，建议出发前再次查看并备好便携雨具。\n\n虽然预报无雨，但针对雨天备选方案，地图查询显示有室内景点候选：如陕西自然博物馆（雁塔区）、大华博物馆（新城区）及西安记忆历史文化展览馆（莲湖区）等科教文化场馆 [W7f84904830f19e3b]；以及长乐游泳健身、欢乐迪KTV(未央店)等室内娱乐设施 [W1a3f3ed801f12a9b]。这些场所的室内条件、营业状态及预约要求均待核实，建议出行前再次确认。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "W9d48d7cf7fdf",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:43:35.397381+00:00"
+        },
+        {
+          "id": "W7f84904830f19e3b",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFMHT4LY",
+                "name": "西安国际会展中心展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "会展一路1399号",
+                "location": "109.038654,34.335431",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFJIWE14",
+                "name": "西安记忆历史文化展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "西安鼓楼北门旁(广济街地铁站D1口步行400米)",
+                "location": "108.943435,34.260714",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0G2X7MQ7K",
+                "name": "西安国际会展中心展览馆地下停车场",
+                "type": "交通设施服务;停车场;公共停车场",
+                "address": "会展一路1399号西安国际会展中心",
+                "location": "109.037366,34.336601",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFFPKPYM",
+                "name": "大华博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "太华南路251号",
+                "location": "108.975380,34.283829",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0H32741ZP",
+                "name": "城市记忆展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "咸宁西路55号兴庆宫公园",
+                "location": "108.983009,34.253226",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:43:42.080708+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "W1a3f3ed801f12a9b",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内娱乐 影院 KTV 健身房 游泳馆",
+          "data": {
+            "query": "室内娱乐 影院 KTV 健身房 游泳馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0LBA7T30T",
+                "name": "长乐游泳健身",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "雨润星雨华府湖心岛负一层",
+                "location": "108.915586,34.375222",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0HDJ4RKWU",
+                "name": "闪耀游泳馆",
+                "type": "体育休闲服务;运动场馆;游泳馆",
+                "address": "莱茵风景大道海荣名城北侧约30米",
+                "location": "108.944505,34.349877",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0JDS9N9CZ",
+                "name": "零距离健身游泳(新天地店)",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "凤城八路与渭滨路70号水晶卡芭拉负层一层11301B1-066号",
+                "location": "108.964376,34.341531",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0FFKYB32T",
+                "name": "欢乐迪KTV(未央店)",
+                "type": "体育休闲服务;娱乐场所;KTV",
+                "address": "文景路凤城一路19号(凤城一号小区2-3层商铺)",
+                "location": "108.938235,34.314414",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0H3ZCFZDW",
+                "name": "景格游泳健身",
+                "type": "体育休闲服务;运动场馆;游泳馆",
+                "address": "未央宫街道龙首北路与明光路十字东北角天竹综合大厦负一楼",
+                "location": "108.932789,34.293055",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0LR3CDF72",
+                "name": "水动丽游泳健身",
+                "type": "体育休闲服务;运动场馆;健身中心|体育休闲服务;运动场馆;游泳馆",
+                "address": "文景北路10号1幢1层",
+                "location": "108.937112,34.314979",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0L0M59EIT",
+                "name": "乐普健身游泳",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "永宜路蔚蓝花城七色镇幼儿园对面",
+                "location": "108.914704,34.281718",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0KR45I8FE",
+                "name": "零距离健身游泳(中登广场店)",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "凤城四路4号中登广场F1层",
+                "location": "108.943350,34.326218",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:43:44.167263+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 31156,
+        "model_calls": 9,
+        "model_elapsed_ms": 21766,
+        "leaf_tool_calls": 5,
+        "leaf_tool_elapsed_ms": 5484,
+        "usage_reported_calls": 9,
+        "prompt_tokens": 39363,
+        "completion_tokens": 1392,
+        "total_tokens": 40755,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 31156
+      },
+      "retrieved_evidence": [
+        {
+          "id": "Wcf8a240f6d76",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：西安",
+          "data": {
+            "candidates": [
+              {
+                "id": 1790630,
+                "name": "西安",
+                "latitude": 34.25833,
+                "longitude": 108.92861,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "陕西",
+                "admin2": "西安市",
+                "feature_code": "PPLA",
+                "population": 9600000,
+                "elevation": 416.0,
+                "location_id": 1790630,
+                "label": "西安 · 陕西 · 西安市 · 中国"
+              },
+              {
+                "id": 1790631,
+                "name": "西安",
+                "latitude": 28.46667,
+                "longitude": 111.05,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "湖南",
+                "admin2": "常德市",
+                "feature_code": "PPLA4",
+                "elevation": 541.0,
+                "location_id": 1790631,
+                "label": "西安 · 湖南 · 常德市 · 中国"
+              },
+              {
+                "id": 1551730,
+                "name": "西安",
+                "latitude": 27.5351,
+                "longitude": 106.422,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "贵州",
+                "admin2": "遵义市",
+                "feature_code": "PPL",
+                "elevation": 880.0,
+                "location_id": 1551730,
+                "label": "西安 · 贵州 · 遵义市 · 中国"
+              },
+              {
+                "id": 1913787,
+                "name": "西安",
+                "latitude": 22.93439,
+                "longitude": 112.79641,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "佛山市",
+                "feature_code": "PPL",
+                "elevation": 6.0,
+                "location_id": 1913787,
+                "label": "西安 · 广东 · 佛山市 · 中国"
+              },
+              {
+                "id": 1984210,
+                "name": "西安村",
+                "latitude": 27.01623,
+                "longitude": 119.54361,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "宁德市",
+                "feature_code": "PPL",
+                "elevation": 206.0,
+                "location_id": 1984210,
+                "label": "西安村 · 福建省 · 宁德市 · 中国"
+              },
+              {
+                "id": 2005499,
+                "name": "西安",
+                "latitude": 25.81766,
+                "longitude": 117.5648,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "三明市",
+                "feature_code": "PPL",
+                "elevation": 575.0,
+                "location_id": 2005499,
+                "label": "西安 · 福建省 · 三明市 · 中国"
+              },
+              {
+                "id": 2048018,
+                "name": "西安",
+                "latitude": 40.32369,
+                "longitude": 117.63465,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "河北省",
+                "admin2": "承德市",
+                "feature_code": "PPL",
+                "elevation": 377.0,
+                "location_id": 2048018,
+                "label": "西安 · 河北省 · 承德市 · 中国"
+              },
+              {
+                "id": 6793014,
+                "name": "西安",
+                "latitude": 20.7254,
+                "longitude": 110.14886,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "湛江市",
+                "feature_code": "PPL",
+                "elevation": 60.0,
+                "location_id": 6793014,
+                "label": "西安 · 广东 · 湛江市 · 中国"
+              },
+              {
+                "id": 6854552,
+                "name": "西安",
+                "latitude": 22.29999,
+                "longitude": 112.78035,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "江门市",
+                "feature_code": "PPL",
+                "elevation": 9.0,
+                "location_id": 6854552,
+                "label": "西安 · 广东 · 江门市 · 中国"
+              },
+              {
+                "id": 7628804,
+                "name": "西安",
+                "latitude": 45.00241,
+                "longitude": 127.3179,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "黑龙江",
+                "admin2": "哈尔滨市",
+                "feature_code": "PPL",
+                "elevation": 183.0,
+                "location_id": 7628804,
+                "label": "西安 · 黑龙江 · 哈尔滨市 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:43:31.201130+00:00"
+        },
+        {
+          "id": "W9d48d7cf7fdf",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:43:35.397381+00:00"
+        },
+        {
+          "id": "W7f84904830f19e3b",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFMHT4LY",
+                "name": "西安国际会展中心展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "会展一路1399号",
+                "location": "109.038654,34.335431",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFJIWE14",
+                "name": "西安记忆历史文化展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "西安鼓楼北门旁(广济街地铁站D1口步行400米)",
+                "location": "108.943435,34.260714",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0G2X7MQ7K",
+                "name": "西安国际会展中心展览馆地下停车场",
+                "type": "交通设施服务;停车场;公共停车场",
+                "address": "会展一路1399号西安国际会展中心",
+                "location": "109.037366,34.336601",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFFPKPYM",
+                "name": "大华博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "太华南路251号",
+                "location": "108.975380,34.283829",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0H32741ZP",
+                "name": "城市记忆展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "咸宁西路55号兴庆宫公园",
+                "location": "108.983009,34.253226",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:43:42.080708+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "W1a3f3ed801f12a9b",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内娱乐 影院 KTV 健身房 游泳馆",
+          "data": {
+            "query": "室内娱乐 影院 KTV 健身房 游泳馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0LBA7T30T",
+                "name": "长乐游泳健身",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "雨润星雨华府湖心岛负一层",
+                "location": "108.915586,34.375222",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0HDJ4RKWU",
+                "name": "闪耀游泳馆",
+                "type": "体育休闲服务;运动场馆;游泳馆",
+                "address": "莱茵风景大道海荣名城北侧约30米",
+                "location": "108.944505,34.349877",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0JDS9N9CZ",
+                "name": "零距离健身游泳(新天地店)",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "凤城八路与渭滨路70号水晶卡芭拉负层一层11301B1-066号",
+                "location": "108.964376,34.341531",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0FFKYB32T",
+                "name": "欢乐迪KTV(未央店)",
+                "type": "体育休闲服务;娱乐场所;KTV",
+                "address": "文景路凤城一路19号(凤城一号小区2-3层商铺)",
+                "location": "108.938235,34.314414",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0H3ZCFZDW",
+                "name": "景格游泳健身",
+                "type": "体育休闲服务;运动场馆;游泳馆",
+                "address": "未央宫街道龙首北路与明光路十字东北角天竹综合大厦负一楼",
+                "location": "108.932789,34.293055",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0LR3CDF72",
+                "name": "水动丽游泳健身",
+                "type": "体育休闲服务;运动场馆;健身中心|体育休闲服务;运动场馆;游泳馆",
+                "address": "文景北路10号1幢1层",
+                "location": "108.937112,34.314979",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0L0M59EIT",
+                "name": "乐普健身游泳",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "永宜路蔚蓝花城七色镇幼儿园对面",
+                "location": "108.914704,34.281718",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0KR45I8FE",
+                "name": "零距离健身游泳(中登广场店)",
+                "type": "体育休闲服务;运动场馆;健身中心",
+                "address": "凤城四路4号中登广场F1层",
+                "location": "108.943350,34.326218",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:43:44.167263+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "We173977cdba4dca7",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内餐饮 美食街 购物中心",
+          "data": {
+            "query": "室内餐饮 美食街 购物中心",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0G39NJHLV",
+                "name": "食光里美食街(兴正元购物广场东大街店)",
+                "type": "餐饮服务;中餐厅;中餐厅",
+                "address": "东大街骡马市1号星悦MALLB1层",
+                "location": "108.951675,34.259175",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              },
+              {
+                "id": "B0L32H42NE",
+                "name": "林火美食街",
+                "type": "购物服务;购物相关场所;购物相关场所",
+                "address": "长缨西路75号长缨鞋城停车广场及西门面16号商铺",
+                "location": "108.992675,34.277825",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0FFIWVO5U",
+                "name": "王菊美食街·王菊面馆(总店)",
+                "type": "餐饮服务;中餐厅;中餐厅",
+                "address": "雁塔区高新区东辛庄社区27排1-102号",
+                "location": "108.877359,34.233805",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFFS80LV",
+                "name": "美食街步行街",
+                "type": "购物服务;特色商业街;特色商业街",
+                "address": "亚迪路与锦业四路交叉口东北50米惠都购物中心",
+                "location": "108.847210,34.173676",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "长安区",
+                "business": null
+              },
+              {
+                "id": "B0MAZSDJPD",
+                "name": "皇城里民乐园美食街",
+                "type": "风景名胜;风景名胜相关;旅游景点",
+                "address": "东大街335号西安城墙·碑林历史文化景区内(东侧)",
+                "location": "108.965525,34.268575",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0FFHP75AT",
+                "name": "里巷美食街",
+                "type": "购物服务;特色商业街;特色商业街",
+                "address": "大寨路",
+                "location": "108.876008,34.244907",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFGZZIT6",
+                "name": "扬善美食街",
+                "type": "餐饮服务;中餐厅;中餐厅",
+                "address": "朱宏路辅路与凤城七路交叉口西300米",
+                "location": "108.916745,34.336490",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0FFHC8P32",
+                "name": "紫葵美食街",
+                "type": "购物服务;特色商业街;特色商业街",
+                "address": "张家堡街道凤城六路102乾塘华府东侧1楼东北方向40米",
+                "location": "108.934444,34.333641",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:43:45.929449+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        }
+      ],
+      "warnings": [
+        "地点信息不等于门票余量或实时营业保证；开放与预约请核对景区官方公告。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 3734,
+          "usage": {
+            "prompt_tokens": 1226,
+            "total_tokens": 1466,
+            "completion_tokens": 240
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "用户询问明天去西安的天气及下雨时的安排"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气预报，包括降雨概率、温度和风力等关键出行信息。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null,
+              "requires_evidence": true
+            },
+            {
+              "id": "t2",
+              "task": "基于2026年10月13日陕西西安的目的地和单日行程，查找适合雨天进行的室内景点或活动备选方案。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "如果天气显示有雨或降水概率较高",
+              "requires_evidence": true
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1156,
+          "usage": {
+            "prompt_tokens": 1417,
+            "total_tokens": 1457,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "西安",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 1375
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1641,
+          "usage": {
+            "prompt_tokens": 3054,
+            "total_tokens": 3130,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1790630,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 2546
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 3235,
+          "usage": {
+            "prompt_tokens": 4174,
+            "total_tokens": 4427,
+            "completion_tokens": 253
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026年10月13日陕西西安的天气预报，包括降雨概率、温度和风力等关键出行信息。"
+          },
+          "status": "success",
+          "elapsed_ms": 12000
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1141,
+          "usage": {
+            "prompt_tokens": 3878,
+            "total_tokens": 3922,
+            "completion_tokens": 44
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安"
+          },
+          "elapsed_ms": 406
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1344,
+          "usage": {
+            "prompt_tokens": 4919,
+            "total_tokens": 4968,
+            "completion_tokens": 49
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内娱乐 影院 KTV 健身房 游泳馆",
+            "city": "西安"
+          },
+          "elapsed_ms": 750
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1343,
+          "usage": {
+            "prompt_tokens": 6041,
+            "total_tokens": 6086,
+            "completion_tokens": 45
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内餐饮 美食街 购物中心",
+            "city": "西安"
+          },
+          "elapsed_ms": 407
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 4031,
+          "usage": {
+            "prompt_tokens": 7127,
+            "total_tokens": 7461,
+            "completion_tokens": 334
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于2026年10月13日陕西西安的目的地和单日行程，查找适合雨天进行的室内景点或活动备选方案。"
+          },
+          "status": "success",
+          "elapsed_ms": 11265
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 4141,
+          "usage": {
+            "prompt_tokens": 7527,
+            "total_tokens": 7838,
+            "completion_tokens": 311
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气预报，包括降雨概率、温度和风力等关键出行信息。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t2",
+              "task": "基于2026年10月13日陕西西安的目的地和单日行程，查找适合雨天进行的室内景点或活动备选方案。",
+              "status": "answered"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 8,
+      "delegations": 2,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "陕西西安",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户询问明天去西安的天气及下雨时的安排"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": true,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "place_review_completed": true,
+        "all_planned_tasks_answered": true,
+        "cited_weather_matches_target": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 31.156
+    }
+  ],
+  "summary": {
+    "profiles": {
+      "planned": {
+        "attempted": 1,
+        "skipped": 0,
+        "execution_passed": 1,
+        "execution_pass_rate": 1.0,
+        "routing_exact_rate": 1.0,
+        "timeout_rate": 0.0,
+        "latency_p50_seconds": 31.156,
+        "latency_p95_seconds": 31.156,
+        "latency_mean_seconds": 31.156,
+        "mean_model_calls": 9,
+        "token_complete_records": 1,
+        "mean_total_tokens": 40755,
+        "manual_reviewed_records": 0,
+        "semantic_accuracy": null,
+        "request_coverage_rate": null,
+        "supported_claim_rate": null
+      }
+    },
+    "paired_attempts": 0,
+    "comparison": "planned",
+    "paired_delta_mean_seconds": null,
+    "paired_regressions": [],
+    "quantile_method": "nearest_rank; all attempted runs, including failures"
+  },
+  "completed_at": "2026-10-12T12:43:54.263493+08:00"
+}

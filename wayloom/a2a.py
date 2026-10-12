@@ -22,12 +22,12 @@ class RemoteAgents:
     def __init__(self, config):
         self.config = config
 
-    async def call(self, agent, query, history, context, evidence, budget):
+    async def call(self, agent, query, history, context, evidence, budget, *, require_evidence=False):
         if budget < 1:
             raise ValueError('No remaining tool budget')
         task_id = str(uuid.uuid4())
         content = {'query': query, 'history': history, 'context': context, 'evidence': evidence, 'budget': budget,
-                   'compact_handoffs': self.config.get('compact_handoffs', False)}
+                   'compact_handoffs': self.config.get('compact_handoffs', False), 'require_evidence': require_evidence}
         if 'enable_thinking' in self.config:
             content['enable_thinking'] = self.config['enable_thinking']
         task = Task(id=task_id, message=Message(role=MessageRole.USER,
@@ -70,6 +70,7 @@ def create_app(agent_id, model=None):
     @app.post('/tasks/send')
     async def send(request: Request):
         body = {}
+        stage = 'protocol'
         try:
             body = await request.json()
             if not isinstance(body, dict) or body.get('jsonrpc') != '2.0' or body.get('method') != 'tasks/send':
@@ -84,6 +85,9 @@ def create_app(agent_id, model=None):
             compact = payload.get('compact_handoffs', config.get('compact_handoffs', False))
             if type(compact) is not bool:
                 raise ValueError('compact_handoffs must be boolean')
+            require_evidence = payload.get('require_evidence', False)
+            if type(require_evidence) is not bool:
+                raise ValueError('require_evidence must be boolean')
             if 'enable_thinking' in payload and payload['enable_thinking'] is not None and type(payload['enable_thinking']) is not bool:
                 raise ValueError('enable_thinking must be null or boolean')
             if type(context.get('demo_enabled', False)) is not bool:
@@ -100,12 +104,16 @@ def create_app(agent_id, model=None):
             session.update(context.get('trip', {}))
             session.candidates = candidates
             state = RunState(evidence={item['id']: item for item in payload.get('evidence', [])})
+            stage = 'tool_initialization'
             async with ToolHub(config) as hub:
+                stage = 'specialist'
                 request_model = model or (ChatModel(enable_thinking=payload['enable_thinking'])
                     if 'enable_thinking' in payload else ChatModel())
-                engine = Engine(request_model, hub, dict(config, max_tool_calls=payload['budget'], compact_handoffs=compact), session)
+                engine = Engine(request_model, hub, dict(config, max_tool_calls=payload['budget'], compact_handoffs=compact,
+                                require_task_evidence=require_evidence), session)
                 answer = await asyncio.wait_for(engine.specialist(agent, payload['query'], history, state),
                                                 config['a2a_timeout'] - 5)
+            stage = 'response'
             result = {'answer': answer, 'evidence': list(state.evidence.values()), 'trace': state.trace,
                       'warnings': state.warnings, 'tool_calls': state.calls, 'candidates': session.candidates,
                       'quotes': session.quotes}
@@ -113,9 +121,10 @@ def create_app(agent_id, model=None):
             task.artifacts = [{'parts': [{'type': 'text', 'text': answer}]}]
             task.metadata = {'business': result}
             return {'jsonrpc': '2.0', 'id': task.id, 'result': task.to_dict()}
-        except Exception:
+        except Exception as exc:
             return {'jsonrpc': '2.0', 'id': body.get('id') if isinstance(body, dict) else None,
-                    'error': {'code': -32000, 'message': 'Agent 请求未完成'}}
+                    'error': {'code': -32000, 'message': 'Agent 请求未完成',
+                              'data': {'stage': stage, 'error_type': type(exc).__name__}}}
     return app
 
 

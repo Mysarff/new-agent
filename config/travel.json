@@ -14,7 +14,8 @@
   "a2a_timeout": 240,
   "run_timeout": 240,
   "evidence_review_timeout": 90,
-  "compact_handoffs": false,
+  "planned_execution": true,
+  "compact_handoffs": true,
   "review_all_evidence": true,
   "user_timezone": "Asia/Shanghai",
   "agents": [

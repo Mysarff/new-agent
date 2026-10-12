@@ -1,0 +1,958 @@
+{
+  "version": 1,
+  "status": "completed",
+  "started_at": "2026-10-12T12:33:54.771834+08:00",
+  "scope": "开发回归集，人工编写；不是独立测试集，不代表真实用户问题分布。agents为必要专家集合，自动规则仅核查执行契约。",
+  "dataset_sha256": "f38ce351737a2499b953221591e8afd3b79389a7089497d232aa176219540c2c",
+  "implementation_sha256": {
+    "benchmark.py": "50dc20eb8ec3807428057057030b9e7a13e18b0df95c9958bbc28a874c7032d7",
+    "engine.py": "5c1ad2e1d3a92dcc2e201f12dfe1931c99df15ff96efd5c51c1b60952784e89e",
+    "planning.py": "e0601333d96700a054c40871ee37b1a43fa6dd915206958e157a9306ed84b393",
+    "model.py": "2212bfdcc1f818e387b2fa7ec4587007e21487d766d9f3d3e82400908574f84e",
+    "metrics.py": "97e384fa79aab7dcba9e958e91df7dd2ab8f50139aa5efe1f50b58ae09db3eb7",
+    "grounding.py": "6e536f8e3e72dd375cd322b6e11f21aaa9c9ff4e3b7d43f4e049e40f79bd32c7",
+    "a2a.py": "18a9812b4d24d6ac7327bb5aa87ad3bda346e4a65191c28b01872c2d8fc65e38",
+    "runtime.py": "a583c7f1e2a76edda309c99896c2f17bbb0178aba73b8b588bb55acab23f8976"
+  },
+  "configuration_sha256": "c7823d01bbeeac0e3cdfc0add7193fbc55be5faf6175a7c2c9a97795ee85ac80",
+  "transport": "a2a_mcp",
+  "model": "qwen3.7-flash",
+  "repeats": 1,
+  "profile_order": "AB/BA alternating by case and repeat, sequential execution",
+  "notes": [
+    "No paid model judge; semantic accuracy requires manual review.",
+    "Wall-clock latency includes MCP startup/cleanup; no TTFT or currency cost inferred.",
+    "Live API data and provider load can change between paired runs."
+  ],
+  "records": [
+    {
+      "case_id": "rain_plan",
+      "repeat": 1,
+      "profile": "planned",
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "model_options": {
+        "enable_thinking": false,
+        "planned_execution": true,
+        "compact_handoffs": true
+      },
+      "answer": "西安 · 陕西 · 西安市 · 中国 · 2026-10-13：预报为阴天，气温 12.6℃～23.2℃，当日最高降水概率 0%，预计降水量 0 mm，最大风速 8.8 km/h。[W62e8c1c7e27e]\n以上是当前预报，并非确定结果；即使降水概率为 0% 也不保证无雨，建议出发前再次查看并备好便携雨具。\n\n未完成：因明天预报无降雨，雨天备选行程暂不触发。若需室内活动参考，地图查询到的地点候选包括陕西自然博物馆（长安南路88号）、陕西历史博物馆（小寨东路91号）及大华博物馆（太华南路251号）等 [Wec710067b815ea6e]。具体是否全室内、实时开放情况及是否需要预约，请核对景区官方公告 [Wa3edbf800fc6de72][W391aacde19a63e58]。",
+      "answer_review": "completed",
+      "citations": [
+        {
+          "id": "W62e8c1c7e27e",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:34:05.414911+00:00"
+        },
+        {
+          "id": "Wec710067b815ea6e",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFMHT4LY",
+                "name": "西安国际会展中心展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "会展一路1399号",
+                "location": "109.038654,34.335431",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFJIWE14",
+                "name": "西安记忆历史文化展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "西安鼓楼北门旁(广济街地铁站D1口步行400米)",
+                "location": "108.943435,34.260714",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0G2X7MQ7K",
+                "name": "西安国际会展中心展览馆地下停车场",
+                "type": "交通设施服务;停车场;公共停车场",
+                "address": "会展一路1399号西安国际会展中心",
+                "location": "109.037366,34.336601",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFFPKPYM",
+                "name": "大华博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "太华南路251号",
+                "location": "108.975380,34.283829",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0H32741ZP",
+                "name": "城市记忆展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "咸宁西路55号兴庆宫公园",
+                "location": "108.983009,34.253226",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:34:12.398102+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "Wa3edbf800fc6de72",
+          "source": "https://www.sxhm.com/guide/visit/detail/16032.html",
+          "title": "陕西历史博物馆及秦汉馆“五一”预约攻略_陕西历史博物馆_陕西历史博物馆,及,秦汉,馆,五,一,预约,攻略",
+          "data": {
+            "snippet": "2024年4月24日\n\n【温馨提示】\n\n五一期间，西安温度适宜，\n\n请您关注天气变化，\n\n注意防晒，携带雨具。\n\n下面是我馆的预约攻略\n\n快来了解一下\n\n⬇\n\n一、放票时间\n\n①提前放票天数\n\n陕西历史博物馆、陕西历史博物馆秦汉馆五一期间均正常开放，两馆放票时间并不相同，请您根据行程安排提前了解两馆放票时间，以免错过。\n\n本馆与秦汉馆有什么区别？\n\n您可以点击陕西历史博物馆、陕西历史博物馆秦汉馆详细了解一下。\n\n②每日放票时间\n\n预约系统每天10点、11点、18点、19点整点放票，请调好闹钟，准点预约！只需要提前3分钟打开公众号，蹲点儿操作刷新~\n\n一定要耐心多尝试几次！假如您10点没有约到票，系统会显示“11点开约”，请耐心等待，11点再继续预约门票。\n\nPS.秦汉馆平日无需预约。\n\n二、预约流程\n\n第一步：微信搜索“陕西历史博物馆”官方微信公众号，点击进入。\n\n第二步：点击右下角“门票预约”（标记1处），继续点击“门票预约”（标记2处）。\n\n第三步：仔细阅读温馨提示内容（相当重要） [...] 临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆及秦汉馆“五一”预约攻略\n\n时间：2024-04-24\n\n亲爱的观众朋友们：\n\n“田家少闲月，五月人倍忙”，古人以农忙描述五月的忙碌辛劳；“劳动最光荣，劳动最美丽”，今人让诚实劳动、勤勉工作蔚然成风。“五一”将至，您和家人都休息一下吧。长安的微风细雨、春和景明，都和我们一起欢迎您的到来。愿您在这里度过一段美好愉快的时光。\n\n祝您工作顺利，万事顺心！\n\n陕西历史博物馆\n\n2024年4月24日 [...] 根据您的参观意向点击上图页面下方的陕西历史博物馆预约，或者点击陕西历史博物馆秦汉馆“天下同一”展预约。\n\n第四步：选择参观日期\n\n选择参观日期、场次、数量（一次最多可以添加5张），点击“下一步”。\n\n第五步：填写游客信息\n\n以陕西历史博物馆预约入口为例。\n\n点击“选择新增”（标记1处）\n\n⬇\n\n点击“证件类型”（标记2处）\n\n选择相应有效证件（标记3处可上下滑动选择）\n\n⬇\n\n依次添加参观者姓名、证件号、手机号（最多添加5位观众）\n\n⬇\n\n点击“保存”（标记4处）\n\n⬇\n\n提交后，请一定注意页面情况，此时会显示“出票中”的提示，请不要着急退出界面，等屏幕显示如下图所示“待使用”界面时，方为预约成功！\n\n 请您认准陕西历史博物馆微信公众号，这是我馆唯一官方预约平台，请勿相信第三方代约票行为。\n 您对我们的厚爱让每一位陕历博人欣喜，极高的关注度也让约票变得困难，甚至可能出现“秒光”现象。如果预约不到门票，您可以访问陕历博官方网站和云观博展厅或虚拟展厅，欣赏过往精彩的临时展览以及业内专家讲座，领略灿烂文明、感受历史文化。非常感谢大家的理解、包容和支持， 我们一定竭诚为您服务！",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W391aacde19a63e58",
+          "source": "https://www.sxhm.com/guide/visit/detail/1598.html",
+          "title": "陕西历史博物馆恢复开放公告_陕西历史博物馆_陕西历史博物馆,恢复,开放,公告",
+          "data": {
+            "snippet": "二、陕西历史博物馆实行“限量、预约、错峰”的开放政策，每日接待量6000人次。\n\n三、请您通过“陕西历史博物馆”官方微信公众号提前进行门票预约。采用刷取本人身份证的方式入馆参观，详细的预约信息请阅读参观须知。\n\n四、入馆须配合工作人员查验陕西一码通（绿码）、通信大数据行程卡（绿码）及本人有效身份证件，按照预约时段入馆参观。\n\n网站地图|网友留言|\n\n友情链接： 中国国家博物馆故宫博物院上海博物馆南京博物院湖南博物院河南博物院湖北省博物馆浙江省博物馆辽宁省博物馆首都博物馆山西博物院重庆中国三峡博物馆敦煌研究院秦始皇帝陵博物院西安碑林博物馆汉景帝阳陵博物院陕西黄河文化博物馆\n\n中国 · 陕西 · 西安市小寨东路91号\n\nCopyright 2021 陕西历史博物馆版权所有All Rights Reserved.  陕ICP备05005777号-2 陕公网安备 61011302001384号\n\n网站建设：北京分形科技\n\n您当前使用的浏览器版本过低，  \n建议尽快升级您的浏览器，以获得更好的浏览体验！ [...] 展览\n\n常设展览\n\n专题展览\n\n临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆恢复开放公告\n\n时间：2022-08-29\n\n尊敬的观众朋友们：\n\n       陕西历史博物馆将于2022年8月30日（星期二）恢复开放，现就相关事项公告如下：\n\n一、开放时间：3月15日至11月14日：8：30—18：00，16：30停止入馆。11月15日至次年3月14日：9：00—17：30，16：00停止入馆。每周一（法定节假日除外）闭馆。",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        }
+      ],
+      "metrics": {
+        "engine_elapsed_ms": 31422,
+        "model_calls": 8,
+        "model_elapsed_ms": 20281,
+        "leaf_tool_calls": 4,
+        "leaf_tool_elapsed_ms": 7188,
+        "usage_reported_calls": 8,
+        "prompt_tokens": 37951,
+        "completion_tokens": 1473,
+        "total_tokens": 39424,
+        "reasoning_tokens": null,
+        "total_elapsed_ms": 31422
+      },
+      "retrieved_evidence": [
+        {
+          "id": "Wd02f3d1232ac",
+          "source": "https://geocoding-api.open-meteo.com/v1/search?name=%E8%A5%BF%E5%AE%89&count=10&language=zh&format=json&countryCode=CN",
+          "title": "地点查询：西安",
+          "data": {
+            "candidates": [
+              {
+                "id": 1790630,
+                "name": "西安",
+                "latitude": 34.25833,
+                "longitude": 108.92861,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "陕西",
+                "admin2": "西安市",
+                "feature_code": "PPLA",
+                "population": 9600000,
+                "elevation": 416.0,
+                "location_id": 1790630,
+                "label": "西安 · 陕西 · 西安市 · 中国"
+              },
+              {
+                "id": 1790631,
+                "name": "西安",
+                "latitude": 28.46667,
+                "longitude": 111.05,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "湖南",
+                "admin2": "常德市",
+                "feature_code": "PPLA4",
+                "elevation": 541.0,
+                "location_id": 1790631,
+                "label": "西安 · 湖南 · 常德市 · 中国"
+              },
+              {
+                "id": 1551730,
+                "name": "西安",
+                "latitude": 27.5351,
+                "longitude": 106.422,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "贵州",
+                "admin2": "遵义市",
+                "feature_code": "PPL",
+                "elevation": 880.0,
+                "location_id": 1551730,
+                "label": "西安 · 贵州 · 遵义市 · 中国"
+              },
+              {
+                "id": 1913787,
+                "name": "西安",
+                "latitude": 22.93439,
+                "longitude": 112.79641,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "佛山市",
+                "feature_code": "PPL",
+                "elevation": 6.0,
+                "location_id": 1913787,
+                "label": "西安 · 广东 · 佛山市 · 中国"
+              },
+              {
+                "id": 1984210,
+                "name": "西安村",
+                "latitude": 27.01623,
+                "longitude": 119.54361,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "宁德市",
+                "feature_code": "PPL",
+                "elevation": 206.0,
+                "location_id": 1984210,
+                "label": "西安村 · 福建省 · 宁德市 · 中国"
+              },
+              {
+                "id": 2005499,
+                "name": "西安",
+                "latitude": 25.81766,
+                "longitude": 117.5648,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "福建省",
+                "admin2": "三明市",
+                "feature_code": "PPL",
+                "elevation": 575.0,
+                "location_id": 2005499,
+                "label": "西安 · 福建省 · 三明市 · 中国"
+              },
+              {
+                "id": 2048018,
+                "name": "西安",
+                "latitude": 40.32369,
+                "longitude": 117.63465,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "河北省",
+                "admin2": "承德市",
+                "feature_code": "PPL",
+                "elevation": 377.0,
+                "location_id": 2048018,
+                "label": "西安 · 河北省 · 承德市 · 中国"
+              },
+              {
+                "id": 6793014,
+                "name": "西安",
+                "latitude": 20.7254,
+                "longitude": 110.14886,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "湛江市",
+                "feature_code": "PPL",
+                "elevation": 60.0,
+                "location_id": 6793014,
+                "label": "西安 · 广东 · 湛江市 · 中国"
+              },
+              {
+                "id": 6854552,
+                "name": "西安",
+                "latitude": 22.29999,
+                "longitude": 112.78035,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "广东",
+                "admin2": "江门市",
+                "feature_code": "PPL",
+                "elevation": 9.0,
+                "location_id": 6854552,
+                "label": "西安 · 广东 · 江门市 · 中国"
+              },
+              {
+                "id": 7628804,
+                "name": "西安",
+                "latitude": 45.00241,
+                "longitude": 127.3179,
+                "timezone": "Asia/Shanghai",
+                "country": "中国",
+                "country_code": "CN",
+                "admin1": "黑龙江",
+                "admin2": "哈尔滨市",
+                "feature_code": "PPL",
+                "elevation": 183.0,
+                "location_id": 7628804,
+                "label": "西安 · 黑龙江 · 哈尔滨市 · 中国"
+              }
+            ]
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "location_candidates",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:34:01.618185+00:00"
+        },
+        {
+          "id": "W62e8c1c7e27e",
+          "source": "https://api.open-meteo.com/v1/forecast?latitude=34.25833&longitude=108.92861&daily=weather_code%2Ctemperature_2m_max%2Ctemperature_2m_min%2Cprecipitation_probability_max%2Cprecipitation_sum%2Crain_sum%2Cwind_speed_10m_max&timezone=Asia%2FShanghai&start_date=2026-10-13&end_date=2026-10-13&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm",
+          "title": "西安 · 陕西 · 西安市 · 中国 天气预报",
+          "data": {
+            "location": {
+              "id": 1790630,
+              "name": "西安",
+              "latitude": 34.25833,
+              "longitude": 108.92861,
+              "timezone": "Asia/Shanghai",
+              "country": "中国",
+              "country_code": "CN",
+              "admin1": "陕西",
+              "admin2": "西安市",
+              "feature_code": "PPLA",
+              "population": 9600000,
+              "elevation": 416.0,
+              "location_id": 1790630,
+              "label": "西安 · 陕西 · 西安市 · 中国"
+            },
+            "timezone": "Asia/Shanghai",
+            "daily": [
+              {
+                "date": "2026-10-13",
+                "weather_code": 3,
+                "temperature_2m_max": 23.2,
+                "temperature_2m_min": 12.6,
+                "precipitation_probability_max": 0,
+                "precipitation_sum": 0.0,
+                "rain_sum": 0.0,
+                "wind_speed_10m_max": 8.8,
+                "weather_description": "阴天"
+              }
+            ],
+            "units": {
+              "weather_code": "wmo code",
+              "temperature_2m_max": "°C",
+              "temperature_2m_min": "°C",
+              "precipitation_probability_max": "%",
+              "precipitation_sum": "mm",
+              "rain_sum": "mm",
+              "wind_speed_10m_max": "km/h"
+            },
+            "requested_range": {
+              "start_date": "2026-10-13",
+              "end_date": "2026-10-13"
+            },
+            "available_range": {
+              "start_date": "2026-10-12",
+              "end_date": "2026-10-27",
+              "timezone": "Asia/Shanghai"
+            },
+            "variable_notes": {
+              "weather_code": "WMO 天气现象代码，代表当日最严重天气现象",
+              "weather_description": "按 Open-Meteo 官方 WMO 码表翻译的中文解释，非额外预测；强度名称不代表中国降水量等级或官方预警",
+              "precipitation_sum": "总降水量（雨、阵雨及雪的水当量）",
+              "rain_sum": "大尺度天气系统降雨量；不包括单独统计的阵雨与雪",
+              "precipitation_probability_max": "当日最高降水概率，不是降雨时长占比"
+            },
+            "forecast_not_observation": true
+          },
+          "metadata": {
+            "provenance": "live_api",
+            "kind": "weather_forecast",
+            "provider": "Open-Meteo"
+          },
+          "retrieved_at": "2026-10-12T04:34:05.414911+00:00"
+        },
+        {
+          "id": "Wec710067b815ea6e",
+          "source": "https://lbs.amap.com/api/webservice/guide/api/search",
+          "title": "高德地点查询：西安 室内景点 博物馆 展览馆",
+          "data": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安",
+            "places": [
+              {
+                "id": "B0FFMHT4LY",
+                "name": "西安国际会展中心展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "会展一路1399号",
+                "location": "109.038654,34.335431",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFF2GQDD",
+                "name": "陕西自然博物馆自然展馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "陕西自然博物馆(电视塔地铁站B西南口步行230米)",
+                "location": "108.946511,34.195810",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B001D0939J",
+                "name": "陕西自然博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "长安南路88号电视塔1层(电视塔地铁站B西南口旁)",
+                "location": "108.946597,34.195866",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "雁塔区",
+                "business": null
+              },
+              {
+                "id": "B0FFJIWE14",
+                "name": "西安记忆历史文化展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "西安鼓楼北门旁(广济街地铁站D1口步行400米)",
+                "location": "108.943435,34.260714",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "莲湖区",
+                "business": null
+              },
+              {
+                "id": "B0FFHU533M",
+                "name": "名车展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "疏导线58号西部国际车城",
+                "location": "108.816817,34.293025",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "未央区",
+                "business": null
+              },
+              {
+                "id": "B0G2X7MQ7K",
+                "name": "西安国际会展中心展览馆地下停车场",
+                "type": "交通设施服务;停车场;公共停车场",
+                "address": "会展一路1399号西安国际会展中心",
+                "location": "109.037366,34.336601",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "灞桥区",
+                "business": null
+              },
+              {
+                "id": "B0FFFPKPYM",
+                "name": "大华博物馆",
+                "type": "科教文化服务;博物馆;博物馆",
+                "address": "太华南路251号",
+                "location": "108.975380,34.283829",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "新城区",
+                "business": null
+              },
+              {
+                "id": "B0H32741ZP",
+                "name": "城市记忆展览馆",
+                "type": "科教文化服务;展览馆;展览馆",
+                "address": "咸宁西路55号兴庆宫公园",
+                "location": "108.983009,34.253226",
+                "pname": "陕西省",
+                "cityname": "西安市",
+                "adname": "碑林区",
+                "business": null
+              }
+            ]
+          },
+          "retrieved_at": "2026-10-12T04:34:12.398102+00:00",
+          "metadata": {
+            "provenance": "live_api"
+          }
+        },
+        {
+          "id": "Wa3edbf800fc6de72",
+          "source": "https://www.sxhm.com/guide/visit/detail/16032.html",
+          "title": "陕西历史博物馆及秦汉馆“五一”预约攻略_陕西历史博物馆_陕西历史博物馆,及,秦汉,馆,五,一,预约,攻略",
+          "data": {
+            "snippet": "2024年4月24日\n\n【温馨提示】\n\n五一期间，西安温度适宜，\n\n请您关注天气变化，\n\n注意防晒，携带雨具。\n\n下面是我馆的预约攻略\n\n快来了解一下\n\n⬇\n\n一、放票时间\n\n①提前放票天数\n\n陕西历史博物馆、陕西历史博物馆秦汉馆五一期间均正常开放，两馆放票时间并不相同，请您根据行程安排提前了解两馆放票时间，以免错过。\n\n本馆与秦汉馆有什么区别？\n\n您可以点击陕西历史博物馆、陕西历史博物馆秦汉馆详细了解一下。\n\n②每日放票时间\n\n预约系统每天10点、11点、18点、19点整点放票，请调好闹钟，准点预约！只需要提前3分钟打开公众号，蹲点儿操作刷新~\n\n一定要耐心多尝试几次！假如您10点没有约到票，系统会显示“11点开约”，请耐心等待，11点再继续预约门票。\n\nPS.秦汉馆平日无需预约。\n\n二、预约流程\n\n第一步：微信搜索“陕西历史博物馆”官方微信公众号，点击进入。\n\n第二步：点击右下角“门票预约”（标记1处），继续点击“门票预约”（标记2处）。\n\n第三步：仔细阅读温馨提示内容（相当重要） [...] 临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆及秦汉馆“五一”预约攻略\n\n时间：2024-04-24\n\n亲爱的观众朋友们：\n\n“田家少闲月，五月人倍忙”，古人以农忙描述五月的忙碌辛劳；“劳动最光荣，劳动最美丽”，今人让诚实劳动、勤勉工作蔚然成风。“五一”将至，您和家人都休息一下吧。长安的微风细雨、春和景明，都和我们一起欢迎您的到来。愿您在这里度过一段美好愉快的时光。\n\n祝您工作顺利，万事顺心！\n\n陕西历史博物馆\n\n2024年4月24日 [...] 根据您的参观意向点击上图页面下方的陕西历史博物馆预约，或者点击陕西历史博物馆秦汉馆“天下同一”展预约。\n\n第四步：选择参观日期\n\n选择参观日期、场次、数量（一次最多可以添加5张），点击“下一步”。\n\n第五步：填写游客信息\n\n以陕西历史博物馆预约入口为例。\n\n点击“选择新增”（标记1处）\n\n⬇\n\n点击“证件类型”（标记2处）\n\n选择相应有效证件（标记3处可上下滑动选择）\n\n⬇\n\n依次添加参观者姓名、证件号、手机号（最多添加5位观众）\n\n⬇\n\n点击“保存”（标记4处）\n\n⬇\n\n提交后，请一定注意页面情况，此时会显示“出票中”的提示，请不要着急退出界面，等屏幕显示如下图所示“待使用”界面时，方为预约成功！\n\n 请您认准陕西历史博物馆微信公众号，这是我馆唯一官方预约平台，请勿相信第三方代约票行为。\n 您对我们的厚爱让每一位陕历博人欣喜，极高的关注度也让约票变得困难，甚至可能出现“秒光”现象。如果预约不到门票，您可以访问陕历博官方网站和云观博展厅或虚拟展厅，欣赏过往精彩的临时展览以及业内专家讲座，领略灿烂文明、感受历史文化。非常感谢大家的理解、包容和支持， 我们一定竭诚为您服务！",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W391aacde19a63e58",
+          "source": "https://www.sxhm.com/guide/visit/detail/1598.html",
+          "title": "陕西历史博物馆恢复开放公告_陕西历史博物馆_陕西历史博物馆,恢复,开放,公告",
+          "data": {
+            "snippet": "二、陕西历史博物馆实行“限量、预约、错峰”的开放政策，每日接待量6000人次。\n\n三、请您通过“陕西历史博物馆”官方微信公众号提前进行门票预约。采用刷取本人身份证的方式入馆参观，详细的预约信息请阅读参观须知。\n\n四、入馆须配合工作人员查验陕西一码通（绿码）、通信大数据行程卡（绿码）及本人有效身份证件，按照预约时段入馆参观。\n\n网站地图|网友留言|\n\n友情链接： 中国国家博物馆故宫博物院上海博物馆南京博物院湖南博物院河南博物院湖北省博物馆浙江省博物馆辽宁省博物馆首都博物馆山西博物院重庆中国三峡博物馆敦煌研究院秦始皇帝陵博物院西安碑林博物馆汉景帝阳陵博物院陕西黄河文化博物馆\n\n中国 · 陕西 · 西安市小寨东路91号\n\nCopyright 2021 陕西历史博物馆版权所有All Rights Reserved.  陕ICP备05005777号-2 陕公网安备 61011302001384号\n\n网站建设：北京分形科技\n\n您当前使用的浏览器版本过低，  \n建议尽快升级您的浏览器，以获得更好的浏览体验！ [...] 展览\n\n常设展览\n\n专题展览\n\n临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆恢复开放公告\n\n时间：2022-08-29\n\n尊敬的观众朋友们：\n\n       陕西历史博物馆将于2022年8月30日（星期二）恢复开放，现就相关事项公告如下：\n\n一、开放时间：3月15日至11月14日：8：30—18：00，16：30停止入馆。11月15日至次年3月14日：9：00—17：30，16：00停止入馆。每周一（法定节假日除外）闭馆。",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "Wb09b49e27d1e34a8",
+          "source": "https://www.sxhm.com/guide/visit/detail/1018555.html",
+          "title": "陕西历史博物馆2026年“五一”假期开放公告_陕西历史博物馆_陕西历史博物馆",
+          "data": {
+            "snippet": "本馆（西安市雁塔区小寨东路91号）\n\n1.5月1日—5日，每日延长开放3.5小时，开放时间调整为7:30-20:30（19:30停止检票），参观预约数量为17500人次/日。\n\n2.完成提升改造的“唐代壁画珍品展”于5月1日起恢复对外开放（“壁上丹青 盛唐气象——唐韩休墓壁画考古发掘与保护展”因场馆设备更新改造继续关闭）。\n\n3.开放的展览有：\n\n①基本陈列“陕西古代文明”（第一、第二、第三展厅）；\n\n②专题陈列“大唐遗宝——何家村窖藏出土文物展”（第四展厅）；\n\n③专题陈列“唐代壁画珍品展”（东展厅地下一层）。\n\n④寻找“最初的中国”——秦晋豫“十四五”期间中华文明探源考古成果展（第五展厅）；\n\n⑤面见唐人——陕西唐代面食文化展（国宝厅）；\n\n秦汉馆(西咸新区秦汉新城兰池三路东段)\n\n1.5月1日—5日，每日开放时间8:30-18:00（17:00停止检票）维持不变，观众可持有效身份证件免预约入馆参观。\n\n2.开放的展览有：\n\n①基本陈列“天下同一——秦汉文明主题展”（第一、第二展厅）；\n\n②专题陈列“城与陵”（四区一层）；\n\n网站地图|网友留言| [...] 网站地图|网友留言|\n\n友情链接： 中国国家博物馆故宫博物院上海博物馆南京博物院湖南博物院河南博物院湖北省博物馆浙江省博物馆辽宁省博物馆首都博物馆山西博物院重庆中国三峡博物馆敦煌研究院秦始皇帝陵博物院西安碑林博物馆汉景帝阳陵博物院陕西黄河文化博物馆\n\n中国 · 陕西 · 西安市小寨东路91号\n\nCopyright 2021 陕西历史博物馆版权所有All Rights Reserved.  陕ICP备05005777号-2 陕公网安备 61011302001384号\n\n网站建设：北京分形科技\n\n您当前使用的浏览器版本过低，  \n建议尽快升级您的浏览器，以获得更好的浏览体验！ [...] 展览\n\n常设展览\n\n专题展览\n\n临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆2026年“五一”假期开放公告\n\n时间：2026-04-23\n\n亲爱的观众朋友：\n\n2026年“五一”劳动节假期将至，为进一步满足广大观众假日期间精神文化需求，现就陕西历史博物馆“五一”假期开放事宜公告如下：\n\n本馆（西安市雁塔区小寨东路91号）",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W08078f177e00aef1",
+          "source": "https://www.sxhm.com/guide/visit/detail/16186.html",
+          "title": "陕西历史博物馆暑期延长开放时间的公告_陕西历史博物馆_陕西历史博物馆,暑期,延长,开放,时间,的,公告",
+          "data": {
+            "snippet": "具体安排如下：\n\n1. 开放时间：2024年7月2日起至2024年8月31日，每周周二至周日开放时间由8:30——18:00调整为8:00——18:30（17:00停止检票）。\n\n2. 预约渠道：通过“陕西历史博物馆”官方微信公众号预约。提前3日（如：7月2日可以预约7月4日门票）可开始预约。\n\n3. 即日起即可约票，请携带本人身份证检票入馆。\n\n网站地图|网友留言|\n\n友情链接： 中国国家博物馆故宫博物院上海博物馆南京博物院湖南博物院河南博物院湖北省博物馆浙江省博物馆辽宁省博物馆首都博物馆山西博物院重庆中国三峡博物馆敦煌研究院秦始皇帝陵博物院西安碑林博物馆汉景帝阳陵博物院陕西黄河文化博物馆\n\n中国 · 陕西 · 西安市小寨东路91号\n\nCopyright 2021 陕西历史博物馆版权所有All Rights Reserved.  陕ICP备05005777号-2 陕公网安备 61011302001384号\n\n网站建设：北京分形科技\n\n您当前使用的浏览器版本过低，  \n建议尽快升级您的浏览器，以获得更好的浏览体验！ [...] 无障碍参观服务\n\n展览\n\n常设展览\n\n专题展览\n\n临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n陕西历史博物馆暑期延长开放时间的公告\n\n时间：2024-07-01\n\n暑期已至，为进一步满足观众的参观需求，让更多观众走进博物馆，陕西历史博物馆（小寨东路91号）定于2024年7月2日起至2024年8月31日延长开放时间。\n\n具体安排如下：",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        },
+        {
+          "id": "W7e5fde1a76175ac6",
+          "source": "https://www.sxhm.com/guide/visit/p/5.html",
+          "title": "参观公告_陕西历史博物馆_陕西历史博物馆",
+          "data": {
+            "snippet": "2025-01-13\n\n陕西历史博物馆门票预约系统维护公告\n\n观众朋友们：为优化门票预约服务，陕西历史博物馆门票预约系统将于2025年1月12日20:00进行维护，预计1月13日17:00前完成维护。维护期间将暂停门票预约、查询、退票等服务，已预约的门票可正常参观。1月13日...\n\n2025-01-12\n\n陕西历史博物馆关于实行冬季开放时间的公告\n\n尊敬的观众朋友们：2024年11月15日至2025年3月14日，我馆将实行冬季开放时间。本馆（雁塔区小寨东路91号）开放时间调整为：9:00--17:30（16:00停止入场），每周一闭馆（国家法定节假日除外）。请...\n\n2024-11-14\n\n陕西历史博物馆讲解员收费标准\n\n2024-10-11\n\n1 … 3 45;) 6 7 …\n\n网站地图|网友留言|\n\n友情链接： 中国国家博物馆故宫博物院上海博物馆南京博物院湖南博物院河南博物院湖北省博物馆浙江省博物馆辽宁省博物馆首都博物馆山西博物院重庆中国三峡博物馆敦煌研究院秦始皇帝陵博物院西安碑林博物馆汉景帝阳陵博物院陕西黄河文化博物馆\n\n中国 · 陕西 · 西安市小寨东路91号 [...] 常设展览\n\n专题展览\n\n临时展览\n\n修复展示\n\n线上展览\n\n交流展览\n\n虚拟布展\n\n云展览\n\n藏品\n\n镇馆之宝\n\n馆藏精品\n\n文物数据\n\n教育\n\n活动预告\n\n精彩回顾\n\n学术\n\n学术刊物\n\n学术成果\n\n学术研讨会\n\n学术讲座\n\n学术机构\n\n馆藏壁画科研基地\n\n青年学术论坛\n\n学术资源目录\n\n文创\n\n资讯\n\n党建工作\n\n工作动态\n\n行业信息\n\n最新公告\n\n志愿者\n\n采购公示\n\n文明旅游\n\n信息公开\n\n博物馆章程\n\n运营看板\n\n公共资源共享服务\n\n在校学生社会实践活动\n\n理事会信息\n\n理事监事成员\n\n关于\n\n本馆概述\n\n馆长致辞\n\n历史沿革\n\n馆级领导\n\n机构设置\n\n专家介绍\n\n \n\n中文版\n\nEN\n\n导览\n\n2026年5月6日至2026年11月14日(国家法定节假日开放时间详见最新公告）\n\n无障碍参观服务\n\n参观公告\n\n陕西历史博物馆新门票预约系统上线试运行公告\n\n观众朋友们：陕西历史博物馆门票预约系统现已维护完毕，新门票预约系统已上线试运行，系统启用全新的预约流程和操作界面，现就系统上线当日及今后放票安排公告如下：1月13日，系统上线当天放票时间为17:00-18:00。本... [...] Copyright 2021 陕西历史博物馆版权所有All Rights Reserved.  陕ICP备05005777号-2 陕公网安备 61011302001384号\n\n网站建设：北京分形科技\n\n您当前使用的浏览器版本过低，  \n建议尽快升级您的浏览器，以获得更好的浏览体验！",
+            "published_at": null
+          },
+          "retrieved_at": "2026-10-12T04:34:16.552994+00:00",
+          "metadata": {
+            "provenance": "web_search_excerpt"
+          }
+        }
+      ],
+      "warnings": [
+        "地点信息不等于门票余量或实时营业保证；开放与预约请核对景区官方公告。",
+        "搜索摘录可能不完整，需检查原站、发布日期与适用范围；无结果不代表没有公告。"
+      ],
+      "trace": [
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 2891,
+          "usage": {
+            "prompt_tokens": 1226,
+            "total_tokens": 1455,
+            "completion_tokens": 229
+          },
+          "stage": "plan"
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "update_trip_context",
+          "status": "success",
+          "arguments": {
+            "departure": null,
+            "destination": "陕西西安",
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13",
+            "travelers": null,
+            "preferences": [],
+            "notes": "查询明天天气及雨天备选方案"
+          },
+          "elapsed_ms": 0
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_plan",
+          "status": "success",
+          "tasks": [
+            {
+              "id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气预报（包括降雨概率、温度等），以回答用户关于明天天气的问题。",
+              "agent": "weather",
+              "depends_on": [],
+              "condition": null,
+              "requires_evidence": true
+            },
+            {
+              "id": "t2",
+              "task": "基于明天可能下雨的情况，为陕西西安查找适合雨天的室内景点或活动安排，作为备用行程建议。",
+              "agent": "itinerary",
+              "depends_on": [
+                "t1"
+              ],
+              "condition": "如果明天西安下雨",
+              "requires_evidence": true
+            }
+          ]
+        },
+        {
+          "actor": "weather",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 985,
+          "usage": {
+            "prompt_tokens": 1418,
+            "total_tokens": 1458,
+            "completion_tokens": 40
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__geocode",
+          "status": "needs_input",
+          "arguments": {
+            "query": "西安",
+            "country_code": "CN"
+          },
+          "elapsed_ms": 1375
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 1156,
+          "usage": {
+            "prompt_tokens": 3055,
+            "total_tokens": 3131,
+            "completion_tokens": 76
+          }
+        },
+        {
+          "actor": "weather",
+          "event": "tool",
+          "tool": "travel__forecast",
+          "status": "success",
+          "arguments": {
+            "location_id": 1790630,
+            "start_date": "2026-10-13",
+            "end_date": "2026-10-13"
+          },
+          "elapsed_ms": 2625
+        },
+        {
+          "actor": "weather",
+          "event": "model",
+          "elapsed_ms": 3516,
+          "usage": {
+            "prompt_tokens": 4178,
+            "total_tokens": 4417,
+            "completion_tokens": 239
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__weather",
+          "task_id": "t1",
+          "arguments": {
+            "task": "查询2026年10月13日陕西西安的天气预报（包括降雨概率、温度等），以回答用户关于明天天气的问题。"
+          },
+          "status": "success",
+          "elapsed_ms": 11500
+        },
+        {
+          "actor": "itinerary",
+          "event": "A2A tasks/send",
+          "status": "success"
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 921,
+          "usage": {
+            "prompt_tokens": 3852,
+            "total_tokens": 3896,
+            "completion_tokens": 44
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_places",
+          "status": "success",
+          "arguments": {
+            "query": "室内景点 博物馆 展览馆",
+            "city": "西安"
+          },
+          "elapsed_ms": 375
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 1328,
+          "usage": {
+            "prompt_tokens": 4891,
+            "total_tokens": 4956,
+            "completion_tokens": 65
+          }
+        },
+        {
+          "actor": "itinerary",
+          "event": "tool",
+          "tool": "travel__search_travel_web",
+          "status": "success",
+          "arguments": {
+            "query": "西安博物院 陕西历史博物馆 雨天开放 预约",
+            "official_domains": [
+              "www.sxhm.com",
+              "www.xayw.gov.cn"
+            ]
+          },
+          "elapsed_ms": 2813
+        },
+        {
+          "actor": "itinerary",
+          "event": "model",
+          "elapsed_ms": 5109,
+          "usage": {
+            "prompt_tokens": 9342,
+            "total_tokens": 9762,
+            "completion_tokens": 420
+          }
+        },
+        {
+          "actor": "coordinator",
+          "event": "tool",
+          "tool": "delegate__itinerary",
+          "task_id": "t2",
+          "arguments": {
+            "task": "基于明天可能下雨的情况，为陕西西安查找适合雨天的室内景点或活动安排，作为备用行程建议。"
+          },
+          "status": "success",
+          "elapsed_ms": 12640
+        },
+        {
+          "actor": "coordinator",
+          "event": "model",
+          "elapsed_ms": 4375,
+          "usage": {
+            "prompt_tokens": 9989,
+            "total_tokens": 10349,
+            "completion_tokens": 360
+          },
+          "stage": "compose"
+        },
+        {
+          "actor": "coordinator",
+          "event": "task_coverage",
+          "status": "checked",
+          "tasks": [
+            {
+              "task_id": "t1",
+              "task": "查询2026年10月13日陕西西安的天气预报（包括降雨概率、温度等），以回答用户关于明天天气的问题。",
+              "status": "answered"
+            },
+            {
+              "task_id": "t2",
+              "task": "基于明天可能下雨的情况，为陕西西安查找适合雨天的室内景点或活动安排，作为备用行程建议。",
+              "status": "unavailable"
+            }
+          ]
+        },
+        {
+          "actor": "coordinator",
+          "event": "answer_validation",
+          "status": "completed"
+        }
+      ],
+      "tool_calls": 7,
+      "delegations": 2,
+      "context": {
+        "trip": {
+          "departure": null,
+          "destination": "陕西西安",
+          "start_date": "2026-10-13",
+          "end_date": "2026-10-13",
+          "travelers": null,
+          "preferences": [],
+          "notes": "查询明天天气及雨天备选方案"
+        },
+        "recent_ticket_candidates": [],
+        "demo_enabled": false
+      },
+      "quotes": [],
+      "checks": {
+        "routing_exact": true,
+        "no_incomplete_event": true,
+        "answer_nonempty": true,
+        "tool:travel__forecast": true,
+        "tool:travel__search_places": true,
+        "context:start_date": true,
+        "context:end_date": true,
+        "citation_ids_valid": true,
+        "evidence_cited": true,
+        "place_review_completed": true,
+        "cited_weather_matches_target": true
+      },
+      "status": "passed",
+      "manual_review": {
+        "status": "pending",
+        "claim_count": null,
+        "supported_claim_count": null,
+        "answer_correct": null,
+        "covers_user_request": null,
+        "reviewer": null
+      },
+      "elapsed_seconds": 31.422
+    }
+  ],
+  "summary": {
+    "profiles": {
+      "planned": {
+        "attempted": 1,
+        "skipped": 0,
+        "execution_passed": 1,
+        "execution_pass_rate": 1.0,
+        "routing_exact_rate": 1.0,
+        "timeout_rate": 0.0,
+        "latency_p50_seconds": 31.422,
+        "latency_p95_seconds": 31.422,
+        "latency_mean_seconds": 31.422,
+        "mean_model_calls": 8,
+        "token_complete_records": 1,
+        "mean_total_tokens": 39424,
+        "manual_reviewed_records": 0,
+        "semantic_accuracy": null,
+        "request_coverage_rate": null,
+        "supported_claim_rate": null
+      }
+    },
+    "paired_attempts": 0,
+    "comparison": "planned",
+    "paired_delta_mean_seconds": null,
+    "paired_regressions": [],
+    "quantile_method": "nearest_rank; all attempted runs, including failures"
+  },
+  "completed_at": "2026-10-12T12:34:26.194850+08:00"
+}

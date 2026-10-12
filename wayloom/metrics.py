@@ -3,6 +3,9 @@ import time
 
 
 def model_event(actor, event, started, response=None, **fields):
+    retries = (response or {}).pop('_connection_retries', 0)
+    if retries:
+        fields['connection_retries'] = retries
     usage = (response or {}).pop('_usage', {})
     if not isinstance(usage, dict):
         usage = {}
