@@ -2,6 +2,7 @@
 import os
 
 from .config import env_value
+from .diagnostics import ModelResponseError
 
 import httpx
 
@@ -38,8 +39,15 @@ class ChatModel:
             response = await client.post(self.base + '/chat/completions', json=payload,
                                          headers={'Authorization': f'Bearer {self.key}'})
             response.raise_for_status()
-            data = response.json()
-        message = data['choices'][0]['message']
+            try:
+                data = response.json()
+                message = data['choices'][0]['message']
+                if (not isinstance(message, dict) or message.get('role') != 'assistant'
+                        or not (isinstance(message.get('content'), str) and message['content'].strip()
+                                or message.get('tool_calls'))):
+                    raise ValueError('Missing assistant output')
+            except (ValueError, TypeError, KeyError, IndexError) as exc:
+                raise ModelResponseError('Invalid Chat Completions response') from exc
         result = {k: v for k, v in message.items() if k in ('role', 'content', 'tool_calls')}
         result['_usage'] = data.get('usage') if isinstance(data.get('usage'), dict) else {}
         details = result['_usage'].get('completion_tokens_details')

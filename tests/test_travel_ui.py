@@ -103,6 +103,24 @@ class TravelUITests(unittest.TestCase):
         with closing(sqlite3.connect(self.config['booking_db'])) as db:
             self.assertEqual(db.execute('SELECT COUNT(*) FROM demo_tickets').fetchone()[0], 0)
 
+    def test_connection_check_is_opt_in_and_displays_model_failure(self):
+        probe = AsyncMock(return_value={'checked_at': '2030-09-01T00:00:00+00:00',
+            'notice': '健康检查不是完整业务验收', 'checks': [
+                {'name': '模型', 'status': 'error', 'message': '模型请求超时'}]})
+        with patch('wayloom.config.integrations', return_value={
+            'model': True, 'weather': True, 'embeddings': False,
+            'places': False, 'live_search': False, 'tickets': False}), \
+            patch('wayloom.diagnostics.check_connections', probe):
+            self.app.run()
+            probe.assert_not_awaited()
+            self.widget('checkbox', '快速回答（实验）').check().run()
+            self.click('检查模型与专家连接')
+            probe.assert_awaited_once()
+            self.assertIs(probe.call_args.args[0]['enable_thinking'], False)
+            self.assertTrue(any('模型请求超时' in error.value for error in self.app.error))
+            self.app.run()
+            probe.assert_awaited_once()
+
     def test_database_outage_does_not_break_page_or_knowledge_search(self):
         from wayloom.booking import BookingUnavailable
         with patch.dict(os.environ, {'WAYLOOM_BOOKING_BACKEND': 'mysql'}):

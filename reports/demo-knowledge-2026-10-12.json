@@ -1,0 +1,325 @@
+{
+  "checked_at": "2026-10-12T03:57:57.762595+00:00",
+  "model": "qwen3.7-flash",
+  "mode": "real_model_a2a_mcp",
+  "enable_thinking": false,
+  "query": "乘坐中国境内航班，可以携带没有3C标识的充电宝吗？请检索资料并引用来源，说明适用范围与核验日期。",
+  "checks": {
+    "knowledge_agent_selected": true,
+    "rag_returned_candidates": true,
+    "answer_has_valid_relevant_K_citation": true,
+    "citation_id_present_in_answer": true,
+    "answer_identifies_domestic_scope": true,
+    "no_model_error": true
+  },
+  "observed": {
+    "relevant_citation_ids": [
+      "K-faf599d7fcd980e35c99"
+    ]
+  },
+  "result": {
+    "answer": "根据中国民用航空局2025年6月26日发布的官方通知（自2025年6月28日起生效），乘坐中国境内航班时，旅客不得携带没有“3C”（CCC）标识的充电宝。如果充电宝上的标识模糊、无法辨认，同样禁止携带 [K-faf599d7fcd980e35c99]。此外，属于国家召回型号或批次的充电宝也不得携带 [K-faf599d7fcd980e35c99]。\n\n该规定仅适用于中国境内的航班 [K-faf599d7fcd980e35c99]。请注意，上述信息基于2025年发布的官方摘要快照，出行前请务必通过中国民航局官网或咨询您的承运航空公司，以确认最新的执行标准。",
+    "answer_review": "completed",
+    "citations": [
+      {
+        "id": "K-faf599d7fcd980e35c99",
+        "document_id": "caac-power-bank-domestic-20250628",
+        "title": "境内航班充电宝：3C 标识与召回限制",
+        "heading": "境内航班充电宝：3C 标识与召回限制",
+        "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+        "text": "民航局于2025年6月26日发布通知：从6月28日开始，境内航班旅客不得携带没有3C标识、标识无法辨认，或属于召回型号/批次的充电宝。\n这条通知只回答认证标识和召回限制，不能单凭有3C标识就判断某件产品一定符合所有乘机要求。应同时核对其他适用规定及承运航司要求。",
+        "start": 0,
+        "end": 131,
+        "metadata": {
+          "id": "caac-power-bank-domestic-20250628",
+          "source_type": "official_summary",
+          "publisher": "中国民用航空局",
+          "published_at": "2025-06-26",
+          "checked_at": "2026-09-26",
+          "valid_from": "2025-06-28",
+          "valid_to": null,
+          "regions": [
+            "CN",
+            "中国"
+          ],
+          "tags": [
+            "充电宝",
+            "飞机",
+            "航空",
+            "3C",
+            "召回",
+            "境内航班"
+          ],
+          "scope": "中国境内航班；只摘记本通知涉及的3C和召回要求，不代表完整行李规则",
+          "verification_method": "读取官方网页正文并自行归纳；未设置的结束日期不表示永久有效",
+          "local_path": "caac_power_banks.json"
+        },
+        "score": 0.032787,
+        "lexical_score": 19.958902,
+        "dense_similarity": 0.8537640501776047,
+        "temporal_status": "within_recorded_period",
+        "evidence_status": "official_summary"
+      }
+    ],
+    "metrics": {
+      "engine_elapsed_ms": 14140,
+      "model_calls": 6,
+      "model_elapsed_ms": 11798,
+      "leaf_tool_calls": 1,
+      "leaf_tool_elapsed_ms": 312,
+      "usage_reported_calls": 6,
+      "prompt_tokens": 12876,
+      "completion_tokens": 898,
+      "total_tokens": 13774,
+      "reasoning_tokens": null,
+      "total_elapsed_ms": 14140
+    },
+    "retrieved_evidence": [
+      {
+        "id": "K-faf599d7fcd980e35c99",
+        "document_id": "caac-power-bank-domestic-20250628",
+        "title": "境内航班充电宝：3C 标识与召回限制",
+        "heading": "境内航班充电宝：3C 标识与召回限制",
+        "source": "https://www.caac.gov.cn/XWZX/MHYW/202506/t20250626_227805.html",
+        "text": "民航局于2025年6月26日发布通知：从6月28日开始，境内航班旅客不得携带没有3C标识、标识无法辨认，或属于召回型号/批次的充电宝。\n这条通知只回答认证标识和召回限制，不能单凭有3C标识就判断某件产品一定符合所有乘机要求。应同时核对其他适用规定及承运航司要求。",
+        "start": 0,
+        "end": 131,
+        "metadata": {
+          "id": "caac-power-bank-domestic-20250628",
+          "source_type": "official_summary",
+          "publisher": "中国民用航空局",
+          "published_at": "2025-06-26",
+          "checked_at": "2026-09-26",
+          "valid_from": "2025-06-28",
+          "valid_to": null,
+          "regions": [
+            "CN",
+            "中国"
+          ],
+          "tags": [
+            "充电宝",
+            "飞机",
+            "航空",
+            "3C",
+            "召回",
+            "境内航班"
+          ],
+          "scope": "中国境内航班；只摘记本通知涉及的3C和召回要求，不代表完整行李规则",
+          "verification_method": "读取官方网页正文并自行归纳；未设置的结束日期不表示永久有效",
+          "local_path": "caac_power_banks.json"
+        },
+        "score": 0.032787,
+        "lexical_score": 19.958902,
+        "dense_similarity": 0.8537640501776047,
+        "temporal_status": "within_recorded_period",
+        "evidence_status": "official_summary"
+      },
+      {
+        "id": "K-ee81b0d57ddfbd25f135",
+        "document_id": "rail-disruption-refund-checked-20260926",
+        "title": "国铁列车晚点或停运：退票办理时限",
+        "heading": "国铁列车晚点或停运：退票办理时限",
+        "source": "https://kyfw.12306.cn/otn/gonggao/saleTicketMeans.html",
+        "text": "国铁旅客运输规程区分晚点与停运。未乘车旅客因列车晚点退票，应在出发站该列车实际开车前办理，免收退票费并退还全部票款。\n列车停运时，可从停运信息公布起到票面乘车日期后30日以内办理免手续费退票。联程票有额外条件，不能将上述规定直接套用于所有自愿退票或所有境外铁路订单。实际办理应查看12306订单与最新公告。",
+        "start": 0,
+        "end": 153,
+        "metadata": {
+          "id": "rail-disruption-refund-checked-20260926",
+          "source_type": "official_summary",
+          "publisher": "中国铁路12306",
+          "published_at": null,
+          "checked_at": "2026-09-26",
+          "valid_from": null,
+          "valid_to": null,
+          "regions": [
+            "CN",
+            "中国"
+          ],
+          "tags": [
+            "铁路",
+            "火车",
+            "高铁",
+            "晚点",
+            "停运",
+            "退票",
+            "12306"
+          ],
+          "scope": "国铁集团所属铁路运输企业及控股合资铁路公司境内旅客运输；只摘记第51、52条有关情形",
+          "verification_method": "读取官方网页铁路旅客运输规程第51、52条并自行归纳；页面对应版本发布日期未明确，不猜测生效日",
+          "local_path": "rail_refund_disruption.json"
+        },
+        "score": 0.032258,
+        "lexical_score": 3.279438,
+        "dense_similarity": 0.29430981515197585,
+        "temporal_status": "validity_not_specified",
+        "evidence_status": "official_summary"
+      },
+      {
+        "id": "K-d53570fcb9044cfefc22",
+        "document_id": "palace-booking-checked-20260926",
+        "title": "故宫预约、闭馆日与参观入口",
+        "heading": "故宫预约、闭馆日与参观入口",
+        "source": "https://www.dpm.org.cn/subject_booking/",
+        "text": "故宫通常周一不开放，法定节假日另行安排；特别开放日还须查看专项公告。官方不售当日票，参观前第7天20:00起开放预约。观众须实名预约，建议使用故宫博物院官方小程序办理。\n参观从南侧午门进入，离院可走神武门或东华门。预约成功与具体时段以官方订单为准，不能把本资料当作余票查询结果。",
+        "start": 0,
+        "end": 139,
+        "metadata": {
+          "id": "palace-booking-checked-20260926",
+          "source_type": "official_summary",
+          "publisher": "故宫博物院",
+          "published_at": null,
+          "checked_at": "2026-09-26",
+          "valid_from": null,
+          "valid_to": null,
+          "regions": [
+            "CN/北京",
+            "北京",
+            "北京市",
+            "故宫"
+          ],
+          "tags": [
+            "故宫",
+            "预约",
+            "门票",
+            "周一",
+            "入口",
+            "北京"
+          ],
+          "scope": "故宫常规参观；专项公告可能覆盖常规规则",
+          "verification_method": "读取官方订票页当前个人订票须知；不采用页面遗留的疫情说明。原页未给出本段发布日期，因此留空",
+          "local_path": "palace_booking.json"
+        },
+        "score": 0.015873,
+        "lexical_score": 0.362097,
+        "dense_similarity": null,
+        "temporal_status": "validity_not_specified",
+        "evidence_status": "official_summary"
+      }
+    ],
+    "warnings": [
+      "检索结果是本地资料候选证据，分数不是事实置信度；核验日期不代表持续有效。需核对来源、适用地区和行程日期，出行前复核官方最新信息。未检索到证据不等于没有公告；历史资料不能当作当前公告。"
+    ],
+    "trace": [
+      {
+        "actor": "coordinator",
+        "event": "model",
+        "elapsed_ms": 1625,
+        "usage": {
+          "prompt_tokens": 759,
+          "total_tokens": 872,
+          "completion_tokens": 113
+        }
+      },
+      {
+        "actor": "coordinator",
+        "event": "tool",
+        "tool": "update_trip_context",
+        "status": "success",
+        "arguments": {
+          "departure": null,
+          "destination": null,
+          "start_date": null,
+          "end_date": null,
+          "travelers": null,
+          "preferences": [],
+          "notes": "用户询问中国境内航班携带无3C标识充电宝的规定，属于业务咨询，不改变行程上下文。"
+        },
+        "elapsed_ms": 0
+      },
+      {
+        "actor": "coordinator",
+        "event": "model",
+        "elapsed_ms": 1047,
+        "usage": {
+          "prompt_tokens": 1842,
+          "total_tokens": 1897,
+          "completion_tokens": 55
+        }
+      },
+      {
+        "actor": "knowledge",
+        "event": "A2A tasks/send",
+        "status": "success"
+      },
+      {
+        "actor": "knowledge",
+        "event": "model",
+        "elapsed_ms": 1188,
+        "usage": {
+          "prompt_tokens": 1253,
+          "total_tokens": 1314,
+          "completion_tokens": 61
+        }
+      },
+      {
+        "actor": "knowledge",
+        "event": "tool",
+        "tool": "travel__search_knowledge",
+        "status": "candidates",
+        "arguments": {
+          "query": "中国民航局 国内航班 充电宝 携带规定 3C标识 额定能量限制 最新公告",
+          "top_k": 5
+        },
+        "elapsed_ms": 312
+      },
+      {
+        "actor": "knowledge",
+        "event": "model",
+        "elapsed_ms": 3344,
+        "usage": {
+          "prompt_tokens": 2878,
+          "total_tokens": 3120,
+          "completion_tokens": 242
+        }
+      },
+      {
+        "actor": "coordinator",
+        "event": "tool",
+        "tool": "delegate__knowledge",
+        "status": "success",
+        "arguments": {
+          "task": "检索中国民航局关于乘坐国内航班携带充电宝的规定，特别是关于3C标识的要求、额定能量限制以及适用范围和最新公告日期。"
+        },
+        "elapsed_ms": 6859
+      },
+      {
+        "actor": "coordinator",
+        "event": "model",
+        "elapsed_ms": 2766,
+        "usage": {
+          "prompt_tokens": 3638,
+          "total_tokens": 3878,
+          "completion_tokens": 240
+        }
+      },
+      {
+        "actor": "coordinator",
+        "event": "evidence_review",
+        "elapsed_ms": 1828,
+        "usage": {
+          "prompt_tokens": 2506,
+          "total_tokens": 2693,
+          "completion_tokens": 187
+        },
+        "status": "completed"
+      }
+    ],
+    "tool_calls": 3,
+    "delegations": 1,
+    "context": {
+      "trip": {
+        "departure": null,
+        "destination": null,
+        "start_date": null,
+        "end_date": null,
+        "travelers": null,
+        "preferences": [],
+        "notes": "用户询问中国境内航班携带无3C标识充电宝的规定，属于业务咨询，不改变行程上下文。"
+      },
+      "recent_ticket_candidates": [],
+      "demo_enabled": false
+    },
+    "quotes": []
+  },
+  "scope": "单次知识问答的执行与引用验收，不是准确率或稳定性测评。"
+}

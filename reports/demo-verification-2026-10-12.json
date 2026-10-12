@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-12",
+  "model": "qwen3.7-flash",
+  "scope": "本机演示修复验收。单次执行结果不是模型准确率、长期成功率或稳定性能基准。",
+  "initial_observations": {
+    "ui_and_agent_ports_running": false,
+    "host_model_api_reachable": true,
+    "actual_context_extraction_tool_supported": true,
+    "historical_error_root_cause": "未取得用户那次失败的详细记录，不能判定唯一原因；本轮确认服务未运行，重启后示例完成。"
+  },
+  "connection_check": {
+    "checked_at": "2026-10-12T03:55:40.015555+00:00",
+    "model_tool_protocol": "passed",
+    "agent_health": {"weather": "passed", "itinerary": "passed", "knowledge": "passed", "tickets": "passed"},
+    "scope": "专家健康检查只证明进程可连接，不等于每个业务接口通过。"
+  },
+  "browser_observations": [
+    {
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "response_mode": "环境配置（供应方默认思考设置）",
+      "enable_thinking": null,
+      "observed_from": "真实 Streamlit 页面回答及展开的执行详情；原始 trace 未成功导出",
+      "elapsed_seconds": 139.2,
+      "model_calls": 10,
+      "business_tool_calls": 3,
+      "total_tokens": 51606,
+      "agents": ["weather", "itinerary"],
+      "observed_result": "返回 2026-10-13 西安预报、雨天场所候选、来源及开放情况待核实说明。",
+      "coverage": "weather_and_rain_alternative_present"
+    },
+    {
+      "query": "明天去陕西西安，天气怎么样？如果下雨，怎么安排？",
+      "response_mode": "快速回答（实验）",
+      "enable_thinking": false,
+      "observed_from": "真实 Streamlit 页面回答及展开的执行详情",
+      "elapsed_seconds": 19.2,
+      "model_calls": 7,
+      "business_tool_calls": 2,
+      "total_tokens": 22190,
+      "agents": ["weather"],
+      "observed_result": "仅返回天气；因预报无降雨而省略用户请求的雨天备选安排。",
+      "coverage": "failed_missing_rain_alternative",
+      "decision": "保持实验标签与默认关闭，不能将此样本称为同等质量下的性能提升。"
+    }
+  ],
+  "knowledge_verification": {
+    "report": "demo-knowledge-2026-10-12.json",
+    "elapsed_seconds": 14.14,
+    "model_calls": 6,
+    "business_tool_calls": 1,
+    "execution_checks": "6/6 passed",
+    "manual_limit": "回答使用了相关知识引用并标明国内范围与快照限制，但未明确写出资料 checked_at 日期；执行检查不能替代回答完整性评价。"
+  },
+  "offline_regression": {
+    "full_run": {"total": 165, "passed": 144, "skipped_mysql_integration": 21},
+    "subsequent_targeted_run": {"total": 19, "passed": 19, "note": "覆盖最终来源复核诊断、页面和新增模型错误传递测试；与全量测试有重叠，不能相加。"}
+  },
+  "remaining_limits": [
+    "未复现用户历史失败的详细报文，不声称已经证明其唯一根因。",
+    "完整模式的复合查询仍耗时较长。",
+    "快速模式可能遗漏复合问题，默认保持关闭。",
+    "本轮未重新验证真实票务供应方或执行模拟订票。"
+  ]
+}

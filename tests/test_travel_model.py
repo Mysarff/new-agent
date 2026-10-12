@@ -6,6 +6,7 @@ from unittest.mock import patch
 import httpx
 
 from wayloom.model import ChatModel, thinking_setting
+from wayloom.diagnostics import ModelResponseError
 from wayloom.config import env_value
 from wayloom.tools import ISODate
 from pydantic import TypeAdapter, ValidationError
@@ -47,6 +48,17 @@ class ModelOptionsTests(unittest.IsolatedAsyncioTestCase):
                 thinking_setting(value)
         self.assertIsNone(thinking_setting(''))
         self.assertIs(thinking_setting('false'),False)
+
+    async def test_http_success_with_invalid_or_empty_output_is_a_protocol_failure(self):
+        client = httpx.AsyncClient
+        for data in ({'error': 'hidden provider message'}, {'choices': []},
+                     {'choices': [{'message': {'role': 'assistant', 'content': ''}}]}):
+            with patch.dict(os.environ, {'WAYLOOM_MODEL': 'test-model', 'WAYLOOM_API_KEY': 'test-secret',
+                 'WAYLOOM_BASE_URL': 'https://model.test/v1'}), patch('wayloom.model.httpx.AsyncClient',
+                 side_effect=lambda **kw: client(transport=httpx.MockTransport(lambda request:
+                     httpx.Response(200, json=data)), **kw)):
+                with self.assertRaises(ModelResponseError):
+                    await ChatModel().complete([{'role': 'user', 'content': 'hello'}], [])
 
     def test_knowledge_optional_date_schema_rejects_string_none(self):
         adapter=TypeAdapter(ISODate | None)

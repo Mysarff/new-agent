@@ -11,6 +11,7 @@ from jsonschema import ValidationError, validate
 
 from .grounding import needs_place_review, review_place_answer
 from .metrics import model_event, summarize_trace
+from .diagnostics import model_failure
 
 COMPACT_HANDOFF = '''你向协调器交接结果，不直接撰写给用户的长回答。完成所需查询后，用简短条目交接：关键事实及原始证据ID、缺失项/失败项、需要澄清的信息。不要重复上游已有事实、寒暄、大标题或扩写建议；完整原始工具证据会单独交给协调器。不能为了简短省略必要查询、日期/地点歧义、模拟标识或报价数量与金额。'''
 FINALIZE_TOOL = {'type': 'function', 'function': {'name': 'finalize_answer',
@@ -240,8 +241,9 @@ class Engine:
                 state.trace.append(model_event(actor, 'model_cancelled', started))
                 raise
             except Exception as exc:
-                state.trace.append(model_event(actor, 'model_error', started, error=type(exc).__name__))
-                state.warnings.append('模型请求失败，请检查配置、额度或网络。')
+                diagnostic = model_failure(exc)
+                state.trace.append(model_event(actor, 'model_error', started, error=type(exc).__name__, diagnostic=diagnostic))
+                state.warnings.append(diagnostic['message'])
                 return '模型调用未完成，不能生成可靠结论。'
             state.trace.append(model_event(actor, 'model', started, message))
             calls = message.get('tool_calls') or []

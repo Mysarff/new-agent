@@ -15,6 +15,7 @@ from wayloom.model import Embeddings
 from wayloom.presentation import format_answer, safe_source_url, source_catalog, trip_overview
 from wayloom.runtime import chat, direct_tool
 from wayloom.booking import booking_action
+from wayloom.diagnostics import check_connections
 
 st.set_page_config(page_title='Wayloom 旅知 · 旅行助手', page_icon='🧭', layout='wide')
 st.markdown('''<style>
@@ -170,6 +171,17 @@ with st.sidebar:
         st.caption('服务模式：' + ('独立 Agent 服务' if env_value('WAYLOOM_A2A') == '1' else '本机协作'))
         fast_response = st.checkbox('快速回答（实验）', value=False)
         st.caption('减少模型思考等待，复杂问题可能更容易遗漏。需要模型支持关闭思考；如报错请关闭。默认沿用本地模型配置。')
+        if st.button('检查模型与专家连接', disabled=not available['model']):
+            with st.spinner('正在检查连接（会调用一次模型 API，最多等待 30 秒）…'):
+                probe_config = {**config, 'enable_thinking': False} if fast_response else config
+                st.session_state.connection_check = asyncio.run(check_connections(
+                    probe_config, network=env_value('WAYLOOM_A2A') == '1'))
+        if st.session_state.get('connection_check'):
+            check = st.session_state.connection_check
+            st.caption('最近自检时间：' + check['checked_at'])
+            for item in check['checks']:
+                (st.success if item['status'] == 'ok' else st.error)(item['name'] + '：' + item['message'])
+            st.caption(check['notice'])
 
 st.caption('WAYLOOM / 旅知')
 st.title('下一程，从容出发。')
